@@ -1,0 +1,11 @@
+{
+    "tabWidth": 4,
+    "printWidth": 80,
+    "plugins": [
+        "prettier-plugin-organize-imports",
+        "prettier-plugin-tailwindcss"
+    ],
+    "singleQuote": true,
+    "trailingComma": "all",
+    "htmlWhitespaceSensitivity": "css"
+}
