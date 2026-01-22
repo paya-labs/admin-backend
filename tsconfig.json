@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "noEmit": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "baseUrl": ".",
+        "types": ["vite/client"]
+    },
+    "include": [
+        "packages/admin-ui/src/**/*.ts",
+        "packages/admin-ui/src/**/*.vue",
+        "packages/demo/src/**/*.js",
+        "packages/demo/src/**/*.vue"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "packages/create-admin-ui/template"
+    ]
+}

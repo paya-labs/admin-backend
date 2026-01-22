@@ -1,0 +1,49 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'UTC'
+    allow:
+      - dependency-type: 'all'
+    groups:
+      vue-ecosystem:
+        patterns:
+          - 'vue'
+          - 'vue-router'
+          - '@vitejs/plugin-vue'
+          - '@vue/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      vite-deps:
+        patterns:
+          - 'vite'
+          - 'rolldown-vite'
+          - 'vite-plugin-vue-devtools'
+        update-types:
+          - 'minor'
+          - 'patch'
+      tailwind-deps:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      linting-deps:
+        patterns:
+          - 'eslint'
+          - 'eslint-*'
+          - '@eslint/*'
+          - 'prettier'
+          - 'prettier-*'
+        update-types:
+          - 'minor'
+          - 'patch'
+    commit-message:
+      prefix: 'deps'
+      include: 'scope'

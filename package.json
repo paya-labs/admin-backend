@@ -1,0 +1,41 @@
+{
+    "name": "admin-ui",
+    "private": true,
+    "version": "0.1.0",
+    "type": "module",
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "lib:dev": "npm run dev -w @flangofas/admin-ui",
+        "lib:build": "npm run build -w @flangofas/admin-ui",
+        "lib:test": "npm run test -w @flangofas/admin-ui",
+        "lib:test:watch": "npm run test:watch -w @flangofas/admin-ui",
+        "demo:dev": "npm run dev -w demo",
+        "demo:build": "npm run build -w demo",
+        "lint": "prettier --check . && eslint .",
+        "lint:fix": "prettier --write . && eslint . --fix"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.39.2",
+        "@typescript-eslint/eslint-plugin": "^8.53.1",
+        "@typescript-eslint/parser": "^8.53.1",
+        "@vitejs/plugin-vue": "^6.0.1",
+        "eslint": "^9.39.2",
+        "eslint-plugin-vue": "^10.6.2",
+        "globals": "^17.0.0",
+        "prettier": "^3.8.0",
+        "prettier-plugin-organize-imports": "^4.3.0",
+        "prettier-plugin-tailwindcss": "^0.7.2",
+        "typescript": "^5.9.3",
+        "vite": "npm:rolldown-vite@7.2.5",
+        "vite-plugin-dts": "^4.5.4",
+        "vue": "^3.5.24"
+    },
+    "overrides": {
+        "vite": "npm:rolldown-vite@7.2.5"
+    },
+    "dependencies": {
+        "vue-tsc": "^3.2.2"
+    }
+}
