@@ -32,10 +32,10 @@ jobs:
         run: npm run lint
 
       - name: Build core library
-        run: lib:build
+        run: npm run lib:build
 
       - name: Build demo site
-        run: demo:build
+        run: npm run demo:build
 
       - name: Test core library
-        run: lib:test
+        run: npm run lib:test
