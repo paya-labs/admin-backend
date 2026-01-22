@@ -1,6 +1,6 @@
 {
     "name": "@flangofas/admin-ui",
-    "version": "0.1.4",
+    "version": "0.0.0",
     "description": "Vue 3 admin UI components for building backoffice applications",
     "type": "module",
     "main": "./dist/admin-ui.umd.cjs",

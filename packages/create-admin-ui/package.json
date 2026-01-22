@@ -1,6 +1,6 @@
 {
     "name": "@flangofas/create-admin-ui",
-    "version": "0.1.4",
+    "version": "0.0.0",
     "description": "CLI to scaffold new admin projects using @flangofas/admin-ui",
     "type": "module",
     "bin": {
