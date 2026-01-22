@@ -21,9 +21,5 @@
         "packages/demo/src/**/*.js",
         "packages/demo/src/**/*.vue"
     ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "packages/create-admin-ui/template"
-    ]
+    "exclude": ["node_modules", "dist", "packages/create-admin-ui/template"]
 }

@@ -2,9 +2,9 @@
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useTheme } from '../composables/useTheme';
-import AppButton from './AppButton.vue';
 import { vClickOutside } from '../directives/clickOutside';
 import type { User } from '../types';
+import AppButton from './AppButton.vue';
 
 interface Props {
     user?: User;

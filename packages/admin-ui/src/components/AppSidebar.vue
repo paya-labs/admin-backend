@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
-import AppIcon from './AppIcon.vue';
 import type { NavigationItem } from '../types';
+import AppIcon from './AppIcon.vue';
 
 interface SidebarNavigationItem extends NavigationItem {
     route?: string;
@@ -43,7 +43,8 @@ const toggleGroup = (groupId: string): void => {
     }
 };
 
-const isGroupExpanded = (groupId: string): boolean => expandedGroups.value.has(groupId);
+const isGroupExpanded = (groupId: string): boolean =>
+    expandedGroups.value.has(groupId);
 
 const isActive = (path: string): boolean => route.path === path;
 

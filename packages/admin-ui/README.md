@@ -31,39 +31,39 @@ import '@flangofas/admin-ui/styles';
 
 ## Components
 
-| Component | Description |
-| --------- | ----------- |
-| `AppButton` | Button with variants and loading state |
-| `AppInput` | Text input with label and validation |
-| `AppTextarea` | Multi-line text input |
-| `AppSelect` | Select dropdown |
-| `AppBadge` | Status badge with variants |
-| `AppCard` | Stats/info card with trend indicators |
-| `AppTable` | Data table with sorting and pagination |
-| `AppHeader` | Top header with user info and search |
-| `AppSidebar` | Navigation sidebar with collapse |
-| `AppModal` | Modal dialog |
-| `AppForm` | Dynamic form generator |
-| `AppIcon` | Icon component with built-in icons |
-| `AppToastContainer` | Toast notifications container |
-| `AdminLayout` | Main layout with sidebar and header |
+| Component           | Description                            |
+| ------------------- | -------------------------------------- |
+| `AppButton`         | Button with variants and loading state |
+| `AppInput`          | Text input with label and validation   |
+| `AppTextarea`       | Multi-line text input                  |
+| `AppSelect`         | Select dropdown                        |
+| `AppBadge`          | Status badge with variants             |
+| `AppCard`           | Stats/info card with trend indicators  |
+| `AppTable`          | Data table with sorting and pagination |
+| `AppHeader`         | Top header with user info and search   |
+| `AppSidebar`        | Navigation sidebar with collapse       |
+| `AppModal`          | Modal dialog                           |
+| `AppForm`           | Dynamic form generator                 |
+| `AppIcon`           | Icon component with built-in icons     |
+| `AppToastContainer` | Toast notifications container          |
+| `AdminLayout`       | Main layout with sidebar and header    |
 
 ## Composables
 
-| Composable | Description |
-| ---------- | ----------- |
-| `useTheme` | Dark/light/system theme management |
-| `useSidebar` | Sidebar state (open, collapsed, mobile) |
-| `useToast` | Toast notification system |
-| `useAuth` | Authentication state management |
-| `useApi` | HTTP client with error handling |
-| `useCrud` | CRUD operations helper |
-| `usePagination` | Pagination state and controls |
+| Composable      | Description                             |
+| --------------- | --------------------------------------- |
+| `useTheme`      | Dark/light/system theme management      |
+| `useSidebar`    | Sidebar state (open, collapsed, mobile) |
+| `useToast`      | Toast notification system               |
+| `useAuth`       | Authentication state management         |
+| `useApi`        | HTTP client with error handling         |
+| `useCrud`       | CRUD operations helper                  |
+| `usePagination` | Pagination state and controls           |
 
 ## Directives
 
-| Directive | Description |
-| --------- | ----------- |
+| Directive         | Description                      |
+| ----------------- | -------------------------------- |
 | `v-click-outside` | Detect clicks outside an element |
 
 ## Theme Customization

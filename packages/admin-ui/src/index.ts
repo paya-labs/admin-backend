@@ -38,13 +38,16 @@ import type { App, Plugin } from 'vue';
 export * from './types';
 
 // Re-export composable types
-export type { UseApiReturn, ApiError } from './composables/useApi';
+export type { ApiError, UseApiReturn } from './composables/useApi';
 export type { UseAuthReturn } from './composables/useAuth';
 export type { UseCrudReturn } from './composables/useCrud';
-export type { UsePaginationReturn, UsePaginationOptions } from './composables/usePagination';
+export type {
+    UsePaginationOptions,
+    UsePaginationReturn,
+} from './composables/usePagination';
 export type { UseSidebarReturn } from './composables/useSidebar';
 export type { UseThemeReturn } from './composables/useTheme';
-export type { UseToastReturn, ShowToastOptions } from './composables/useToast';
+export type { ShowToastOptions, UseToastReturn } from './composables/useToast';
 
 // Re-export icon types
 export type { IconDefinition } from './icons';

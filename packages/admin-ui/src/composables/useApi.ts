@@ -1,5 +1,5 @@
 import { ref, shallowRef, type Ref } from 'vue';
-import type { UseApiOptions, RequestOptions } from '../types';
+import type { RequestOptions, UseApiOptions } from '../types';
 
 export interface ApiError extends Error {
     status?: number;
@@ -14,7 +14,11 @@ export interface UseApiReturn<T> {
     get: (url: string, options?: RequestOptions) => Promise<T>;
     post: (url: string, body?: unknown, options?: RequestOptions) => Promise<T>;
     put: (url: string, body?: unknown, options?: RequestOptions) => Promise<T>;
-    patch: (url: string, body?: unknown, options?: RequestOptions) => Promise<T>;
+    patch: (
+        url: string,
+        body?: unknown,
+        options?: RequestOptions,
+    ) => Promise<T>;
     del: (url: string, options?: RequestOptions) => Promise<T>;
     reset: () => void;
 }
@@ -24,7 +28,9 @@ interface ExecuteOptions extends RequestInit {
     headers?: Record<string, string>;
 }
 
-export function useApi<T = unknown>(options: UseApiOptions = {}): UseApiReturn<T> {
+export function useApi<T = unknown>(
+    options: UseApiOptions = {},
+): UseApiReturn<T> {
     const {
         baseUrl = '',
         headers: defaultHeaders = {},
@@ -37,7 +43,10 @@ export function useApi<T = unknown>(options: UseApiOptions = {}): UseApiReturn<T
     const loading = ref(false);
     const status = ref<number | null>(null);
 
-    const buildUrl = (url: string, params?: Record<string, unknown>): string => {
+    const buildUrl = (
+        url: string,
+        params?: Record<string, unknown>,
+    ): string => {
         const fullUrl = baseUrl ? `${baseUrl}${url}` : url;
         if (!params || Object.keys(params).length === 0) {
             return fullUrl;
@@ -49,7 +58,9 @@ export function useApi<T = unknown>(options: UseApiOptions = {}): UseApiReturn<T
         return `${fullUrl}?${searchParams.toString()}`;
     };
 
-    const defaultResponseHandler = async (response: Response): Promise<unknown> => {
+    const defaultResponseHandler = async (
+        response: Response,
+    ): Promise<unknown> => {
         const contentType = response.headers.get('content-type');
         if (contentType?.includes('application/json')) {
             return response.json();
@@ -57,7 +68,10 @@ export function useApi<T = unknown>(options: UseApiOptions = {}): UseApiReturn<T
         return response.text();
     };
 
-    const execute = async (url: string, fetchOptions: ExecuteOptions = {}): Promise<T> => {
+    const execute = async (
+        url: string,
+        fetchOptions: ExecuteOptions = {},
+    ): Promise<T> => {
         const { params, headers: requestHeaders, ...rest } = fetchOptions;
 
         loading.value = true;
@@ -78,11 +92,13 @@ export function useApi<T = unknown>(options: UseApiOptions = {}): UseApiReturn<T
             status.value = response.status;
 
             if (!response.ok) {
-                const errorData = await defaultResponseHandler(response) as Record<string, unknown>;
+                const errorData = (await defaultResponseHandler(
+                    response,
+                )) as Record<string, unknown>;
                 const err: ApiError = new Error(
                     (errorData?.message as string) ||
-                    (errorData?.error as string) ||
-                    `HTTP ${response.status}`,
+                        (errorData?.error as string) ||
+                        `HTTP ${response.status}`,
                 );
                 err.status = response.status;
                 err.data = errorData;
@@ -90,7 +106,7 @@ export function useApi<T = unknown>(options: UseApiOptions = {}): UseApiReturn<T
             }
 
             const handler = responseHandler || defaultResponseHandler;
-            const result = await handler(response) as T;
+            const result = (await handler(response)) as T;
             data.value = result;
             return result;
         } catch (err) {
@@ -109,7 +125,11 @@ export function useApi<T = unknown>(options: UseApiOptions = {}): UseApiReturn<T
         return execute(url, { method: 'GET', ...options });
     };
 
-    const post = (url: string, body?: unknown, options: RequestOptions = {}): Promise<T> => {
+    const post = (
+        url: string,
+        body?: unknown,
+        options: RequestOptions = {},
+    ): Promise<T> => {
         return execute(url, {
             method: 'POST',
             body: body ? JSON.stringify(body) : undefined,
@@ -117,7 +137,11 @@ export function useApi<T = unknown>(options: UseApiOptions = {}): UseApiReturn<T
         });
     };
 
-    const put = (url: string, body?: unknown, options: RequestOptions = {}): Promise<T> => {
+    const put = (
+        url: string,
+        body?: unknown,
+        options: RequestOptions = {},
+    ): Promise<T> => {
         return execute(url, {
             method: 'PUT',
             body: body ? JSON.stringify(body) : undefined,
@@ -125,7 +149,11 @@ export function useApi<T = unknown>(options: UseApiOptions = {}): UseApiReturn<T
         });
     };
 
-    const patch = (url: string, body?: unknown, options: RequestOptions = {}): Promise<T> => {
+    const patch = (
+        url: string,
+        body?: unknown,
+        options: RequestOptions = {},
+    ): Promise<T> => {
         return execute(url, {
             method: 'PATCH',
             body: body ? JSON.stringify(body) : undefined,

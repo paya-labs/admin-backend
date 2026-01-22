@@ -1,5 +1,13 @@
-import { computed, onMounted, onUnmounted, ref, watch, type ComputedRef, type Ref } from 'vue';
-import type { ThemeMode, ResolvedTheme } from '../types';
+import {
+    computed,
+    onMounted,
+    onUnmounted,
+    ref,
+    watch,
+    type ComputedRef,
+    type Ref,
+} from 'vue';
+import type { ResolvedTheme, ThemeMode } from '../types';
 
 export interface UseThemeReturn {
     mode: Ref<ThemeMode>;

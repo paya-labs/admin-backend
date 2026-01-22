@@ -6,9 +6,9 @@ This guide explains how to publish `@flangofas/admin-ui` and `@flangofas/create-
 
 1. A GitHub account with access to the `flangofas` organization/acctoun
 2. A GitHub Personal Access Token (PAT) with the following scopes:
-   - `read:packages`
-   - `write:packages`
-   - `delete:packages` (optional, for unpublishing)
+    - `read:packages`
+    - `write:packages`
+    - `delete:packages` (optional, for unpublishing)
 
 ## Setup
 
@@ -117,9 +117,9 @@ Create a PAT with `read:packages` scope (same process as above). This token will
 1. Go to your App in DigitalOcean App Platform
 2. Navigate to **Settings** → **App-Level Environment Variables**
 3. Add the following variable:
-   - **Key:** `NPM_TOKEN`
-   - **Value:** Your GitHub PAT
-   - **Encrypt:** Yes (recommended for secrets)
+    - **Key:** `NPM_TOKEN`
+    - **Value:** Your GitHub PAT
+    - **Encrypt:** Yes (recommended for secrets)
 
 ### 3. Configure .npmrc in Your Project
 
@@ -139,17 +139,17 @@ In your `app.yaml` or via the App Platform UI:
 ```yaml
 name: my-admin-app
 static_sites:
-  - name: web
-    github:
-      repo: flangofas/my-admin-app
-      branch: main
-    build_command: npm ci && npm run build
-    output_dir: dist
-    envs:
-      - key: NPM_TOKEN
-        value: ${NPM_TOKEN}
-        scope: BUILD_TIME
-        type: SECRET
+    - name: web
+      github:
+          repo: flangofas/my-admin-app
+          branch: main
+      build_command: npm ci && npm run build
+      output_dir: dist
+      envs:
+          - key: NPM_TOKEN
+            value: ${NPM_TOKEN}
+            scope: BUILD_TIME
+            type: SECRET
 ```
 
 **Note:** The `scope: BUILD_TIME` ensures the token is only available during the build phase, not at runtime.
@@ -160,9 +160,9 @@ If you prefer not to commit `.npmrc`, use a build command that creates it:
 
 ```yaml
 build_command: |
-  echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> .npmrc
-  echo "@flangofas:registry=https://npm.pkg.github.com" >> .npmrc
-  npm ci && npm run build
+    echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> .npmrc
+    echo "@flangofas:registry=https://npm.pkg.github.com" >> .npmrc
+    npm ci && npm run build
 ```
 
 ## Troubleshooting
@@ -185,6 +185,6 @@ The package name in `package.json` must be scoped to match the GitHub org/user:
 
 ```json
 {
-  "name": "@flangofas/admin-ui"
+    "name": "@flangofas/admin-ui"
 }
 ```

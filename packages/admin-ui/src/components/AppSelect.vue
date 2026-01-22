@@ -129,7 +129,10 @@ const handleKeydown = (event: KeyboardEvent): void => {
     }
 };
 
-const findNextEnabledIndex = (startIndex: number, direction: number): number => {
+const findNextEnabledIndex = (
+    startIndex: number,
+    direction: number,
+): number => {
     let index = startIndex;
     const len = props.options.length;
 

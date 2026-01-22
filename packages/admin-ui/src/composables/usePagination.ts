@@ -25,7 +25,9 @@ export interface UsePaginationReturn {
     reset: () => void;
 }
 
-export function usePagination(options: UsePaginationOptions = {}): UsePaginationReturn {
+export function usePagination(
+    options: UsePaginationOptions = {},
+): UsePaginationReturn {
     const {
         initialPage = 1,
         initialPageSize = 10,

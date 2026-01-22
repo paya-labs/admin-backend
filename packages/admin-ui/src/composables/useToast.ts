@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue';
-import type { Toast, ToastVariant, ToastOptions } from '../types';
+import type { Toast, ToastVariant } from '../types';
 
 export interface ShowToastOptions {
     message: string;

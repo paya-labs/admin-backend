@@ -4,11 +4,11 @@ A Vue 3 admin UI components library and CLI tool for building backoffice applica
 
 ## Packages
 
-| Package | Description |
-| ------- | ----------- |
-| [@flangofas/admin-ui](./packages/admin-ui) | Vue 3 admin UI components library |
-| [@flangofas/create-admin-ui](./packages/create-admin-ui) | CLI to scaffold new admin projects |
-| [demo](./packages/demo) | Development playground (local testing) |
+| Package                                                  | Description                            |
+| -------------------------------------------------------- | -------------------------------------- |
+| [@flangofas/admin-ui](./packages/admin-ui)               | Vue 3 admin UI components library      |
+| [@flangofas/create-admin-ui](./packages/create-admin-ui) | CLI to scaffold new admin projects     |
+| [demo](./packages/demo)                                  | Development playground (local testing) |
 
 ## Quick Start
 

@@ -31,5 +31,11 @@ jobs:
       - name: Run linters
         run: npm run lint
 
-      - name: Build
-        run: npm run build
+      - name: Build core library
+        run: lib:build
+
+      - name: Build demo site
+        run: demo:build
+
+      - name: Test core library
+        run: lib:test

@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, ref, type Ref, shallowRef} from 'vue';
+import { computed, type ComputedRef, ref, type Ref, shallowRef } from 'vue';
 
 export interface UseAuthOptions {
     baseUrl?: string;
@@ -33,11 +33,20 @@ interface AuthError extends Error {
 
 interface UserWithRoles {
     role?: string;
-    roles?: Array<string | { name?: string; slug?: string; permissions?: Array<string | { name?: string; slug?: string }> }>;
+    roles?: Array<
+        | string
+        | {
+              name?: string;
+              slug?: string;
+              permissions?: Array<string | { name?: string; slug?: string }>;
+          }
+    >;
     permissions?: Array<string | { name?: string; slug?: string }>;
 }
 
-export function useAuth<TUser = Record<string, unknown>>(options: UseAuthOptions = {}): UseAuthReturn<TUser> {
+export function useAuth<TUser = Record<string, unknown>>(
+    options: UseAuthOptions = {},
+): UseAuthReturn<TUser> {
     const {
         baseUrl = '',
         loginEndpoint = '/auth/login',
@@ -60,7 +69,10 @@ export function useAuth<TUser = Record<string, unknown>>(options: UseAuthOptions
         return baseUrl ? `${baseUrl}${endpoint}` : endpoint;
     };
 
-    const authFetch = async (url: string, options: RequestInit = {}): Promise<Response> => {
+    const authFetch = async (
+        url: string,
+        options: RequestInit = {},
+    ): Promise<Response> => {
         return await fetch(url, {
             ...options,
             credentials: 'include',
@@ -79,7 +91,9 @@ export function useAuth<TUser = Record<string, unknown>>(options: UseAuthOptions
 
         if (!response.ok) {
             const message =
-                (isJson && ((data as Record<string, string>).message || (data as Record<string, string>).error)) ||
+                (isJson &&
+                    ((data as Record<string, string>).message ||
+                        (data as Record<string, string>).error)) ||
                 `HTTP ${response.status}`;
             const err: AuthError = new Error(message);
             err.status = response.status;
@@ -98,7 +112,9 @@ export function useAuth<TUser = Record<string, unknown>>(options: UseAuthOptions
         });
     };
 
-    const login = async (credentials: Record<string, unknown>): Promise<TUser> => {
+    const login = async (
+        credentials: Record<string, unknown>,
+    ): Promise<TUser> => {
         loading.value = true;
         error.value = null;
 
@@ -110,7 +126,10 @@ export function useAuth<TUser = Record<string, unknown>>(options: UseAuthOptions
                 body: JSON.stringify(credentials),
             });
 
-            const data = await handleResponse(response) as Record<string, unknown>;
+            const data = (await handleResponse(response)) as Record<
+                string,
+                unknown
+            >;
 
             if (data.user) {
                 user.value = data.user as TUser;
@@ -171,7 +190,10 @@ export function useAuth<TUser = Record<string, unknown>>(options: UseAuthOptions
                 return null;
             }
 
-            const data = await handleResponse(response) as Record<string, unknown>;
+            const data = (await handleResponse(response)) as Record<
+                string,
+                unknown
+            >;
             user.value = (data.user || data) as TUser;
             return user.value;
         } catch {
@@ -200,7 +222,13 @@ export function useAuth<TUser = Record<string, unknown>>(options: UseAuthOptions
         if (userData.role === role) return true;
         if (Array.isArray(userData.roles)) {
             if (userData.roles.includes(role)) return true;
-            if (userData.roles.some((r) => typeof r === 'object' && (r.name === role || r.slug === role))) {
+            if (
+                userData.roles.some(
+                    (r) =>
+                        typeof r === 'object' &&
+                        (r.name === role || r.slug === role),
+                )
+            ) {
                 return true;
             }
         }
@@ -215,16 +243,32 @@ export function useAuth<TUser = Record<string, unknown>>(options: UseAuthOptions
 
         if (Array.isArray(userData.permissions)) {
             if (userData.permissions.includes(permission)) return true;
-            if (userData.permissions.some((p) => typeof p === 'object' && (p.name === permission || p.slug === permission))) {
+            if (
+                userData.permissions.some(
+                    (p) =>
+                        typeof p === 'object' &&
+                        (p.name === permission || p.slug === permission),
+                )
+            ) {
                 return true;
             }
         }
 
         if (Array.isArray(userData.roles)) {
             for (const role of userData.roles) {
-                if (typeof role === 'object' && Array.isArray(role.permissions)) {
+                if (
+                    typeof role === 'object' &&
+                    Array.isArray(role.permissions)
+                ) {
                     if (role.permissions.includes(permission)) return true;
-                    if (role.permissions.some((p) => typeof p === 'object' && (p.name === permission || p.slug === permission))) {
+                    if (
+                        role.permissions.some(
+                            (p) =>
+                                typeof p === 'object' &&
+                                (p.name === permission ||
+                                    p.slug === permission),
+                        )
+                    ) {
                         return true;
                     }
                 }

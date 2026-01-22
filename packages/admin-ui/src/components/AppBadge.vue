@@ -1,5 +1,11 @@
 <script setup lang="ts">
-type BadgeVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+type BadgeVariant =
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'info';
 type BadgeSize = 'sm' | 'md' | 'lg';
 
 interface Props {

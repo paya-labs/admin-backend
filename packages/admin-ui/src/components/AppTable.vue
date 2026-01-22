@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { TableAction, TableColumn } from '../types';
 import AppButton from './AppButton.vue';
-import type { TableColumn, TableAction, ButtonVariant } from '../types';
 
 interface Props {
     columns: TableColumn[];
@@ -30,7 +30,10 @@ const emit = defineEmits<{
 
 const hasActions = computed(() => props.actions.length > 0);
 
-const getCellValue = (row: Record<string, unknown>, column: TableColumn): unknown => {
+const getCellValue = (
+    row: Record<string, unknown>,
+    column: TableColumn,
+): unknown => {
     const value = row[column.key];
     if (column.format) {
         return column.format(value, row);

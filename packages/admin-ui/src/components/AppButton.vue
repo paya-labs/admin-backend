@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ButtonVariant, ButtonSize } from '../types';
+import type { ButtonSize, ButtonVariant } from '../types';
 
 type ButtonType = 'button' | 'submit' | 'reset';
 

@@ -1,7 +1,7 @@
 import { computed, ref, shallowRef, type ComputedRef, type Ref } from 'vue';
+import type { UseCrudOptions } from '../types';
 import { useApi } from './useApi';
 import { usePagination, type UsePaginationReturn } from './usePagination';
-import type { UseCrudOptions } from '../types';
 
 export interface UseCrudReturn<T> {
     items: Ref<T[]>;
@@ -29,7 +29,9 @@ interface ListResponse<T> {
     total?: number;
 }
 
-export function useCrud<T extends Record<string, unknown>>(options: UseCrudOptions): UseCrudReturn<T> {
+export function useCrud<T extends Record<string, unknown>>(
+    options: UseCrudOptions,
+): UseCrudReturn<T> {
     const {
         baseUrl,
         resource,
@@ -68,7 +70,9 @@ export function useCrud<T extends Record<string, unknown>>(options: UseCrudOptio
         return id !== undefined ? `${base}/${id}` : base;
     };
 
-    const fetchList = async (params: Record<string, unknown> = {}): Promise<T[]> => {
+    const fetchList = async (
+        params: Record<string, unknown> = {},
+    ): Promise<T[]> => {
         listLoading.value = true;
         error.value = null;
         lastParams.value = params;
@@ -149,7 +153,10 @@ export function useCrud<T extends Record<string, unknown>>(options: UseCrudOptio
         }
     };
 
-    const update = async (id: string | number, data: Partial<T>): Promise<T> => {
+    const update = async (
+        id: string | number,
+        data: Partial<T>,
+    ): Promise<T> => {
         saving.value = true;
         error.value = null;
 
@@ -177,7 +184,10 @@ export function useCrud<T extends Record<string, unknown>>(options: UseCrudOptio
         try {
             await api.del(buildUrl(id));
 
-            if (current.value && (current.value as Record<string, unknown>).id === id) {
+            if (
+                current.value &&
+                (current.value as Record<string, unknown>).id === id
+            ) {
                 current.value = null;
             }
 

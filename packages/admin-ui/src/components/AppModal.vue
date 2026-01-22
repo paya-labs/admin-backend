@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import AppButton from './AppButton.vue';
 import type { ModalSize } from '../types';
+import AppButton from './AppButton.vue';
 
 interface Props {
     modelValue?: boolean;
