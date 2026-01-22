@@ -1,0 +1,28 @@
+{
+    "name": "@flangofas/create-admin-ui",
+    "version": "0.1.4",
+    "description": "CLI to scaffold new admin projects using @flangofas/admin-ui",
+    "type": "module",
+    "bin": {
+        "create-admin-ui": "./bin/cli.js"
+    },
+    "files": [
+        "bin",
+        "template"
+    ],
+    "keywords": [
+        "cli",
+        "scaffold",
+        "admin",
+        "vue",
+        "backoffice"
+    ],
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/flangofas/admin-ui.git"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    }
+}
