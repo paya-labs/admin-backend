@@ -1,0 +1,207 @@
+/* ============================================
+   TAILWIND V4 THEME CONFIGURATION
+   Using @theme directive for custom properties
+
+   NOTE: Do NOT import tailwindcss here.
+   The consumer project handles that.
+   ============================================ */
+
+@theme {
+    /* ----------------------------------------
+       COLOR PALETTE
+       These generate utilities like bg-gray-200, text-primary-500
+       ---------------------------------------- */
+
+    /* Primary Brand Colors */
+    --color-primary-50: oklch(0.98 0.005 265);
+    --color-primary-100: oklch(0.96 0.01 265);
+    --color-primary-200: oklch(0.91 0.015 265);
+    --color-primary-300: oklch(0.83 0.02 265);
+    --color-primary-400: oklch(0.7 0.025 265);
+    --color-primary-500: oklch(0.55 0.03 265);
+    --color-primary-600: oklch(0.45 0.03 265);
+    --color-primary-700: oklch(0.37 0.025 265);
+    --color-primary-800: oklch(0.3 0.02 265);
+    --color-primary-900: oklch(0.24 0.015 265);
+    --color-primary-950: oklch(0.16 0.01 265);
+
+    /* Neutral Gray Scale */
+    --color-gray-50: oklch(0.985 0 0);
+    --color-gray-100: oklch(0.965 0 0);
+    --color-gray-200: oklch(0.915 0 0);
+    --color-gray-300: oklch(0.84 0 0);
+    --color-gray-400: oklch(0.7 0 0);
+    --color-gray-500: oklch(0.55 0 0);
+    --color-gray-600: oklch(0.45 0 0);
+    --color-gray-700: oklch(0.37 0 0);
+    --color-gray-800: oklch(0.27 0 0);
+    --color-gray-900: oklch(0.2 0 0);
+    --color-gray-950: oklch(0.13 0 0);
+
+    /* Status Colors */
+    --color-success: oklch(0.65 0.17 145);
+    --color-warning: oklch(0.75 0.15 85);
+    --color-danger: oklch(0.6 0.2 25);
+    --color-info: oklch(0.65 0.15 230);
+
+    /* ----------------------------------------
+       SEMANTIC COLORS (Light Mode Defaults)
+       These generate utilities like bg-surface, text-muted
+       Override in .dark for dark mode
+       ---------------------------------------- */
+
+    /* Backgrounds */
+    --color-body: var(--color-gray-100);
+    --color-surface: white;
+    --color-surface-hover: var(--color-gray-50);
+    --color-sidebar: white;
+    --color-header: white;
+
+    /* Text */
+    --color-text: var(--color-gray-900);
+    --color-text-secondary: var(--color-gray-600);
+    --color-muted: var(--color-gray-400);
+    --color-inverse: white;
+
+    /* Borders */
+    --color-border: var(--color-gray-200);
+    --color-border-strong: var(--color-gray-300);
+
+    /* Inputs */
+    --color-input-bg: white;
+    --color-input-border: var(--color-gray-300);
+    --color-focus-ring: var(--color-primary-500);
+
+    /* ----------------------------------------
+       LAYOUT DIMENSIONS
+       ---------------------------------------- */
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 72px;
+    --header-height: 64px;
+    --mobile-header-height: 56px;
+
+    /* ----------------------------------------
+       TRANSITIONS
+       ---------------------------------------- */
+    --transition-fast: 150ms ease;
+    --transition-normal: 200ms ease;
+    --transition-slow: 300ms ease;
+
+    /* ----------------------------------------
+       BORDER RADIUS
+       ---------------------------------------- */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+
+    /* ----------------------------------------
+       SHADOWS
+       ---------------------------------------- */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md:
+        0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+    --shadow-lg:
+        0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+
+    /* ----------------------------------------
+       Z-INDEX SCALE
+       ---------------------------------------- */
+    --z-sidebar: 40;
+    --z-header: 30;
+    --z-overlay: 50;
+    --z-modal: 60;
+    --z-dropdown: 70;
+    --z-toast: 80;
+}
+
+/* ============================================
+   DARK THEME
+   Override semantic colors for dark mode
+   ============================================ */
+.dark {
+    /* Backgrounds */
+    --color-body: var(--color-gray-950);
+    --color-surface: var(--color-gray-900);
+    --color-surface-hover: var(--color-gray-800);
+    --color-sidebar: var(--color-gray-900);
+    --color-header: var(--color-gray-900);
+
+    /* Text */
+    --color-text: var(--color-gray-100);
+    --color-text-secondary: var(--color-gray-400);
+    --color-muted: var(--color-gray-500);
+    --color-inverse: var(--color-gray-900);
+
+    /* Borders */
+    --color-border: var(--color-gray-800);
+    --color-border-strong: var(--color-gray-700);
+
+    /* Inputs */
+    --color-input-bg: var(--color-gray-800);
+    --color-input-border: var(--color-gray-700);
+    --color-focus-ring: var(--color-primary-400);
+
+    color-scheme: dark;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+:root {
+    color-scheme: light;
+}
+
+body {
+    background-color: var(--color-body);
+    color: var(--color-text);
+    font-family:
+        ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+}
+
+/* Touch target minimum size helper */
+.touch-target {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-body);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-gray-300);
+    border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: var(--color-gray-700);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gray-400);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gray-600);
+}
