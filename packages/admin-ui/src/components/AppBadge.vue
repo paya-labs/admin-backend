@@ -36,9 +36,9 @@ withDefaults(defineProps<Props>(), {
 
             // Variants
             variant === 'primary' &&
-                'text-white bg-primary-600 hover:bg-primary-700 active:bg-primary-800',
+                'text-white bg-primary-600',
             variant === 'secondary' &&
-                'bg-gray-200 text-text hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600',
+                'bg-surface text-text',
             variant === 'success' &&
                 'bg-success/70 text-white',
             variant === 'warning' &&
