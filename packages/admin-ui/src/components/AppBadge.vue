@@ -36,17 +36,17 @@ withDefaults(defineProps<Props>(), {
 
             // Variants
             variant === 'primary' &&
-                'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300',
+                'text-white bg-primary-600 hover:bg-primary-700 active:bg-primary-800',
             variant === 'secondary' &&
-                'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
+                'bg-gray-200 text-text hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600',
             variant === 'success' &&
-                'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400',
+                'bg-success/70 text-white',
             variant === 'warning' &&
-                'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400',
+                'bg-warning/70 text-white',
             variant === 'danger' &&
-                'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400',
+                'bg-danger/70 text-white',
             variant === 'info' &&
-                'bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-400',
+                'bg-info/70 text-white',
         ]"
     >
         <slot />
