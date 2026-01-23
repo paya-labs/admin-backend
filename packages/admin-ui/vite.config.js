@@ -16,6 +16,7 @@ export default defineConfig({
             outDir: 'dist',
             staticImport: true,
             insertTypesEntry: true,
+            copyDtsFiles: true
         }),
     ],
     resolve: {

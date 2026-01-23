@@ -8,6 +8,7 @@
     "types": "./dist/admin-ui.d.ts",
     "exports": {
         ".": {
+            "types": "./dist/admin-ui.d.ts",
             "import": "./dist/admin-ui.js",
             "require": "./dist/admin-ui.umd.cjs"
         },
@@ -16,10 +17,7 @@
     },
     "files": [
         "dist",
-        "src/components",
-        "src/layouts",
-        "src/themes",
-        "src/types"
+        "src"
     ],
     "scripts": {
         "dev": "vite build --watch",
