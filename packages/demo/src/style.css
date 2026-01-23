@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+/*
+ * Import pre-built admin-ui styles
+ * This includes all component CSS + theme variables
+ */
+@import '@paya-labs/admin-ui/styles';
+
+/* Custom styles for this demo project */

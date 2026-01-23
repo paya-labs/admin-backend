@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+
+/*
+ * Import pre-built admin-ui styles
+ * This includes all component CSS + theme variables
+ */
+@import '@paya-labs/admin-ui/styles';
+
+/*
+ * ============================================
+ * THEME CUSTOMIZATION
+ * ============================================
+ * Override these in @theme {} to customize your theme.
+ * All colors automatically work with Tailwind utilities:
+ * bg-primary-500, text-danger, border-border, etc.
+ *
+ * PALETTE COLORS (same in light/dark)
+ * --color-primary-50 to --color-primary-950
+ * --color-gray-50 to --color-gray-950
+ * --color-success, --color-warning, --color-danger, --color-info
+ *
+ * SEMANTIC COLORS (auto-switch in dark mode)
+ * --color-surface         Background for cards, modals
+ * --color-surface-hover   Hover state for surfaces
+ * --color-body            Page background
+ * --color-sidebar         Sidebar background
+ * --color-header          Header background
+ * --color-text            Primary text color
+ * --color-text-secondary  Secondary text color
+ * --color-muted           Muted/placeholder text
+ * --color-border          Border color
+ * --color-input-bg        Input background
+ * --color-input-border    Input border
+ * --color-focus-ring      Focus ring color
+ *
+ * LAYOUT
+ * --sidebar-width: 280px
+ * --sidebar-collapsed-width: 72px
+ * --header-height: 64px
+ *
+ * BORDERS
+ * --radius-sm, --radius-md, --radius-lg, --radius-xl
+ *
+ * Example:
+ * @theme {
+ *     --color-primary-500: #3b82f6;
+ *     --color-primary-600: #2563eb;
+ *     --color-danger: #ef4444;
+ * }
+ */
+
+/* Custom styles for this project */
