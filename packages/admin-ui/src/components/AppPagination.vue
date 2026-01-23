@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { SelectOption } from '../types';
 import AppButton from './AppButton.vue';
 import AppSelect from './AppSelect.vue';
-import type { SelectOption } from '../types';
 
 interface Props {
     page: number;
@@ -124,17 +124,18 @@ const setPageSize = (size: number): void => {
 </script>
 
 <template>
-    <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+    <div class="gap-4 sm:flex-row flex flex-col items-center justify-between">
         <!-- Info text -->
-        <div v-if="showInfo" class="text-muted text-sm">
+        <div v-if="showInfo" class="text-sm text-muted">
             <template v-if="total > 0">
-                Showing {{ showingFrom }} to {{ showingTo }} of {{ total }} results
+                Showing {{ showingFrom }} to {{ showingTo }} of
+                {{ total }} results
             </template>
             <template v-else>No results</template>
         </div>
         <div v-else />
 
-        <div class="flex items-center gap-4">
+        <div class="gap-4 flex items-center">
             <!-- Page size selector -->
             <AppSelect
                 v-if="showPageSize"
@@ -146,7 +147,7 @@ const setPageSize = (size: number): void => {
             />
 
             <!-- Page controls -->
-            <div class="flex items-center gap-1">
+            <div class="gap-1 flex items-center">
                 <!-- Previous button -->
                 <AppButton
                     variant="outline"

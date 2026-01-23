@@ -38,7 +38,7 @@ const handleClick = (event: MouseEvent): void => {
         :disabled="disabled || loading"
         :class="[
             // Base styles
-            'gap-2 font-medium inline-flex items-center justify-center cursor-pointer',
+            'gap-2 font-medium inline-flex cursor-pointer items-center justify-center',
             'transition-all duration-[var(--transition-fast)]',
             'focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:outline-none',
             'disabled:cursor-not-allowed disabled:opacity-50',
