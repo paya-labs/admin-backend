@@ -92,6 +92,12 @@ console.log(`\nCreating project in ${targetDir}...\n`);
 // Copy template
 copyDir(TEMPLATE_DIR, targetDir);
 
+// Rename gitignore to .gitignore (npm publish ignores .gitignore files)
+const gitignoreSrc = path.join(targetDir, 'gitignore');
+if (fs.existsSync(gitignoreSrc)) {
+    fs.renameSync(gitignoreSrc, path.join(targetDir, '.gitignore'));
+}
+
 // Replace placeholders
 const filesToProcess = [
     'package.json',
