@@ -1,6 +1,6 @@
 # Publishing to GitHub Packages (Private Registry)
 
-This guide explains how to publish `@flangofas/admin-ui` and `@flangofas/create-admin-ui` as private packages to GitHub Packages.
+This guide explains how to publish `@paya-labs/admin-ui` and `@paya-labs/create-admin-ui` as private packages to GitHub Packages.
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ Create or edit `~/.npmrc` in your home directory:
 
 ```
 //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
-@flangofas:registry=https://npm.pkg.github.com
+@paya-labs:registry=https://npm.pkg.github.com
 ```
 
 Replace `YOUR_GITHUB_TOKEN` with your actual PAT.
@@ -54,10 +54,10 @@ npm run lib:build
 
 ```bash
 # Publish the component library
-npm publish -w @flangofas/admin-ui
+npm publish -w @paya-labs/admin-ui
 
 # Publish the CLI tool
-npm publish -w @flangofas/create-admin-ui
+npm publish -w @paya-labs/create-admin-ui
 ```
 
 ### Version Bumping
@@ -66,13 +66,13 @@ Before publishing a new version:
 
 ```bash
 # Patch version (0.1.0 → 0.1.1)
-npm version patch -w @flangofas/admin-ui
+npm version patch -w @paya-labs/admin-ui
 
 # Minor version (0.1.0 → 0.2.0)
-npm version minor -w @flangofas/admin-ui
+npm version minor -w @paya-labs/admin-ui
 
 # Major version (0.1.0 → 1.0.0)
-npm version major -w @flangofas/admin-ui
+npm version major -w @paya-labs/admin-ui
 ```
 
 ## Installing Private Packages
@@ -89,19 +89,19 @@ Add to `~/.npmrc`:
 
 ```
 //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
-@flangofas:registry=https://npm.pkg.github.com
+@paya-labs:registry=https://npm.pkg.github.com
 ```
 
 ### 3. Install
 
 ```bash
-npm install @flangofas/admin-ui
+npm install @paya-labs/admin-ui
 ```
 
 Or use the CLI:
 
 ```bash
-npx @flangofas/create-admin-ui my-project
+npx @paya-labs/create-admin-ui my-project
 ```
 
 ## CI/CD Setup (DigitalOcean App Platform)
@@ -127,7 +127,7 @@ Create a `.npmrc` file in your project root:
 
 ```
 //npm.pkg.github.com/:_authToken=${NPM_TOKEN}
-@flangofas:registry=https://npm.pkg.github.com
+@paya-labs:registry=https://npm.pkg.github.com
 ```
 
 This file uses the `NPM_TOKEN` environment variable, so it's safe to commit.
@@ -161,7 +161,7 @@ If you prefer not to commit `.npmrc`, use a build command that creates it:
 ```yaml
 build_command: |
     echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> .npmrc
-    echo "@flangofas:registry=https://npm.pkg.github.com" >> .npmrc
+    echo "@paya-labs:registry=https://npm.pkg.github.com" >> .npmrc
     npm ci && npm run build
 ```
 
@@ -170,7 +170,7 @@ build_command: |
 ### 403 Forbidden
 
 - Verify your PAT has the correct scopes
-- Ensure the package name matches the repository owner (`@flangofas`)
+- Ensure the package name matches the repository owner (`@paya-labs`)
 - Check that the repository exists and you have write access
 
 ### 404 Not Found (when installing)
@@ -185,6 +185,6 @@ The package name in `package.json` must be scoped to match the GitHub org/user:
 
 ```json
 {
-    "name": "@flangofas/admin-ui"
+    "name": "@paya-labs/admin-ui"
 }
 ```

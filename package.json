@@ -7,10 +7,10 @@
         "packages/*"
     ],
     "scripts": {
-        "lib:dev": "npm run dev -w @flangofas/admin-ui",
-        "lib:build": "npm run build -w @flangofas/admin-ui",
-        "lib:test": "npm run test -w @flangofas/admin-ui",
-        "lib:test:watch": "npm run test:watch -w @flangofas/admin-ui",
+        "lib:dev": "npm run dev -w @paya-labs/admin-ui",
+        "lib:build": "npm run build -w @paya-labs/admin-ui",
+        "lib:test": "npm run test -w @paya-labs/admin-ui",
+        "lib:test:watch": "npm run test:watch -w @paya-labs/admin-ui",
         "demo:dev": "npm run dev -w demo",
         "demo:build": "npm run build -w demo",
         "lint": "prettier --check . && eslint .",

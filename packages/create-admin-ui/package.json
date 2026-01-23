@@ -1,7 +1,7 @@
 {
-    "name": "@flangofas/create-admin-ui",
+    "name": "@paya-labs/create-admin-ui",
     "version": "0.0.0",
-    "description": "CLI to scaffold new admin projects using @flangofas/admin-ui",
+    "description": "CLI to scaffold new admin projects using @paya-labs/admin-ui",
     "type": "module",
     "bin": {
         "create-admin-ui": "./bin/cli.js"

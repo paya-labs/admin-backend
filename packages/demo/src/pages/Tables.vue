@@ -1,5 +1,5 @@
 <script setup>
-import { AppBadge, AppButton, AppTable } from '@flangofas/admin-ui';
+import { AppBadge, AppButton, AppTable } from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 // Basic table

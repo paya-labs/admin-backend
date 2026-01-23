@@ -5,7 +5,7 @@ import {
     AppPagination,
     AppTable,
     usePagination,
-} from '@flangofas/admin-ui';
+} from '@paya-labs/admin-ui';
 import { computed } from 'vue';
 
 // Basic pagination demo

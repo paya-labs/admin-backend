@@ -1,11 +1,11 @@
-# @flangofas/create-admin-ui
+# @paya-labs/create-admin-ui
 
-CLI to scaffold new admin projects using [@flangofas/admin-ui](https://github.com/flangofas/admin-ui).
+CLI to scaffold new admin projects using [@paya-labs/admin-ui](https://github.com/flangofas/admin-ui).
 
 ## Usage
 
 ```bash
-npx @flangofas/create-admin-ui my-project
+npx @paya-labs/create-admin-ui my-project
 cd my-project
 npm install
 npm run dev
@@ -16,7 +16,7 @@ npm run dev
 The generated project includes:
 
 - Vue 3 + Vite setup
-- @flangofas/admin-ui components
+- @paya-labs/admin-ui components
 - Tailwind CSS v4
 - Vue Router
 - ESLint + Prettier configuration

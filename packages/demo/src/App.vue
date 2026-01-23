@@ -1,5 +1,5 @@
 <script setup>
-import { AdminLayout } from '@flangofas/admin-ui';
+import { AdminLayout } from '@paya-labs/admin-ui';
 import { moduleConfig } from './module.config.js';
 </script>
 

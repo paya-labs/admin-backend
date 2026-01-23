@@ -5,7 +5,7 @@ import {
     AppInput,
     AppModal,
     AppSelect,
-} from '@flangofas/admin-ui';
+} from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 // Basic modal

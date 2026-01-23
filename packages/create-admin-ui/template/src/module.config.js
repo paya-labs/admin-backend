@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@flangofas/admin-ui').ModuleConfig} ModuleConfig
+ * @typedef {import('@paya-labs/admin-ui').ModuleConfig} ModuleConfig
  */
 
 /** @type {ModuleConfig} */

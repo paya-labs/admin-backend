@@ -1,5 +1,5 @@
 <script setup>
-import { AppBadge, AppButton, AppCard, AppIcon } from '@flangofas/admin-ui';
+import { AppBadge, AppButton, AppCard, AppIcon } from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 // Loading state toggle

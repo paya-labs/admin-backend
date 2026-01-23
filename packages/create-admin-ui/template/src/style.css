@@ -4,7 +4,7 @@
  * Import pre-built admin-ui styles
  * This includes all component CSS + theme variables
  */
-@import '@flangofas/admin-ui/styles';
+@import '@paya-labs/admin-ui/styles';
 
 /*
  * ============================================

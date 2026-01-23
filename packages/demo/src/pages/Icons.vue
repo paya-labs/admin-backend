@@ -1,5 +1,5 @@
 <script setup>
-import { AppIcon, AppSelect } from '@flangofas/admin-ui';
+import { AppIcon, AppSelect } from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 const selectedSize = ref('md');
@@ -222,7 +222,7 @@ const copyToClipboard = (iconName) => {
                         <code
                             class="bg-surface-hover text-muted block rounded p-3"
                         >
-                            import { AppIcon } from '@flangofas/admin-ui';
+                            import { AppIcon } from '@paya-labs/admin-ui';
                         </code>
                     </div>
                 </div>

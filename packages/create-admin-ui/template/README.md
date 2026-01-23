@@ -1,6 +1,6 @@
 # {{PROJECT_NAME}} Admin
 
-Admin dashboard built with [@flangofas/admin-ui](https://github.com/flangofas/admin-ui).
+Admin dashboard built with [@paya-labs/admin-ui](https://github.com/flangofas/admin-ui).
 
 ## Getting Started
 
@@ -33,7 +33,7 @@ Edit `src/module.config.js` to customize:
 
 ## Available Components
 
-Import from `@flangofas/admin-ui`:
+Import from `@paya-labs/admin-ui`:
 
 - `AppButton`, `AppInput`, `AppSelect`
 - `AppTable`, `AppCard`, `AppBadge`

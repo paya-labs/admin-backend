@@ -6,7 +6,7 @@ import {
     AppTextarea,
     useApi,
     useToast,
-} from '@flangofas/admin-ui';
+} from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 const toast = useToast();

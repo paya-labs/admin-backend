@@ -4,7 +4,7 @@ import {
     AppSelect,
     AppToastContainer,
     useToast,
-} from '@flangofas/admin-ui';
+} from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 const toast = useToast();
@@ -187,7 +187,7 @@ toast.dismiss(id);</code></pre>
 &lt;AppToastContainer position="bottom-right" :max="5" /&gt;
 
 // 2. Use the composable anywhere
-import { useToast } from '@flangofas/admin-ui';
+import { useToast } from '@paya-labs/admin-ui';
 
 const toast = useToast();
 

@@ -1,5 +1,5 @@
 <script setup>
-import { AppCard } from '@flangofas/admin-ui';
+import { AppCard } from '@paya-labs/admin-ui';
 </script>
 
 <template>

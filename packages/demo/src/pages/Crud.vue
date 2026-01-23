@@ -9,7 +9,7 @@ import {
     AppTextarea,
     useCrud,
     useToast,
-} from '@flangofas/admin-ui';
+} from '@paya-labs/admin-ui';
 import { onMounted, ref } from 'vue';
 
 const toast = useToast();
@@ -193,7 +193,7 @@ const tableActions = [
             <div class="border-border bg-surface rounded-lg border p-6">
                 <pre
                     class="bg-surface-hover text-muted overflow-x-auto rounded-md p-4 text-xs"
-                ><code>import { useCrud } from '@flangofas/admin-ui';
+                ><code>import { useCrud } from '@paya-labs/admin-ui';
 
 const posts = useCrud({
     baseUrl: 'https://api.example.com',

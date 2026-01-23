@@ -7,7 +7,7 @@ import {
     AppModal,
     AppSelect,
     AppTable,
-} from '@flangofas/admin-ui';
+} from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 const inputValue = ref('');

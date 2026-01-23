@@ -1,4 +1,4 @@
-import { AdminUIPlugin } from '@flangofas/admin-ui';
+import { AdminUIPlugin } from '@paya-labs/admin-ui';
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';

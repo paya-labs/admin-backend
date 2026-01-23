@@ -1,5 +1,5 @@
 <script setup>
-import { useTheme } from '@flangofas/admin-ui';
+import { useTheme } from '@paya-labs/admin-ui';
 
 const { mode, toggleTheme } = useTheme();
 
@@ -534,7 +534,7 @@ const copyToClipboard = (text) => {
                     <pre
                         class="bg-surface-hover overflow-x-auto rounded-md p-4 text-xs"
                     ><code class="text-text">@import 'tailwindcss';
-@import '@flangofas/admin-ui/styles';
+@import '@paya-labs/admin-ui/styles';
 
 @theme {
     /* Custom primary color */

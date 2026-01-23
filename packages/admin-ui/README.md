@@ -1,11 +1,11 @@
-# @flangofas/admin-ui
+# @paya-labs/admin-ui
 
 Vue 3 admin UI components for building backoffice applications.
 
 ## Installation
 
 ```bash
-npm install @flangofas/admin-ui
+npm install @paya-labs/admin-ui
 ```
 
 ## Setup
@@ -14,8 +14,8 @@ npm install @flangofas/admin-ui
 
 ```javascript
 import { createApp } from 'vue';
-import { AdminUIPlugin } from '@flangofas/admin-ui';
-import '@flangofas/admin-ui/styles';
+import { AdminUIPlugin } from '@paya-labs/admin-ui';
+import '@paya-labs/admin-ui/styles';
 
 const app = createApp(App);
 app.use(AdminUIPlugin);
@@ -25,8 +25,8 @@ app.mount('#app');
 ### Option 2: Individual Imports
 
 ```javascript
-import { AppButton, AppTable, AdminLayout } from '@flangofas/admin-ui';
-import '@flangofas/admin-ui/styles';
+import { AppButton, AppTable, AdminLayout } from '@paya-labs/admin-ui';
+import '@paya-labs/admin-ui/styles';
 ```
 
 ## Components

@@ -1,5 +1,5 @@
 <script setup>
-import { AppBadge, AppButton, AppInput, useAuth } from '@flangofas/admin-ui';
+import { AppBadge, AppButton, AppInput, useAuth } from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 // Mock auth - simulates cookie-based auth flow
@@ -228,7 +228,7 @@ const roleChecks = ['admin', 'editor', 'viewer'];
             <div class="border-border bg-surface rounded-lg border p-6">
                 <pre
                     class="bg-surface-hover text-muted overflow-x-auto rounded-md p-4 text-xs"
-                ><code>import { useAuth } from '@flangofas/admin-ui';
+                ><code>import { useAuth } from '@paya-labs/admin-ui';
 
 const auth = useAuth({
     baseUrl: 'https://api.example.com',

@@ -11,7 +11,7 @@
         "lint-fix": "prettier --write . && eslint . --fix"
     },
     "dependencies": {
-        "@flangofas/admin-ui": "latest",
+        "@paya-labs/admin-ui": "latest",
         "vue": "^3.5.0",
         "vue-router": "^4.6.0"
     },

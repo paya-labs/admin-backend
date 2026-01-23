@@ -6,8 +6,8 @@ A Vue 3 admin UI components library and CLI tool for building backoffice applica
 
 | Package                                                  | Description                            |
 | -------------------------------------------------------- | -------------------------------------- |
-| [@flangofas/admin-ui](./packages/admin-ui)               | Vue 3 admin UI components library      |
-| [@flangofas/create-admin-ui](./packages/create-admin-ui) | CLI to scaffold new admin projects     |
+| [@paya-labs/admin-ui](./packages/admin-ui)               | Vue 3 admin UI components library      |
+| [@paya-labs/create-admin-ui](./packages/create-admin-ui) | CLI to scaffold new admin projects     |
 | [demo](./packages/demo)                                  | Development playground (local testing) |
 
 ## Quick Start
@@ -15,7 +15,7 @@ A Vue 3 admin UI components library and CLI tool for building backoffice applica
 ### Create a New Admin Project
 
 ```bash
-npx @flangofas/create-admin-ui my-client-admin
+npx @paya-labs/create-admin-ui my-client-admin
 cd my-client-admin
 npm install
 npm run dev
@@ -24,15 +24,15 @@ npm run dev
 ### Use Components Directly
 
 ```bash
-npm install @flangofas/admin-ui
+npm install @paya-labs/admin-ui
 ```
 
 ```javascript
-import { AppButton, AppTable, AdminLayout } from '@flangofas/admin-ui';
-import '@flangofas/admin-ui/styles';
+import { AppButton, AppTable, AdminLayout } from '@paya-labs/admin-ui';
+import '@paya-labs/admin-ui/styles';
 ```
 
-See the [@flangofas/admin-ui README](./packages/admin-ui/README.md) for full component documentation.
+See the [@paya-labs/admin-ui README](./packages/admin-ui/README.md) for full component documentation.
 
 ## Tech Stack
 
@@ -59,8 +59,8 @@ npm run lint:fix       # Fix formatting and linting
 
 ```
 packages/
-├── admin-ui/             # @flangofas/admin-ui
-├── create-admin-ui/      # @flangofas/create-admin-ui CLI
+├── admin-ui/             # @paya-labs/admin-ui
+├── create-admin-ui/      # @paya-labs/create-admin-ui CLI
 └── demo/                 # Development playground
 ```
 

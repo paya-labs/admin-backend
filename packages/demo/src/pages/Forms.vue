@@ -5,7 +5,7 @@ import {
     AppInput,
     AppSelect,
     AppTextarea,
-} from '@flangofas/admin-ui';
+} from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 // Basic form

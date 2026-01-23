@@ -1,6 +1,6 @@
 # Demo App
 
-Development playground for testing `@flangofas/admin-ui` components.
+Development playground for testing `@paya-labs/admin-ui` components.
 
 ## Why This Exists
 
@@ -39,7 +39,7 @@ npm run demo:dev
 The `package.json` specifies:
 
 ```json
-"@flangofas/admin-ui": "*"
+"@paya-labs/admin-ui": "*"
 ```
 
 npm workspaces resolves this to the local `packages/admin-ui` directory (symlinked), not the npm registry.
