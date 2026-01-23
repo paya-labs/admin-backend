@@ -4,6 +4,7 @@ import {
     AppButton,
     AppInput,
     AppModal,
+    AppPagination,
     AppTable,
     AppTextarea,
     useCrud,
@@ -175,38 +176,13 @@ const tableActions = [
                     }}</span>
                 </template>
                 <template #footer>
-                    <div class="flex items-center justify-between">
-                        <div class="text-muted text-sm">
-                            Page {{ posts.pagination.page.value }} of
-                            {{ posts.pagination.totalPages.value }}
-                        </div>
-                        <div class="flex gap-1">
-                            <AppButton
-                                variant="outline"
-                                size="sm"
-                                :disabled="!posts.pagination.hasPrevPage.value"
-                                @click="
-                                    handlePageChange(
-                                        posts.pagination.page.value - 1,
-                                    )
-                                "
-                            >
-                                Previous
-                            </AppButton>
-                            <AppButton
-                                variant="outline"
-                                size="sm"
-                                :disabled="!posts.pagination.hasNextPage.value"
-                                @click="
-                                    handlePageChange(
-                                        posts.pagination.page.value + 1,
-                                    )
-                                "
-                            >
-                                Next
-                            </AppButton>
-                        </div>
-                    </div>
+                    <AppPagination
+                        :page="posts.pagination.page.value"
+                        :page-size="posts.pagination.pageSize.value"
+                        :total="posts.pagination.total.value"
+                        :show-page-size="false"
+                        @update:page="handlePageChange"
+                    />
                 </template>
             </AppTable>
         </section>

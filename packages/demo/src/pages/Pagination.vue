@@ -2,7 +2,7 @@
 import {
     AppBadge,
     AppButton,
-    AppSelect,
+    AppPagination,
     AppTable,
     usePagination,
 } from '@flangofas/admin-ui';
@@ -58,13 +58,14 @@ const getStatusVariant = (status) => {
     return variants[status] || 'default';
 };
 
-// Page size options for select
-const pageSizeSelectOptions = computed(() =>
-    tablePagination.pageSizeOptions.map((size) => ({
-        value: size,
-        label: `${size} per page`,
-    })),
-);
+// Pagination handlers
+const handlePageChange = (page) => {
+    tablePagination.goToPage(page);
+};
+
+const handlePageSizeChange = (size) => {
+    tablePagination.setPageSize(size);
+};
 </script>
 
 <template>
@@ -167,88 +168,13 @@ pagination.setTotal(150);</code></pre>
                     </AppTable>
 
                     <!-- Pagination footer -->
-                    <div
-                        class="flex flex-col items-center justify-between gap-4 sm:flex-row"
-                    >
-                        <div class="text-muted text-sm">
-                            Showing
-                            {{ tablePagination.offset.value + 1 }}
-                            to
-                            {{
-                                Math.min(
-                                    tablePagination.offset.value +
-                                        tablePagination.pageSize.value,
-                                    tablePagination.total.value,
-                                )
-                            }}
-                            of {{ tablePagination.total.value }} results
-                        </div>
-
-                        <div class="flex items-center gap-4">
-                            <!-- Page size selector -->
-                            <AppSelect
-                                :model-value="tablePagination.pageSize.value"
-                                :options="pageSizeSelectOptions"
-                                class="w-36"
-                                @update:model-value="
-                                    tablePagination.setPageSize($event)
-                                "
-                            />
-
-                            <!-- Page controls -->
-                            <div class="flex items-center gap-1">
-                                <AppButton
-                                    variant="outline"
-                                    size="sm"
-                                    :disabled="
-                                        !tablePagination.hasPrevPage.value
-                                    "
-                                    @click="tablePagination.prevPage()"
-                                >
-                                    ←
-                                </AppButton>
-
-                                <template
-                                    v-for="pageNum in tablePagination.pageRange
-                                        .value"
-                                    :key="pageNum"
-                                >
-                                    <span
-                                        v-if="pageNum === '...'"
-                                        class="text-muted px-1"
-                                    >
-                                        ...
-                                    </span>
-                                    <AppButton
-                                        v-else
-                                        :variant="
-                                            pageNum ===
-                                            tablePagination.page.value
-                                                ? 'primary'
-                                                : 'ghost'
-                                        "
-                                        size="sm"
-                                        @click="
-                                            tablePagination.goToPage(pageNum)
-                                        "
-                                    >
-                                        {{ pageNum }}
-                                    </AppButton>
-                                </template>
-
-                                <AppButton
-                                    variant="outline"
-                                    size="sm"
-                                    :disabled="
-                                        !tablePagination.hasNextPage.value
-                                    "
-                                    @click="tablePagination.nextPage()"
-                                >
-                                    →
-                                </AppButton>
-                            </div>
-                        </div>
-                    </div>
+                    <AppPagination
+                        :page="tablePagination.page.value"
+                        :page-size="tablePagination.pageSize.value"
+                        :total="tablePagination.total.value"
+                        @update:page="handlePageChange"
+                        @update:page-size="handlePageSizeChange"
+                    />
                 </div>
             </div>
         </section>

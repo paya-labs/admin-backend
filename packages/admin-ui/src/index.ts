@@ -10,6 +10,7 @@ import AppHeader from './components/AppHeader.vue';
 import AppIcon from './components/AppIcon.vue';
 import AppInput from './components/AppInput.vue';
 import AppModal from './components/AppModal.vue';
+import AppPagination from './components/AppPagination.vue';
 import AppSelect from './components/AppSelect.vue';
 import AppSidebar from './components/AppSidebar.vue';
 import AppTable from './components/AppTable.vue';
@@ -63,6 +64,7 @@ export {
     AppIcon,
     AppInput,
     AppModal,
+    AppPagination,
     AppSelect,
     AppSidebar,
     AppTable,
@@ -104,6 +106,7 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}Header`, AppHeader);
         app.component(`${prefix}Sidebar`, AppSidebar);
         app.component(`${prefix}Modal`, AppModal);
+        app.component(`${prefix}Pagination`, AppPagination);
         app.component(`${prefix}Form`, AppForm);
         app.component(`${prefix}Icon`, AppIcon);
         app.component(`${prefix}ToastContainer`, AppToastContainer);
