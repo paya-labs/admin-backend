@@ -1,13 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { AdminLayout } from '@paya-labs/admin-ui';
-import { moduleConfig } from './module.config.js';
+import { moduleConfig } from './module.config';
 </script>
 
 <template>
-    <AdminLayout
-        :module-name="moduleConfig.name"
-        :navigation="moduleConfig.navigation"
-    >
+    <AdminLayout :navigation="moduleConfig.navigation">
         <router-view />
     </AdminLayout>
 </template>

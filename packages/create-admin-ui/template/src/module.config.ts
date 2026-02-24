@@ -1,9 +1,6 @@
-/**
- * @typedef {import('@paya-labs/admin-ui').ModuleConfig} ModuleConfig
- */
+import type { ModuleConfig } from '@paya-labs/admin-ui';
 
-/** @type {ModuleConfig} */
-export const moduleConfig = {
+export const moduleConfig: ModuleConfig = {
     id: '{{PROJECT_IDENTIFIER}}',
     name: '{{PROJECT_NAME}}',
     logo: null,
@@ -19,7 +16,7 @@ export const moduleConfig = {
         {
             label: 'Dashboard',
             icon: 'home',
-            route: '/',
+            to: '/',
         },
         // Add more navigation items here
     ],

@@ -13,19 +13,18 @@ npm run dev
 
 ```
 src/
-├── main.js              # App entry point
+├── main.ts              # App entry point
 ├── App.vue              # Root component
 ├── style.css            # Custom styles
-├── module.config.js     # Module configuration (theme, navigation, API)
-├── router/
-│   └── index.js         # Vue Router setup
+├── module.config.ts     # Module configuration (theme, navigation, API)
+├── router.ts            # Vue Router setup
 └── pages/
     └── Dashboard.vue    # Dashboard page
 ```
 
 ## Configuration
 
-Edit `src/module.config.js` to customize:
+Edit `src/module.config.ts` to customize:
 
 - **theme**: Primary, secondary, and accent colors
 - **navigation**: Sidebar menu items

@@ -7,17 +7,19 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
+        "type-check": "vue-tsc --noEmit",
         "lint": "prettier --check . && eslint .",
         "lint-fix": "prettier --write . && eslint . --fix"
     },
     "dependencies": {
-        "@paya-labs/admin-ui": "latest",
+        "@paya-labs/admin-ui": "^0.0.1",
         "vue": "^3.5.0",
         "vue-router": "^4.6.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.0",
         "@tailwindcss/vite": "^4.1.0",
+        "@types/node": "^25.1.0",
         "@vitejs/plugin-vue": "^6.0.0",
         "eslint": "^9.39.0",
         "eslint-plugin-vue": "^10.6.0",
@@ -26,9 +28,12 @@
         "prettier-plugin-organize-imports": "^4.3.0",
         "prettier-plugin-tailwindcss": "^0.7.0",
         "tailwindcss": "^4.1.0",
-        "vite": "npm:rolldown-vite@latest"
+        "typescript": "^5.8.0",
+        "vite": "npm:rolldown-vite@7.2.5",
+        "vite-plugin-vue-devtools": "^7.7.0",
+        "vue-tsc": "^2.2.0"
     },
     "overrides": {
-        "vite": "npm:rolldown-vite@latest"
+        "vite": "npm:rolldown-vite@7.2.5"
     }
 }
