@@ -16,6 +16,7 @@ import AppSidebar from './components/AppSidebar.vue';
 import AppTable from './components/AppTable.vue';
 import AppTextarea from './components/AppTextarea.vue';
 import AppToastContainer from './components/AppToastContainer.vue';
+import AppCalendar from './components/AppCalendar.vue';
 
 // Layouts
 import AdminLayout from './layouts/AdminLayout.vue';
@@ -70,6 +71,7 @@ export {
     AppTable,
     AppTextarea,
     AppToastContainer,
+    AppCalendar,
 };
 
 // Re-export composables
