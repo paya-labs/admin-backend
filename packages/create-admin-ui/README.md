@@ -27,15 +27,14 @@ The generated project includes:
 ```
 my-project/
 ├── src/
-│   ├── main.js           # App entry point
+│   ├── main.ts           # App entry point
 │   ├── App.vue           # Root component with AdminLayout
-│   ├── module.config.js  # Theme, navigation, API config
-│   ├── router/
-│   │   └── index.js      # Routes
+│   ├── module.config.ts  # Theme, navigation, API config
+│   ├── router.ts         # Routes
 │   └── pages/
 │       └── Dashboard.vue # Example page
 ├── index.html
-├── vite.config.js
+├── vite.config.ts
 ├── package.json
 └── ...config files
 ```

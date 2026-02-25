@@ -1,8 +1,8 @@
+import router from '@/router';
+import '@/style.css';
 import { AdminUIPlugin } from '@paya-labs/admin-ui';
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router';
-import './style.css';
 
 const app = createApp(App);
 

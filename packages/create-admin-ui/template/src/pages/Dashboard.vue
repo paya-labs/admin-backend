@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { AppCard } from '@paya-labs/admin-ui';
 </script>
 
@@ -10,27 +10,22 @@ import { AppCard } from '@paya-labs/admin-ui';
             <AppCard
                 title="Total Users"
                 value="1,234"
-                trend="+12%"
-                trend-direction="up"
+                trend="up"
+                trendValue="+5%"
             />
             <AppCard
                 title="Active Sessions"
                 value="567"
-                trend="+5%"
-                trend-direction="up"
+                trend="up"
+                trendValue="+12%"
             />
             <AppCard
                 title="Revenue"
                 value="$12,345"
-                trend="-3%"
-                trend-direction="down"
+                trend="down"
+                trendValue="-3%"
             />
-            <AppCard
-                title="Orders"
-                value="89"
-                trend="+8%"
-                trend-direction="up"
-            />
+            <AppCard title="Orders" value="89" trend="up" trendValue="+8%" />
         </div>
 
         <div class="border-border bg-surface rounded-lg border p-6">
@@ -41,7 +36,7 @@ import { AppCard } from '@paya-labs/admin-ui';
                 Start building your backoffice by adding pages, components, and
                 routes. Check out the
                 <code class="bg-body rounded px-1 py-0.5"
-                    >module.config.js</code
+                    >module.config.ts</code
                 >
                 file to customize your navigation and theme.
             </p>

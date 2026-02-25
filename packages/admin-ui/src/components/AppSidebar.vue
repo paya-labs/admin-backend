@@ -5,9 +5,7 @@ import type { NavigationItem } from '../types';
 import AppIcon from './AppIcon.vue';
 
 interface SidebarNavigationItem extends NavigationItem {
-    route?: string;
     children?: SidebarNavigationItem[];
-    badge?: string | number;
     badgeVariant?: 'primary' | 'danger' | 'warning';
 }
 
@@ -48,8 +46,11 @@ const isGroupExpanded = (groupId: string): boolean =>
 
 const isActive = (path: string): boolean => route.path === path;
 
+const getItemPath = (item: SidebarNavigationItem): string =>
+    item.to || (item as SidebarNavigationItem & { route?: string }).route || '';
+
 const hasActiveChild = (children?: SidebarNavigationItem[]): boolean => {
-    return children?.some((child) => isActive(child.route || '')) || false;
+    return children?.some((child) => isActive(getItemPath(child))) || false;
 };
 </script>
 
@@ -145,7 +146,10 @@ const hasActiveChild = (children?: SidebarNavigationItem[]): boolean => {
         <!-- Navigation -->
         <nav class="px-3 py-4 flex-1 overflow-y-auto">
             <ul class="space-y-1">
-                <li v-for="item in navigation" :key="item.route || item.label">
+                <li
+                    v-for="item in navigation"
+                    :key="getItemPath(item) || item.label"
+                >
                     <!-- Item with children (group) -->
                     <template v-if="item.children && item.children.length">
                         <button
@@ -211,15 +215,15 @@ const hasActiveChild = (children?: SidebarNavigationItem[]): boolean => {
                             >
                                 <li
                                     v-for="child in item.children"
-                                    :key="child.route"
+                                    :key="getItemPath(child)"
                                 >
                                     <RouterLink
-                                        :to="child.route || '/'"
+                                        :to="getItemPath(child) || '/'"
                                         :class="[
                                             'gap-3 px-3 py-2 flex min-h-[40px] items-center',
                                             'text-sm rounded-md',
                                             'transition-colors duration-150',
-                                            isActive(child.route || '')
+                                            isActive(getItemPath(child))
                                                 ? 'bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300'
                                                 : 'text-text-secondary hover:bg-surface-hover hover:text-text',
                                         ]"
@@ -242,13 +246,13 @@ const hasActiveChild = (children?: SidebarNavigationItem[]): boolean => {
                     <!-- Single item -->
                     <template v-else>
                         <RouterLink
-                            :to="item.route || '/'"
+                            :to="getItemPath(item) || '/'"
                             :class="[
                                 'gap-3 px-3 py-2.5 flex min-h-[44px] items-center',
                                 'rounded-md',
                                 'transition-colors duration-150',
                                 isCollapsed && 'px-0 justify-center',
-                                isActive(item.route || '')
+                                isActive(getItemPath(item))
                                     ? 'bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300'
                                     : 'text-text-secondary hover:bg-surface-hover hover:text-text',
                             ]"

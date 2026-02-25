@@ -7,6 +7,16 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_DIR = path.resolve(__dirname, '../template');
 
+// Files and directories to skip when copying template
+const SKIP_FILES = [
+    'node_modules',
+    'package-lock.json',
+    '.DS_Store',
+    'dist',
+    'tsconfig.tsbuildinfo',
+    'tsconfig.node.tsbuildinfo',
+];
+
 /**
  * Copy directory recursively
  * @param {string} src
@@ -17,6 +27,11 @@ function copyDir(src, dest) {
     const entries = fs.readdirSync(src, { withFileTypes: true });
 
     for (const entry of entries) {
+        // Skip files that shouldn't be copied
+        if (SKIP_FILES.includes(entry.name)) {
+            continue;
+        }
+
         const srcPath = path.join(src, entry.name);
         const destPath = path.join(dest, entry.name);
 
@@ -102,7 +117,7 @@ if (fs.existsSync(gitignoreSrc)) {
 const filesToProcess = [
     'package.json',
     'index.html',
-    'src/module.config.js',
+    'src/module.config.ts',
     'README.md',
 ];
 
