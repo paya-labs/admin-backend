@@ -66,7 +66,7 @@ const props = withDefaults(defineProps<Props>(), {
   headerToolbar: () => ({
     left: 'prev,next today',
     center: 'title',
-    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+    right: 'dayGridMonth,timeGridWeek,timeGridWorkWeek,timeGridDay,listWeek',
   }),
   height: 700,
   enableEventDetailsModal: true,
@@ -304,6 +304,11 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   height: props.height,
   buttonText: {
     today: 'Today',
+    dayGridMonth: 'Month',
+    timeGridWeek: 'Week',
+    timeGridWorkWeek: 'Work Week',
+    timeGridDay: 'Day',
+    listWeek: 'Agenda',
   },
 
   // Callbacks
@@ -350,6 +355,21 @@ const calendarOptions = computed<CalendarOptions>(() => ({
       dayMaxEventRows: 3,
     },
     timeGridWeek: {
+      slotMinTime: '07:00:00',
+      slotMaxTime: '21:00:00',
+      slotDuration: '00:10:00',
+      slotLabelInterval: '00:10:00',
+      slotLabelFormat: {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      },
+      snapDuration: '00:10:00',
+    },
+    timeGridWorkWeek: {
+      type: 'timeGrid',
+      duration: {weeks: 1},
+      hiddenDays: [0, 6], // Hide Sunday (0) and Saturday (6)
       slotMinTime: '07:00:00',
       slotMaxTime: '21:00:00',
       slotDuration: '00:10:00',
