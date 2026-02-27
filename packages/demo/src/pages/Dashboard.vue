@@ -4,7 +4,9 @@ import { AppCard } from '@paya-labs/admin-ui';
 
 <template>
     <div class="space-y-6">
-        <h1 class="text-text text-2xl font-bold">Dashboard</h1>
+        <h1 class="text-text text-2xl font-bold">
+            Dashboard
+        </h1>
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             <AppCard
@@ -43,8 +45,9 @@ import { AppCard } from '@paya-labs/admin-ui';
                 <router-link
                     to="/components"
                     class="text-primary-600 hover:underline"
-                    >Components</router-link
                 >
+                    Components
+                </router-link>
                 page to see all available components in action.
             </p>
         </div>

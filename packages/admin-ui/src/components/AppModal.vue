@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref, nextTick, onUnmounted } from 'vue';
+import { nextTick, onUnmounted, ref, watch } from 'vue';
 import type { ModalSize } from '../types';
 import AppButton from './AppButton.vue';
 
@@ -27,7 +27,7 @@ const emit = defineEmits<{
 }>();
 
 const modalRef = ref<HTMLElement | null>(null);
-const titleId = `modal-title-${Math.random().toString(36).substr(2, 9)}`;
+const titleId = `modal-title-${Math.random().toString(36).slice(2, 11)}`;
 let previouslyFocusedElement: HTMLElement | null = null;
 
 const close = (): void => {
@@ -52,7 +52,7 @@ const handleKeydown = (e: KeyboardEvent): void => {
     // Focus trap: Tab and Shift+Tab
     if (e.key === 'Tab' && props.modelValue && modalRef.value) {
         const focusableElements = modalRef.value.querySelectorAll<HTMLElement>(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
         );
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
@@ -71,11 +71,13 @@ const focusFirstElement = () => {
     if (!modalRef.value) return;
 
     const focusableElements = modalRef.value.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
 
     // Try to focus the first input, then first focusable element
-    const firstInput = modalRef.value.querySelector<HTMLElement>('input, select, textarea');
+    const firstInput = modalRef.value.querySelector<HTMLElement>(
+        'input, select, textarea',
+    );
     if (firstInput) {
         firstInput.focus();
     } else if (focusableElements[0]) {
