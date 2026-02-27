@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { watch, ref, nextTick, onUnmounted } from 'vue';
 import type { ModalSize } from '../types';
 import AppButton from './AppButton.vue';
 
@@ -26,6 +26,10 @@ const emit = defineEmits<{
     close: [];
 }>();
 
+const modalRef = ref<HTMLElement | null>(null);
+const titleId = `modal-title-${Math.random().toString(36).substr(2, 9)}`;
+let previouslyFocusedElement: HTMLElement | null = null;
+
 const close = (): void => {
     if (props.closable) {
         emit('update:modelValue', false);
@@ -42,22 +46,74 @@ const handleBackdropClick = (): void => {
 const handleKeydown = (e: KeyboardEvent): void => {
     if (e.key === 'Escape' && props.closeOnEscape && props.modelValue) {
         close();
+        return;
+    }
+
+    // Focus trap: Tab and Shift+Tab
+    if (e.key === 'Tab' && props.modelValue && modalRef.value) {
+        const focusableElements = modalRef.value.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement?.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement?.focus();
+        }
+    }
+};
+
+const focusFirstElement = () => {
+    if (!modalRef.value) return;
+
+    const focusableElements = modalRef.value.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+
+    // Try to focus the first input, then first focusable element
+    const firstInput = modalRef.value.querySelector<HTMLElement>('input, select, textarea');
+    if (firstInput) {
+        firstInput.focus();
+    } else if (focusableElements[0]) {
+        focusableElements[0].focus();
     }
 };
 
 watch(
     () => props.modelValue,
-    (isOpen) => {
+    async (isOpen) => {
         if (isOpen) {
+            // Store currently focused element
+            previouslyFocusedElement = document.activeElement as HTMLElement;
+
             document.addEventListener('keydown', handleKeydown);
             document.body.style.overflow = 'hidden';
+
+            // Focus first element after modal renders
+            await nextTick();
+            focusFirstElement();
         } else {
             document.removeEventListener('keydown', handleKeydown);
             document.body.style.overflow = '';
+
+            // Restore focus to previously focused element
+            if (previouslyFocusedElement) {
+                previouslyFocusedElement.focus();
+                previouslyFocusedElement = null;
+            }
         }
     },
     { immediate: true },
 );
+
+onUnmounted(() => {
+    document.removeEventListener('keydown', handleKeydown);
+    document.body.style.overflow = '';
+});
 </script>
 
 <template>
@@ -91,6 +147,7 @@ watch(
                 >
                     <div
                         v-if="modelValue"
+                        ref="modalRef"
                         :class="[
                             'relative flex max-h-[90vh] flex-col overflow-hidden rounded-xl bg-surface shadow-[var(--shadow-lg)]',
 
@@ -104,6 +161,7 @@ watch(
                         ]"
                         role="dialog"
                         aria-modal="true"
+                        :aria-labelledby="title ? titleId : undefined"
                     >
                         <!-- Header -->
                         <div
@@ -113,6 +171,7 @@ watch(
                             <slot name="header">
                                 <h2
                                     v-if="title"
+                                    :id="titleId"
                                     class="text-lg font-semibold text-text"
                                 >
                                     {{ title }}
