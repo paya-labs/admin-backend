@@ -12,6 +12,7 @@ const disabledContent = ref(
     '<p>This content <strong>cannot</strong> be edited.</p>',
 );
 const liveContent = ref('');
+const markdownContent = ref('');
 </script>
 
 <template>
@@ -74,6 +75,23 @@ const liveContent = ref('');
                     <AppEditor
                         v-model="prePopulatedContent"
                         label="Edit Article"
+                    />
+                </div>
+            </div>
+        </section>
+
+        <!-- Markdown Mode -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Markdown Mode</h2>
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <div class="max-w-2xl space-y-4">
+                    <p class="text-sm text-muted">
+                        Click the <strong>MD</strong> button at the far right of the toolbar to toggle between rich text and markdown editing.
+                    </p>
+                    <AppEditor
+                        v-model="markdownContent"
+                        label="Markdown Editor"
+                        placeholder="Try toggling the MD button in the toolbar..."
                     />
                 </div>
             </div>

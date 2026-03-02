@@ -132,8 +132,8 @@ describe('AppEditor', () => {
         expect(toolbar.exists()).toBe(true);
 
         const buttons = toolbar.findAll('button');
-        // H1, H2, H3, B, I, U, S, UL, OL, Quote = 10 buttons
-        expect(buttons.length).toBe(10);
+        // H1, H2, H3, B, I, U, S, UL, OL, Quote, MD = 11 buttons
+        expect(buttons.length).toBe(11);
     });
 
     it('renders toolbar buttons with correct labels', async () => {
@@ -147,6 +147,7 @@ describe('AppEditor', () => {
             'B', 'I', 'U', 'S',
             'UL', 'OL',
             'Quote',
+            'MD',
         ]);
     });
 
@@ -175,8 +176,8 @@ describe('AppEditor', () => {
         await waitForEditor();
 
         const separators = wrapper.findAll('[role="separator"]');
-        // 4 groups = 3 separators
-        expect(separators.length).toBe(3);
+        // 4 groups = 3 separators + 1 before MD toggle = 4 separators
+        expect(separators.length).toBe(4);
     });
 
     it('disables toolbar buttons when disabled', async () => {
@@ -199,5 +200,57 @@ describe('AppEditor', () => {
 
         const container = wrapper.find('.rounded-md');
         expect(container.classes()).toContain('opacity-50');
+    });
+
+    // Markdown mode tests
+    it('renders MD toggle button in toolbar', async () => {
+        const wrapper = mount(AppEditor);
+        await waitForEditor();
+
+        const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
+        expect(mdButton.exists()).toBe(true);
+        expect(mdButton.text()).toBe('MD');
+    });
+
+    it('clicking MD toggle shows textarea and hides TipTap editor', async () => {
+        const wrapper = mount(AppEditor);
+        await waitForEditor();
+
+        const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
+        await mdButton.trigger('click');
+
+        expect(wrapper.find('textarea.app-editor-markdown').exists()).toBe(true);
+        // TipTap editor should be hidden (v-show=false)
+        expect(wrapper.find('.tiptap').isVisible()).toBe(false);
+    });
+
+    it('clicking MD toggle again returns to rich text mode', async () => {
+        const wrapper = mount(AppEditor);
+        await waitForEditor();
+
+        const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
+        // Enter markdown mode
+        await mdButton.trigger('click');
+        expect(wrapper.find('textarea.app-editor-markdown').exists()).toBe(true);
+
+        // Exit markdown mode
+        await mdButton.trigger('click');
+        expect(wrapper.find('textarea.app-editor-markdown').exists()).toBe(false);
+        expect(wrapper.find('.tiptap').isVisible()).toBe(true);
+    });
+
+    it('formatting buttons are disabled in markdown mode', async () => {
+        const wrapper = mount(AppEditor);
+        await waitForEditor();
+
+        const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
+        await mdButton.trigger('click');
+
+        const formattingButtons = wrapper.findAll('[role="toolbar"] button').filter(
+            (btn) => btn.text() !== 'MD',
+        );
+        formattingButtons.forEach((btn) => {
+            expect(btn.element.disabled).toBe(true);
+        });
     });
 });

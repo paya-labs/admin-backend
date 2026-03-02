@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, useId, onBeforeUnmount, watch } from 'vue';
+import { computed, ref, useId, onBeforeUnmount, watch } from 'vue';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
+import { Markdown } from '@tiptap/markdown';
 
 interface Props {
     modelValue?: string;
@@ -31,6 +32,9 @@ const editorId = useId();
 
 const hasError = computed(() => Boolean(props.error));
 
+const isMarkdownMode = ref(false);
+const markdownText = ref('');
+
 const editor = useEditor({
     content: props.modelValue,
     editable: !props.disabled,
@@ -38,6 +42,7 @@ const editor = useEditor({
         StarterKit.configure({
             heading: { levels: [1, 2, 3] },
         }),
+        Markdown,
     ],
     editorProps: {
         attributes: {
@@ -77,6 +82,32 @@ watch(
 onBeforeUnmount(() => {
     editor.value?.destroy();
 });
+
+function toggleMarkdownMode() {
+    const ed = editor.value;
+    if (!ed) return;
+
+    if (isMarkdownMode.value) {
+        // Markdown → Rich text: parse markdown back into TipTap
+        ed.commands.setContent(markdownText.value, { contentType: 'markdown' });
+        isMarkdownMode.value = false;
+    } else {
+        // Rich text → Markdown: serialize to markdown
+        markdownText.value = ed.getMarkdown();
+        isMarkdownMode.value = true;
+    }
+}
+
+function onMarkdownInput(event: Event) {
+    const value = (event.target as HTMLTextAreaElement).value;
+    markdownText.value = value;
+
+    const ed = editor.value;
+    if (!ed) return;
+
+    // Parse markdown and set as TipTap content (triggers onUpdate → emits HTML)
+    ed.commands.setContent(value, { contentType: 'markdown' });
+}
 
 type ToolbarAction = {
     key: string;
@@ -234,7 +265,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                         type="button"
                         :aria-label="btn.ariaLabel"
                         :aria-pressed="btn.isActive()"
-                        :disabled="disabled"
+                        :disabled="disabled || isMarkdownMode"
                         :class="[
                             'inline-flex items-center justify-center',
                             'h-7 min-w-[28px] px-1.5',
@@ -250,10 +281,43 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                         {{ btn.label }}
                     </button>
                 </template>
+
+                <!-- Spacer + MD toggle -->
+                <div class="flex-grow" />
+                <div
+                    class="mx-0.5 h-5 w-px bg-border-strong"
+                    role="separator"
+                />
+                <button
+                    type="button"
+                    aria-label="Toggle markdown mode"
+                    :aria-pressed="isMarkdownMode"
+                    :disabled="disabled"
+                    :class="[
+                        'inline-flex items-center justify-center',
+                        'h-7 min-w-[28px] px-1.5',
+                        'rounded text-xs font-semibold',
+                        'transition-colors duration-[var(--transition-fast)]',
+                        'disabled:cursor-not-allowed disabled:opacity-50',
+                        isMarkdownMode
+                            ? 'bg-primary-500 text-inverse'
+                            : 'text-text-secondary hover:bg-surface hover:text-text',
+                    ]"
+                    @click="toggleMarkdownMode"
+                >
+                    MD
+                </button>
             </div>
 
             <!-- Editor content -->
-            <EditorContent :editor="editor" />
+            <EditorContent v-show="!isMarkdownMode" :editor="editor" />
+            <textarea
+                v-if="isMarkdownMode"
+                :value="markdownText"
+                :disabled="disabled"
+                class="app-editor-markdown"
+                @input="onMarkdownInput"
+            />
         </div>
 
         <!-- Footer: error / hint -->
@@ -351,5 +415,21 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
 
 .app-editor-wrapper .tiptap p:last-child {
     margin-bottom: 0;
+}
+
+/* Markdown textarea */
+.app-editor-wrapper .app-editor-markdown {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    min-height: 10rem;
+    outline: none;
+    border: none;
+    resize: vertical;
+    background: transparent;
+    color: var(--color-text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.625;
 }
 </style>
