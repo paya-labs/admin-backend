@@ -56,9 +56,7 @@ const copyToClipboard = (iconName) => {
 <template>
     <div class="space-y-8">
         <div>
-            <h1 class="text-text text-2xl font-bold">
-                Icon Library
-            </h1>
+            <h1 class="text-text text-2xl font-bold">Icon Library</h1>
             <p class="text-muted mt-1">
                 Heroicons outline set. Click any icon to copy its usage code.
             </p>
@@ -66,9 +64,7 @@ const copyToClipboard = (iconName) => {
 
         <!-- Size Selector -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Sizes
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Sizes</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="flex flex-wrap items-end gap-6">
                     <div
@@ -76,10 +72,7 @@ const copyToClipboard = (iconName) => {
                         :key="size"
                         class="flex flex-col items-center gap-2"
                     >
-                        <AppIcon
-                            name="home"
-                            :size="size"
-                        />
+                        <AppIcon name="home" :size="size" />
                         <span class="text-muted text-xs">
                             {{ size }}
                         </span>
@@ -95,9 +88,7 @@ const copyToClipboard = (iconName) => {
 
         <!-- Color Examples -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Colors
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Colors</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <p class="text-muted mb-4 text-sm">
                     Icons inherit the current text color. Use Tailwind classes
@@ -105,11 +96,7 @@ const copyToClipboard = (iconName) => {
                 </p>
                 <div class="flex flex-wrap items-center gap-6">
                     <div class="flex flex-col items-center gap-2">
-                        <AppIcon
-                            name="heart"
-                            size="lg"
-                            class="text-danger"
-                        />
+                        <AppIcon name="heart" size="lg" class="text-danger" />
                         <span class="text-muted text-xs">danger</span>
                     </div>
                     <div class="flex flex-col items-center gap-2">
@@ -137,11 +124,7 @@ const copyToClipboard = (iconName) => {
                         <span class="text-muted text-xs">primary</span>
                     </div>
                     <div class="flex flex-col items-center gap-2">
-                        <AppIcon
-                            name="cog"
-                            size="lg"
-                            class="text-muted"
-                        />
+                        <AppIcon name="cog" size="lg" class="text-muted" />
                         <span class="text-muted text-xs">muted</span>
                     </div>
                 </div>
@@ -156,9 +139,7 @@ const copyToClipboard = (iconName) => {
         <!-- Size Filter -->
         <section class="space-y-4">
             <div class="flex items-center justify-between">
-                <h2 class="text-text text-lg font-semibold">
-                    All Icons
-                </h2>
+                <h2 class="text-text text-lg font-semibold">All Icons</h2>
                 <div class="flex items-center gap-2">
                     <span class="text-muted text-sm">Preview size:</span>
                     <AppSelect
@@ -207,15 +188,11 @@ const copyToClipboard = (iconName) => {
 
         <!-- Usage Examples -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Usage Examples
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Usage Examples</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-4 text-sm">
                     <div>
-                        <p class="text-text mb-2 font-medium">
-                            Basic usage:
-                        </p>
+                        <p class="text-text mb-2 font-medium">Basic usage:</p>
                         <code
                             class="bg-surface-hover text-muted block rounded p-3"
                         >
@@ -223,9 +200,7 @@ const copyToClipboard = (iconName) => {
                         </code>
                     </div>
                     <div>
-                        <p class="text-text mb-2 font-medium">
-                            With size:
-                        </p>
+                        <p class="text-text mb-2 font-medium">With size:</p>
                         <code
                             class="bg-surface-hover text-muted block rounded p-3"
                         >
@@ -243,9 +218,7 @@ const copyToClipboard = (iconName) => {
                         </code>
                     </div>
                     <div>
-                        <p class="text-text mb-2 font-medium">
-                            Import:
-                        </p>
+                        <p class="text-text mb-2 font-medium">Import:</p>
                         <code
                             class="bg-surface-hover text-muted block rounded p-3"
                         >

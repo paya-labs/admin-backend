@@ -71,9 +71,7 @@ const handlePageSizeChange = (size) => {
 <template>
     <div class="space-y-8">
         <div>
-            <h1 class="text-text text-2xl font-bold">
-                Pagination
-            </h1>
+            <h1 class="text-text text-2xl font-bold">Pagination</h1>
             <p class="text-muted mt-1">
                 The
                 <code class="bg-surface-hover rounded px-1">usePagination</code>
@@ -83,9 +81,7 @@ const handlePageSizeChange = (size) => {
 
         <!-- Basic Usage -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Basic Usage
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Basic Usage</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-4">
                     <!-- Pagination info -->
@@ -155,9 +151,7 @@ pagination.setTotal(150);</code></pre>
 
         <!-- With Table -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                With Table Data
-            </h2>
+            <h2 class="text-text text-lg font-semibold">With Table Data</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-4">
                     <!-- Table -->
@@ -187,13 +181,13 @@ pagination.setTotal(150);</code></pre>
 
         <!-- Custom Options -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Custom Options
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Custom Options</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-4">
                     <div class="text-muted text-sm">
-                        <code class="bg-surface-hover rounded px-1">siblingCount: 2</code>
+                        <code class="bg-surface-hover rounded px-1"
+                            >siblingCount: 2</code
+                        >
                         - Shows 2 pages on each side of current
                     </div>
 
@@ -254,82 +248,102 @@ pagination.setTotal(150);</code></pre>
 
         <!-- API Reference -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                API Reference
-            </h2>
+            <h2 class="text-text text-lg font-semibold">API Reference</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-6">
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            State
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">State</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">page</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >page</code
+                                >
                                 - Current page (1-indexed)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">pageSize</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >pageSize</code
+                                >
                                 - Items per page
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">total</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >total</code
+                                >
                                 - Total item count
                             </p>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            Computed
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">Computed</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">totalPages</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >totalPages</code
+                                >
                                 - Total number of pages
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">hasNextPage</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >hasNextPage</code
+                                >
                                 /
-                                <code class="bg-surface-hover rounded px-1">hasPrevPage</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >hasPrevPage</code
+                                >
                                 - Navigation availability
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">offset</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >offset</code
+                                >
                                 - Offset for API calls (skip)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">pageRange</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >pageRange</code
+                                >
                                 - Array of page numbers and '...' for UI
                             </p>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            Methods
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">Methods</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">nextPage()</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >nextPage()</code
+                                >
                                 /
-                                <code class="bg-surface-hover rounded px-1">prevPage()</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >prevPage()</code
+                                >
                                 - Navigate pages
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">goToPage(n)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >goToPage(n)</code
+                                >
                                 - Jump to specific page
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">setPageSize(n)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >setPageSize(n)</code
+                                >
                                 - Change items per page (resets to page 1)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">setTotal(n)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >setTotal(n)</code
+                                >
                                 - Update total item count
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">reset()</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >reset()</code
+                                >
                                 - Reset to page 1
                             </p>
                         </div>

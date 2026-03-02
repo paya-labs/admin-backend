@@ -8,9 +8,7 @@ const isLoading = ref(false);
 
 <template>
     <div class="space-y-8">
-        <h1 class="text-text text-2xl font-bold">
-            Card Patterns
-        </h1>
+        <h1 class="text-text text-2xl font-bold">Card Patterns</h1>
 
         <!-- Basic Stats Grid -->
         <section class="space-y-4">
@@ -18,22 +16,10 @@ const isLoading = ref(false);
                 Stats Grid (4 Columns)
             </h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <AppCard
-                    title="Total Users"
-                    value="12,345"
-                />
-                <AppCard
-                    title="Revenue"
-                    value="$45,678"
-                />
-                <AppCard
-                    title="Orders"
-                    value="1,234"
-                />
-                <AppCard
-                    title="Visitors"
-                    value="56,789"
-                />
+                <AppCard title="Total Users" value="12,345" />
+                <AppCard title="Revenue" value="$45,678" />
+                <AppCard title="Orders" value="1,234" />
+                <AppCard title="Visitors" value="56,789" />
             </div>
         </section>
 
@@ -76,9 +62,7 @@ const isLoading = ref(false);
 
         <!-- Cards with Icons -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Cards with Icons
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Cards with Icons</h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <AppCard
                     title="Total Users"
@@ -87,10 +71,7 @@ const isLoading = ref(false);
                     trend-value="+12.5%"
                 >
                     <template #icon>
-                        <AppIcon
-                            name="users"
-                            size="lg"
-                        />
+                        <AppIcon name="users" size="lg" />
                     </template>
                 </AppCard>
                 <AppCard
@@ -100,10 +81,7 @@ const isLoading = ref(false);
                     trend-value="+8.2%"
                 >
                     <template #icon>
-                        <AppIcon
-                            name="currency-dollar"
-                            size="lg"
-                        />
+                        <AppIcon name="currency-dollar" size="lg" />
                     </template>
                 </AppCard>
                 <AppCard
@@ -113,10 +91,7 @@ const isLoading = ref(false);
                     trend-value="-3.1%"
                 >
                     <template #icon>
-                        <AppIcon
-                            name="shopping-cart"
-                            size="lg"
-                        />
+                        <AppIcon name="shopping-cart" size="lg" />
                     </template>
                 </AppCard>
                 <AppCard
@@ -126,10 +101,7 @@ const isLoading = ref(false);
                     trend-value="+18.7%"
                 >
                     <template #icon>
-                        <AppIcon
-                            name="eye"
-                            size="lg"
-                        />
+                        <AppIcon name="eye" size="lg" />
                     </template>
                 </AppCard>
             </div>
@@ -137,9 +109,7 @@ const isLoading = ref(false);
 
         <!-- Loading State -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Loading State
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Loading State</h2>
             <div class="flex items-center gap-4">
                 <AppButton
                     variant="outline"
@@ -153,26 +123,10 @@ const isLoading = ref(false);
                 </span>
             </div>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <AppCard
-                    title="Users"
-                    value="12,345"
-                    :loading="isLoading"
-                />
-                <AppCard
-                    title="Revenue"
-                    value="$45,678"
-                    :loading="isLoading"
-                />
-                <AppCard
-                    title="Orders"
-                    value="1,234"
-                    :loading="isLoading"
-                />
-                <AppCard
-                    title="Visitors"
-                    value="56,789"
-                    :loading="isLoading"
-                />
+                <AppCard title="Users" value="12,345" :loading="isLoading" />
+                <AppCard title="Revenue" value="$45,678" :loading="isLoading" />
+                <AppCard title="Orders" value="1,234" :loading="isLoading" />
+                <AppCard title="Visitors" value="56,789" :loading="isLoading" />
             </div>
         </section>
 
@@ -182,24 +136,14 @@ const isLoading = ref(false);
                 Cards with Custom Slot Content
             </h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <AppCard
-                    title="Active Users"
-                    value="1,234"
-                >
+                <AppCard title="Active Users" value="1,234">
                     <div class="mt-4 flex items-center gap-2">
-                        <AppBadge variant="success">
-                            Online: 892
-                        </AppBadge>
-                        <AppBadge variant="default">
-                            Offline: 342
-                        </AppBadge>
+                        <AppBadge variant="success"> Online: 892 </AppBadge>
+                        <AppBadge variant="default"> Offline: 342 </AppBadge>
                     </div>
                 </AppCard>
 
-                <AppCard
-                    title="Server Status"
-                    value="99.9%"
-                >
+                <AppCard title="Server Status" value="99.9%">
                     <div class="mt-4">
                         <div
                             class="text-muted mb-1 flex justify-between text-xs"
@@ -220,22 +164,13 @@ const isLoading = ref(false);
 
                 <AppCard title="Quick Actions">
                     <div class="mt-4 flex flex-wrap gap-2">
-                        <AppButton
-                            variant="outline"
-                            size="sm"
-                        >
+                        <AppButton variant="outline" size="sm">
                             Export
                         </AppButton>
-                        <AppButton
-                            variant="outline"
-                            size="sm"
-                        >
+                        <AppButton variant="outline" size="sm">
                             Import
                         </AppButton>
-                        <AppButton
-                            variant="primary"
-                            size="sm"
-                        >
+                        <AppButton variant="primary" size="sm">
                             New Item
                         </AppButton>
                     </div>
@@ -245,9 +180,7 @@ const isLoading = ref(false);
 
         <!-- Two Column Layout -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Two Column Layout
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Two Column Layout</h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <AppCard
                     title="Monthly Revenue"
@@ -257,10 +190,7 @@ const isLoading = ref(false);
                     subtitle="Compared to last month"
                 >
                     <template #icon>
-                        <AppIcon
-                            name="currency-dollar"
-                            size="lg"
-                        />
+                        <AppIcon name="currency-dollar" size="lg" />
                     </template>
                 </AppCard>
                 <AppCard
@@ -271,10 +201,7 @@ const isLoading = ref(false);
                     subtitle="This month"
                 >
                     <template #icon>
-                        <AppIcon
-                            name="users"
-                            size="lg"
-                        />
+                        <AppIcon name="users" size="lg" />
                     </template>
                 </AppCard>
             </div>
@@ -282,41 +209,21 @@ const isLoading = ref(false);
 
         <!-- Icon Slot Example -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Custom Icon Slot
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Custom Icon Slot</h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <AppCard
-                    title="Success Rate"
-                    value="98.5%"
-                >
+                <AppCard title="Success Rate" value="98.5%">
                     <template #icon>
-                        <AppIcon
-                            name="check-circle"
-                            size="lg"
-                        />
+                        <AppIcon name="check-circle" size="lg" />
                     </template>
                 </AppCard>
-                <AppCard
-                    title="Warnings"
-                    value="12"
-                >
+                <AppCard title="Warnings" value="12">
                     <template #icon>
-                        <AppIcon
-                            name="exclamation-circle"
-                            size="lg"
-                        />
+                        <AppIcon name="exclamation-circle" size="lg" />
                     </template>
                 </AppCard>
-                <AppCard
-                    title="Errors"
-                    value="3"
-                >
+                <AppCard title="Errors" value="3">
                     <template #icon>
-                        <AppIcon
-                            name="x-circle"
-                            size="lg"
-                        />
+                        <AppIcon name="x-circle" size="lg" />
                     </template>
                 </AppCard>
             </div>

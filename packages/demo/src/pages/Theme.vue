@@ -110,9 +110,7 @@ const copyToClipboard = (text) => {
 <template>
     <div class="space-y-8">
         <div>
-            <h1 class="text-text text-2xl font-bold">
-                Theme Reference
-            </h1>
+            <h1 class="text-text text-2xl font-bold">Theme Reference</h1>
             <p class="text-muted mt-1">
                 All available theme tokens and how to use them. Click any value
                 to copy.
@@ -121,9 +119,7 @@ const copyToClipboard = (text) => {
 
         <!-- Current Theme -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Current Theme
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Current Theme</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="flex items-center gap-4">
                     <span class="text-text">Mode:</span>
@@ -150,7 +146,9 @@ const copyToClipboard = (text) => {
                 </h2>
                 <p class="text-muted text-sm">
                     Usage:
-                    <code class="bg-surface-hover rounded px-1">bg-primary-500</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >bg-primary-500</code
+                    >
                 </p>
             </div>
             <div class="border-border bg-surface rounded-lg border p-6">
@@ -182,7 +180,9 @@ const copyToClipboard = (text) => {
                 </h2>
                 <p class="text-muted text-sm">
                     Usage:
-                    <code class="bg-surface-hover rounded px-1">text-primary-600</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >text-primary-600</code
+                    >
                 </p>
             </div>
             <div class="border-border bg-surface rounded-lg border p-6">
@@ -210,7 +210,9 @@ const copyToClipboard = (text) => {
                 </h2>
                 <p class="text-muted text-sm">
                     Usage:
-                    <code class="bg-surface-hover rounded px-1">bg-gray-200</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >bg-gray-200</code
+                    >
                 </p>
             </div>
             <div class="border-border bg-surface rounded-lg border p-6">
@@ -242,7 +244,9 @@ const copyToClipboard = (text) => {
                 </h2>
                 <p class="text-muted text-sm">
                     Usage:
-                    <code class="bg-surface-hover rounded px-1">text-gray-600</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >text-gray-600</code
+                    >
                 </p>
             </div>
             <div class="border-border bg-surface rounded-lg border p-6">
@@ -270,7 +274,9 @@ const copyToClipboard = (text) => {
                 </h2>
                 <p class="text-muted text-sm">
                     Usage:
-                    <code class="bg-surface-hover rounded px-1">bg-success</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >bg-success</code
+                    >
                 </p>
             </div>
             <div class="border-border bg-surface rounded-lg border p-6">
@@ -302,7 +308,9 @@ const copyToClipboard = (text) => {
                 </h2>
                 <p class="text-muted text-sm">
                     Usage:
-                    <code class="bg-surface-hover rounded px-1">text-danger</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >text-danger</code
+                    >
                 </p>
             </div>
             <div class="border-border bg-surface rounded-lg border p-6">
@@ -325,9 +333,7 @@ const copyToClipboard = (text) => {
         <!-- Semantic Colors -->
         <section class="space-y-4">
             <div>
-                <h2 class="text-text text-lg font-semibold">
-                    Semantic Colors
-                </h2>
+                <h2 class="text-text text-lg font-semibold">Semantic Colors</h2>
                 <p class="text-muted text-sm">
                     These automatically adapt to light/dark mode
                 </p>
@@ -362,9 +368,7 @@ const copyToClipboard = (text) => {
         <!-- Text Colors -->
         <section class="space-y-4">
             <div>
-                <h2 class="text-text text-lg font-semibold">
-                    Text Colors
-                </h2>
+                <h2 class="text-text text-lg font-semibold">Text Colors</h2>
                 <p class="text-muted text-sm">
                     Semantic text colors that adapt to theme
                 </p>
@@ -397,12 +401,12 @@ const copyToClipboard = (text) => {
         <!-- Border Color -->
         <section class="space-y-4">
             <div>
-                <h2 class="text-text text-lg font-semibold">
-                    Border Color
-                </h2>
+                <h2 class="text-text text-lg font-semibold">Border Color</h2>
                 <p class="text-muted text-sm">
                     Usage:
-                    <code class="bg-surface-hover rounded px-1">border-border</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >border-border</code
+                    >
                 </p>
             </div>
             <div class="border-border bg-surface rounded-lg border p-6">
@@ -412,27 +416,23 @@ const copyToClipboard = (text) => {
                         @click="copyToClipboard('border-border')"
                     >
                         <code class="text-text text-sm">border-border</code>
-                        <p class="text-muted mt-1 text-xs">
-                            Default border
-                        </p>
+                        <p class="text-muted mt-1 text-xs">Default border</p>
                     </button>
                     <button
                         class="border-primary-500 hover:bg-surface-hover rounded-md border-2 p-4 transition-colors"
                         @click="copyToClipboard('border-primary-500')"
                     >
-                        <code class="text-text text-sm">border-primary-500</code>
-                        <p class="text-muted mt-1 text-xs">
-                            Primary border
-                        </p>
+                        <code class="text-text text-sm"
+                            >border-primary-500</code
+                        >
+                        <p class="text-muted mt-1 text-xs">Primary border</p>
                     </button>
                     <button
                         class="border-danger hover:bg-surface-hover rounded-md border-2 p-4 transition-colors"
                         @click="copyToClipboard('border-danger')"
                     >
                         <code class="text-text text-sm">border-danger</code>
-                        <p class="text-muted mt-1 text-xs">
-                            Error border
-                        </p>
+                        <p class="text-muted mt-1 text-xs">Error border</p>
                     </button>
                 </div>
             </div>
@@ -441,12 +441,12 @@ const copyToClipboard = (text) => {
         <!-- Border Radius -->
         <section class="space-y-4">
             <div>
-                <h2 class="text-text text-lg font-semibold">
-                    Border Radius
-                </h2>
+                <h2 class="text-text text-lg font-semibold">Border Radius</h2>
                 <p class="text-muted text-sm">
                     Usage:
-                    <code class="bg-surface-hover rounded px-1">rounded-lg</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >rounded-lg</code
+                    >
                 </p>
             </div>
             <div class="border-border bg-surface rounded-lg border p-6">
@@ -469,13 +469,21 @@ const copyToClipboard = (text) => {
                 </div>
                 <div class="text-muted mt-4 text-sm">
                     <p>
-                        <code class="bg-surface-hover rounded px-1">rounded-sm</code>
+                        <code class="bg-surface-hover rounded px-1"
+                            >rounded-sm</code
+                        >
                         = 6px |
-                        <code class="bg-surface-hover rounded px-1">rounded-md</code>
+                        <code class="bg-surface-hover rounded px-1"
+                            >rounded-md</code
+                        >
                         = 8px |
-                        <code class="bg-surface-hover rounded px-1">rounded-lg</code>
+                        <code class="bg-surface-hover rounded px-1"
+                            >rounded-lg</code
+                        >
                         = 12px |
-                        <code class="bg-surface-hover rounded px-1">rounded-xl</code>
+                        <code class="bg-surface-hover rounded px-1"
+                            >rounded-xl</code
+                        >
                         = 16px
                     </p>
                 </div>
@@ -485,12 +493,12 @@ const copyToClipboard = (text) => {
         <!-- Focus Ring -->
         <section class="space-y-4">
             <div>
-                <h2 class="text-text text-lg font-semibold">
-                    Focus Ring
-                </h2>
+                <h2 class="text-text text-lg font-semibold">Focus Ring</h2>
                 <p class="text-muted text-sm">
                     Usage:
-                    <code class="bg-surface-hover rounded px-1">focus:ring-focus-ring</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >focus:ring-focus-ring</code
+                    >
                 </p>
             </div>
             <div class="border-border bg-surface rounded-lg border p-6">
@@ -511,16 +519,18 @@ const copyToClipboard = (text) => {
 
         <!-- Customization Guide -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Customization
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Customization</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="text-muted space-y-4 text-sm">
                     <p>
                         Override theme variables in your
-                        <code class="bg-surface-hover rounded px-1">style.css</code>
+                        <code class="bg-surface-hover rounded px-1"
+                            >style.css</code
+                        >
                         using the
-                        <code class="bg-surface-hover rounded px-1">@theme</code>
+                        <code class="bg-surface-hover rounded px-1"
+                            >@theme</code
+                        >
                         directive:
                     </p>
                     <pre
@@ -539,7 +549,9 @@ const copyToClipboard = (text) => {
 }</code></pre>
                     <p>
                         See the CLI template's
-                        <code class="bg-surface-hover rounded px-1">style.css</code>
+                        <code class="bg-surface-hover rounded px-1"
+                            >style.css</code
+                        >
                         for a full list of customizable variables.
                     </p>
                 </div>

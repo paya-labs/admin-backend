@@ -78,15 +78,11 @@ const handleAppFormSubmit = (data) => {
 
 <template>
     <div class="space-y-8">
-        <h1 class="text-text text-2xl font-bold">
-            Form Patterns
-        </h1>
+        <h1 class="text-text text-2xl font-bold">Form Patterns</h1>
 
         <!-- Basic Form Section -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Basic Form
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Basic Form</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="max-w-md space-y-4">
                     <AppInput
@@ -102,12 +98,8 @@ const handleAppFormSubmit = (data) => {
                         placeholder="Enter your password"
                     />
                     <div class="flex gap-3 pt-2">
-                        <AppButton variant="primary">
-                            Sign In
-                        </AppButton>
-                        <AppButton variant="outline">
-                            Cancel
-                        </AppButton>
+                        <AppButton variant="primary"> Sign In </AppButton>
+                        <AppButton variant="outline"> Cancel </AppButton>
                     </div>
                 </div>
             </div>
@@ -141,10 +133,7 @@ const handleAppFormSubmit = (data) => {
                         :error="validationErrors.password"
                         hint="Password must include uppercase, lowercase, and numbers"
                     />
-                    <AppButton
-                        variant="primary"
-                        disabled
-                    >
+                    <AppButton variant="primary" disabled>
                         Create Account
                     </AppButton>
                 </div>
@@ -153,9 +142,7 @@ const handleAppFormSubmit = (data) => {
 
         <!-- Inline Form Layout Section -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Inline Form Layout
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Inline Form Layout</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="flex flex-wrap items-end gap-4">
                     <div class="min-w-[200px] flex-1">
@@ -173,18 +160,14 @@ const handleAppFormSubmit = (data) => {
                             placeholder="Select..."
                         />
                     </div>
-                    <AppButton variant="primary">
-                        Search
-                    </AppButton>
+                    <AppButton variant="primary"> Search </AppButton>
                 </div>
             </div>
         </section>
 
         <!-- Textarea Section -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Textarea
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Textarea</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="grid max-w-2xl gap-6">
                     <AppTextarea
@@ -249,10 +232,7 @@ const handleAppFormSubmit = (data) => {
                                 placeholder="Select department..."
                             />
                             <div class="flex items-center gap-4 pt-2">
-                                <AppButton
-                                    type="submit"
-                                    variant="primary"
-                                >
+                                <AppButton type="submit" variant="primary">
                                     Save User
                                 </AppButton>
                                 <span
@@ -270,9 +250,7 @@ const handleAppFormSubmit = (data) => {
 
         <!-- Disabled Form Section -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Disabled State
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Disabled State</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="max-w-md space-y-4">
                     <AppInput
@@ -286,10 +264,7 @@ const handleAppFormSubmit = (data) => {
                         :options="[{ value: 'option1', label: 'Option 1' }]"
                         disabled
                     />
-                    <AppButton
-                        variant="primary"
-                        disabled
-                    >
+                    <AppButton variant="primary" disabled>
                         Disabled Button
                     </AppButton>
                 </div>
