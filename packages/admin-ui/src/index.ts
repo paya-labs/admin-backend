@@ -4,7 +4,6 @@ import './style.css';
 // Components
 import AppBadge from './components/AppBadge.vue';
 import AppButton from './components/AppButton.vue';
-import AppCalendar from './components/AppCalendar.vue';
 import AppCard from './components/AppCard.vue';
 import AppForm from './components/AppForm.vue';
 import AppHeader from './components/AppHeader.vue';
@@ -17,6 +16,8 @@ import AppSidebar from './components/AppSidebar.vue';
 import AppTable from './components/AppTable.vue';
 import AppTextarea from './components/AppTextarea.vue';
 import AppToastContainer from './components/AppToastContainer.vue';
+import AppCalendar from './components/AppCalendar.vue';
+import AppEditor from './components/AppEditor.vue';
 
 // Layouts
 import AdminLayout from './layouts/AdminLayout.vue';
@@ -59,7 +60,6 @@ export {
     AdminLayout,
     AppBadge,
     AppButton,
-    AppCalendar,
     AppCard,
     AppForm,
     AppHeader,
@@ -72,6 +72,8 @@ export {
     AppTable,
     AppTextarea,
     AppToastContainer,
+    AppCalendar,
+    AppEditor,
 };
 
 // Re-export composables
@@ -113,6 +115,7 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}Icon`, AppIcon);
         app.component(`${prefix}ToastContainer`, AppToastContainer);
         app.component(`${prefix}Calendar`, AppCalendar);
+        app.component(`${prefix}Editor`, AppEditor);
         app.component('AdminLayout', AdminLayout);
 
         // Register directives
