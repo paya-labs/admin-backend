@@ -44,3 +44,35 @@ export interface NewEventData {
     backgroundColor: string;
     frequency: EventFrequency;
 }
+
+export interface BusinessHoursConfig {
+    daysOfWeek: number[];
+    startTime: string;
+    endTime: string;
+}
+
+export type BusinessHoursInput =
+    | boolean
+    | BusinessHoursConfig
+    | BusinessHoursConfig[];
+
+export type SelectAllowFunc = (selectInfo: {
+    start: Date;
+    end: Date;
+    startStr: string;
+    endStr: string;
+    allDay: boolean;
+}) => boolean;
+
+export interface ButtonText {
+    today?: string;
+    month?: string;
+    week?: string;
+    day?: string;
+    list?: string;
+    dayGridMonth?: string;
+    timeGridWeek?: string;
+    timeGridWorkWeek?: string;
+    timeGridDay?: string;
+    listWeek?: string;
+}

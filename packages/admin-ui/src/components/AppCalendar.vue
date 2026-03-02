@@ -3,6 +3,7 @@ import type {
     CalendarApi,
     CalendarOptions,
     DateSelectArg,
+    EventApi,
     EventClickArg,
     EventContentArg,
     EventDropArg,
@@ -16,13 +17,16 @@ import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import FullCalendar from '@fullcalendar/vue3';
-import { computed, ref } from 'vue';
+import { computed, ref, useSlots } from 'vue';
 import type {
+    BusinessHoursInput,
+    ButtonText,
     CalendarEvent,
     EventColor,
     FrequencyOption,
     HeaderToolbar,
     NewEventData,
+    SelectAllowFunc,
     SelectedEvent,
 } from '../types/calendar';
 import AppButton from './AppButton.vue';
@@ -37,11 +41,28 @@ interface Props {
     // Modal control props
     enableEventDetailsModal?: boolean;
     enableCreateEventModal?: boolean;
+    enableEventDeletion?: boolean;
     // Customization props
     eventColors?: EventColor[];
     frequencyOptions?: FrequencyOption[];
     defaultEventColor?: string;
     defaultEventDuration?: number; // in minutes
+    // Time slot configuration
+    slotMinTime?: string;
+    slotMaxTime?: string;
+    slotDuration?: string;
+    slotHeight?: string; // CSS height for time slots (e.g., '3rem', '48px')
+    // Day configuration
+    firstDay?: number;
+    hiddenDays?: number[];
+    weekends?: boolean;
+    // Business hours and selection constraints
+    businessHours?: BusinessHoursInput | false;
+    selectConstraint?: 'businessHours' | string;
+    selectAllow?: SelectAllowFunc;
+    // View customization
+    views?: Record<string, unknown>;
+    buttonText?: ButtonText;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -56,6 +77,7 @@ const props = withDefaults(defineProps<Props>(), {
     height: 700,
     enableEventDetailsModal: true,
     enableCreateEventModal: true,
+    enableEventDeletion: true,
     eventColors: () => [
         { name: 'Tomato', value: '#d50000' },
         { name: 'Flamingo', value: '#e67c73' },
@@ -78,6 +100,22 @@ const props = withDefaults(defineProps<Props>(), {
     ],
     defaultEventColor: '#4285f4',
     defaultEventDuration: 10,
+    // Time slot defaults
+    slotMinTime: '07:00:00',
+    slotMaxTime: '21:00:00',
+    slotDuration: '00:10:00',
+    slotHeight: undefined,
+    // Day configuration defaults
+    firstDay: 1,
+    hiddenDays: () => [],
+    weekends: true,
+    // Business hours and selection (undefined by default)
+    businessHours: false,
+    selectConstraint: undefined,
+    selectAllow: undefined,
+    // View customization (undefined by default)
+    views: undefined,
+    buttonText: undefined,
 });
 
 const emit = defineEmits<{
@@ -88,9 +126,11 @@ const emit = defineEmits<{
     select: [info: DateSelectArg];
     addEvent: [event: NewEventData];
     beforeAddEvent: [event: NewEventData, cancel: () => void];
+    deleteEvent: [payload: { event: SelectedEvent; calendarEvent: EventApi }];
 }>();
 
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
+const slots: ReturnType<typeof useSlots> = useSlots();
 
 // Modal state
 const showEventModal = ref(false);
@@ -169,7 +209,44 @@ const parseDateFromInput = (value: string): Date | null => {
     return new Date(value);
 };
 
+// Helper to check if a date is within business hours
+const isWithinBusinessHours = (date: Date, allDay: boolean): boolean => {
+    if (!props.businessHours || props.selectConstraint !== 'businessHours') {
+        return true;
+    }
+
+    // All-day events are always allowed in business hours mode
+    if (allDay) return true;
+
+    const businessHoursConfig = props.businessHours;
+    const configs = Array.isArray(businessHoursConfig)
+        ? businessHoursConfig
+        : [businessHoursConfig];
+
+    const dayOfWeek = date.getDay();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+    for (const config of configs) {
+        if (typeof config === 'boolean') continue;
+        if (config.daysOfWeek.includes(dayOfWeek)) {
+            if (timeStr >= config.startTime && timeStr < config.endTime) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
 const handleDateClick = (info: DateClickArg) => {
+    // Check if click is within allowed time based on selectConstraint
+    if (!isWithinBusinessHours(info.date, info.allDay)) {
+        emit('dateClick', info);
+        return; // Don't open modal for clicks outside business hours
+    }
+
     const start = info.date;
     const end = new Date(
         start.getTime() + props.defaultEventDuration * 60 * 1000,
@@ -294,6 +371,103 @@ const handleAddEvent = () => {
     };
 };
 
+const handleDeleteEvent = () => {
+    if (!selectedEvent.value) return;
+
+    const calendarApi = calendarRef.value?.getApi();
+    if (!calendarApi) return;
+
+    const calendarEvent = calendarApi.getEventById(selectedEvent.value.id);
+    if (!calendarEvent) return;
+
+    emit('deleteEvent', { event: selectedEvent.value, calendarEvent });
+    calendarEvent.remove();
+    showEventModal.value = false;
+    // Don't nullify selectedEvent immediately - let modal transition complete
+    // It will be replaced when a new event is clicked
+};
+
+// Default view configurations
+const defaultViews = computed(() => ({
+    dayGridMonth: {
+        dayMaxEventRows: 3,
+    },
+    timeGridWeek: {
+        slotMinTime: props.slotMinTime,
+        slotMaxTime: props.slotMaxTime,
+        slotDuration: props.slotDuration,
+        slotLabelInterval: props.slotDuration,
+        slotLabelFormat: {
+            hour: '2-digit' as const,
+            minute: '2-digit' as const,
+            hour12: false,
+        },
+        snapDuration: props.slotDuration,
+    },
+    timeGridWorkWeek: {
+        type: 'timeGrid' as const,
+        duration: { weeks: 1 },
+        hiddenDays: [0, 6], // Hide Sunday (0) and Saturday (6)
+        slotMinTime: props.slotMinTime,
+        slotMaxTime: props.slotMaxTime,
+        slotDuration: props.slotDuration,
+        slotLabelInterval: props.slotDuration,
+        slotLabelFormat: {
+            hour: '2-digit' as const,
+            minute: '2-digit' as const,
+            hour12: false,
+        },
+        snapDuration: props.slotDuration,
+    },
+    timeGridDay: {
+        slotMinTime: props.slotMinTime,
+        slotMaxTime: props.slotMaxTime,
+        slotDuration: props.slotDuration,
+        slotLabelInterval: props.slotDuration,
+        slotLabelFormat: {
+            hour: '2-digit' as const,
+            minute: '2-digit' as const,
+            hour12: false,
+        },
+        snapDuration: props.slotDuration,
+    },
+    listWeek: {
+        eventTimeFormat: {
+            hour: '2-digit' as const,
+            minute: '2-digit' as const,
+            hour12: false,
+        },
+    },
+}));
+
+// Default button text
+const defaultButtonText = {
+    today: 'Today',
+    dayGridMonth: 'Month',
+    timeGridWeek: 'Week',
+    timeGridWorkWeek: 'Work Week',
+    timeGridDay: 'Day',
+    listWeek: 'Agenda',
+};
+
+// Merge user views with defaults
+const mergedViews = computed(() => {
+    if (!props.views) return defaultViews.value;
+    return {
+        ...defaultViews.value,
+        ...props.views,
+    };
+});
+
+// Merge user button text with defaults
+const mergedButtonText = computed(() => {
+    if (!props.buttonText) return defaultButtonText;
+    return {
+        ...defaultButtonText,
+        ...props.buttonText,
+    };
+});
+
 const calendarOptions = computed<CalendarOptions>(() => ({
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
     initialView: props.initialView,
@@ -302,17 +476,17 @@ const calendarOptions = computed<CalendarOptions>(() => ({
     events: props.events,
     dayMaxEvents: true,
     nowIndicator: true,
-    firstDay: 1,
+    firstDay: props.firstDay,
+    hiddenDays: props.hiddenDays,
+    weekends: props.weekends,
     eventDisplay: 'block',
     height: props.height,
-    buttonText: {
-        today: 'Today',
-        dayGridMonth: 'Month',
-        timeGridWeek: 'Week',
-        timeGridWorkWeek: 'Work Week',
-        timeGridDay: 'Day',
-        listWeek: 'Agenda',
-    },
+    buttonText: mergedButtonText.value,
+
+    // Business hours and selection constraints
+    businessHours: props.businessHours,
+    selectConstraint: props.selectConstraint,
+    selectAllow: props.selectAllow,
 
     // Callbacks
     eventClick: handleEventClick,
@@ -320,7 +494,7 @@ const calendarOptions = computed<CalendarOptions>(() => ({
     eventDrop: (info: EventDropArg) => emit('eventDrop', info),
     eventResize: (info: EventResizeDoneArg) => emit('eventResize', info),
     select: handleSelect,
-    selectable: true,
+    selectable: props.editable, // Link selectable to editable
 
     // Custom event content rendering
     eventContent: (arg: EventContentArg) => {
@@ -356,77 +530,17 @@ const calendarOptions = computed<CalendarOptions>(() => ({
             };
         }
 
-        // Timed events: dot + time + title style
-        const startTime = arg.event.start
-            ? arg.event.start.toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  hour12: false,
-              })
-            : '';
-
         return {
             html: `
         <div class="app-calendar-event-timed" style="--event-color: ${safeColor}; height: 100%; display: flex; align-items: start">
-          <span class="app-calendar-event-time">${startTime}</span>
           <span class="app-calendar-event-title">${safeTitle}</span>
         </div>
       `,
         };
     },
 
-    // View-specific options
-    views: {
-        dayGridMonth: {
-            dayMaxEventRows: 3,
-        },
-        timeGridWeek: {
-            slotMinTime: '07:00:00',
-            slotMaxTime: '21:00:00',
-            slotDuration: '00:10:00',
-            slotLabelInterval: '00:10:00',
-            slotLabelFormat: {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false,
-            },
-            snapDuration: '00:10:00',
-        },
-        timeGridWorkWeek: {
-            type: 'timeGrid',
-            duration: { weeks: 1 },
-            hiddenDays: [0, 6], // Hide Sunday (0) and Saturday (6)
-            slotMinTime: '07:00:00',
-            slotMaxTime: '21:00:00',
-            slotDuration: '00:10:00',
-            slotLabelInterval: '00:10:00',
-            slotLabelFormat: {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false,
-            },
-            snapDuration: '00:10:00',
-        },
-        timeGridDay: {
-            slotMinTime: '07:00:00',
-            slotMaxTime: '21:00:00',
-            slotDuration: '00:10:00',
-            slotLabelInterval: '00:10:00',
-            slotLabelFormat: {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false,
-            },
-            snapDuration: '00:10:00',
-        },
-        listWeek: {
-            eventTimeFormat: {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false,
-            },
-        },
-    },
+    // View-specific options (merged with user-provided views)
+    views: mergedViews.value,
 }));
 
 // Expose calendar API and modal controls to parent
@@ -458,17 +572,27 @@ defineExpose({
         showEventModal.value = false;
         showAddEventModal.value = false;
     },
+    deleteEvent: handleDeleteEvent,
 });
 </script>
 
 <template>
-    <div class="app-calendar-wrapper">
+    <div
+        class="app-calendar-wrapper"
+        :style="
+            props.slotHeight
+                ? { '--app-calendar-slot-height': props.slotHeight }
+                : {}
+        "
+    >
         <FullCalendar ref="calendarRef" :options="calendarOptions" />
 
-        <!-- Event Details Modal -->
+        <!-- Event Details Modal - only render when we have an event -->
         <AppModal
+            v-if="selectedEvent"
+            :key="selectedEvent.id"
             v-model="showEventModal"
-            :title="selectedEvent?.title || 'Event Details'"
+            :title="selectedEvent.title || 'Event Details'"
             size="sm"
         >
             <!-- Slot for custom modal content, with selectedEvent and formatEventTime as slot props -->
@@ -477,9 +601,10 @@ defineExpose({
                 :event="selectedEvent"
                 :format-time="formatEventTime"
                 :close="() => (showEventModal = false)"
+                :delete-event="handleDeleteEvent"
             >
                 <!-- Default content when no slot is provided -->
-                <div v-if="selectedEvent" class="app-calendar-modal-content">
+                <div class="app-calendar-modal-content">
                     <div
                         class="app-calendar-modal-color-bar"
                         :style="{
@@ -576,13 +701,22 @@ defineExpose({
                 </div>
             </slot>
 
-            <template #footer>
+            <!-- Only show default footer if custom event-modal slot is NOT provided -->
+            <template v-if="!slots['event-modal']" #footer>
                 <slot
                     name="event-modal-footer"
                     :event="selectedEvent"
                     :close="() => (showEventModal = false)"
+                    :delete-event="handleDeleteEvent"
                 >
-                    <!-- Default: no footer for event details modal -->
+                    <!-- Default footer with delete button when enabled -->
+                    <AppButton
+                        v-if="props.enableEventDeletion"
+                        variant="danger"
+                        @click="handleDeleteEvent"
+                    >
+                        Delete
+                    </AppButton>
                 </slot>
             </template>
         </AppModal>
@@ -760,7 +894,8 @@ defineExpose({
                 </div>
             </slot>
 
-            <template #footer>
+            <!-- Only show default footer if custom add-event-modal slot is NOT provided -->
+            <template v-if="!slots['add-event-modal']" #footer>
                 <slot
                     name="add-event-footer"
                     :close="() => (showAddEventModal = false)"
@@ -1278,7 +1413,7 @@ defineExpose({
    ========================================================================== */
 
 .app-calendar-wrapper .fc .fc-timegrid-slot {
-    height: 2rem;
+    height: var(--app-calendar-slot-height, 2rem);
     border-color: var(--color-gray-100);
 }
 
@@ -1315,6 +1450,21 @@ defineExpose({
 /* Now indicator line */
 .app-calendar-wrapper .fc .fc-timegrid-now-indicator-line {
     border-width: 2px;
+}
+
+/* ==========================================================================
+   BUSINESS HOURS
+   ========================================================================== */
+
+/* Non-business hours styling - make it more prominent */
+.app-calendar-wrapper .fc .fc-non-business {
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--color-gray-100),
+        var(--color-gray-100) 2px,
+        var(--color-gray-50) 2px,
+        var(--color-gray-50) 8px
+    );
 }
 
 /* ==========================================================================
@@ -1592,6 +1742,17 @@ defineExpose({
 
 .dark .app-calendar-wrapper .fc .fc-timegrid-slot {
     border-color: var(--color-border-strong);
+}
+
+/* Business hours in dark mode */
+.dark .app-calendar-wrapper .fc .fc-non-business {
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--color-gray-800),
+        var(--color-gray-800) 2px,
+        var(--color-gray-900) 2px,
+        var(--color-gray-900) 8px
+    );
 }
 
 /* Sticky sections in dark mode */

@@ -102,9 +102,9 @@ watch(
             document.removeEventListener('keydown', handleKeydown);
             document.body.style.overflow = '';
 
-            // Restore focus to previously focused element
+            // Restore focus to previously focused element without scrolling
             if (previouslyFocusedElement) {
-                previouslyFocusedElement.focus();
+                previouslyFocusedElement.focus({ preventScroll: true });
                 previouslyFocusedElement = null;
             }
         }
