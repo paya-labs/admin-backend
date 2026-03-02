@@ -81,5 +81,10 @@ export const moduleConfig = {
             icon: 'bell',
             route: '/toast',
         },
+        {
+            label: 'Calendar',
+            icon: 'calendar',
+            route: '/calendar',
+        },
     ],
 };
