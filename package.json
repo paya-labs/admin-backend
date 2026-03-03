@@ -38,6 +38,6 @@
         "minimatch": "^10.2.4"
     },
     "dependencies": {
-        "vue-tsc": "^3.2.2"
+        "vue-tsc": "^3.2.5"
     }
 }
