@@ -138,8 +138,8 @@ const isLoading = ref(false);
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <AppCard title="Active Users" value="1,234">
                     <div class="mt-4 flex items-center gap-2">
-                        <AppBadge variant="success">Online: 892</AppBadge>
-                        <AppBadge variant="default">Offline: 342</AppBadge>
+                        <AppBadge variant="success"> Online: 892 </AppBadge>
+                        <AppBadge variant="default"> Offline: 342 </AppBadge>
                     </div>
                 </AppCard>
 
@@ -157,7 +157,7 @@ const isLoading = ref(false);
                             <div
                                 class="bg-success h-2 rounded-full"
                                 style="width: 99.9%"
-                            />
+                            ></div>
                         </div>
                     </div>
                 </AppCard>

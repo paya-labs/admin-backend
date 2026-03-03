@@ -43,8 +43,9 @@ import { AppCard } from '@paya-labs/admin-ui';
                 <router-link
                     to="/components"
                     class="text-primary-600 hover:underline"
-                    >Components</router-link
                 >
+                    Components
+                </router-link>
                 page to see all available components in action.
             </p>
         </div>

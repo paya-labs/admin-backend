@@ -98,8 +98,8 @@ const handleAppFormSubmit = (data) => {
                         placeholder="Enter your password"
                     />
                     <div class="flex gap-3 pt-2">
-                        <AppButton variant="primary">Sign In</AppButton>
-                        <AppButton variant="outline">Cancel</AppButton>
+                        <AppButton variant="primary"> Sign In </AppButton>
+                        <AppButton variant="outline"> Cancel </AppButton>
                     </div>
                 </div>
             </div>
@@ -160,7 +160,7 @@ const handleAppFormSubmit = (data) => {
                             placeholder="Select..."
                         />
                     </div>
-                    <AppButton variant="primary">Search</AppButton>
+                    <AppButton variant="primary"> Search </AppButton>
                 </div>
             </div>
         </section>

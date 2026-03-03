@@ -43,13 +43,13 @@ const tableData = [
             <h2 class="text-text text-lg font-semibold">Buttons</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="flex flex-wrap gap-4">
-                    <AppButton variant="primary">Primary</AppButton>
-                    <AppButton variant="secondary">Secondary</AppButton>
-                    <AppButton variant="outline">Outline</AppButton>
-                    <AppButton variant="ghost">Ghost</AppButton>
-                    <AppButton variant="danger">Danger</AppButton>
-                    <AppButton variant="primary" disabled>Disabled</AppButton>
-                    <AppButton variant="primary" loading>Loading</AppButton>
+                    <AppButton variant="primary"> Primary </AppButton>
+                    <AppButton variant="secondary"> Secondary </AppButton>
+                    <AppButton variant="outline"> Outline </AppButton>
+                    <AppButton variant="ghost"> Ghost </AppButton>
+                    <AppButton variant="danger"> Danger </AppButton>
+                    <AppButton variant="primary" disabled> Disabled </AppButton>
+                    <AppButton variant="primary" loading> Loading </AppButton>
                 </div>
             </div>
         </section>
@@ -59,11 +59,11 @@ const tableData = [
             <h2 class="text-text text-lg font-semibold">Badges</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="flex flex-wrap gap-4">
-                    <AppBadge variant="primary">Primary</AppBadge>
-                    <AppBadge variant="secondary">Secondary</AppBadge>
-                    <AppBadge variant="success">Success</AppBadge>
-                    <AppBadge variant="warning">Warning</AppBadge>
-                    <AppBadge variant="danger">Danger</AppBadge>
+                    <AppBadge variant="primary"> Primary </AppBadge>
+                    <AppBadge variant="secondary"> Secondary </AppBadge>
+                    <AppBadge variant="success"> Success </AppBadge>
+                    <AppBadge variant="warning"> Warning </AppBadge>
+                    <AppBadge variant="danger"> Danger </AppBadge>
                 </div>
             </div>
         </section>
@@ -126,9 +126,9 @@ const tableData = [
         <section class="space-y-4">
             <h2 class="text-text text-lg font-semibold">Modal</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
-                <AppButton variant="primary" @click="showModal = true"
-                    >Open Modal</AppButton
-                >
+                <AppButton variant="primary" @click="showModal = true">
+                    Open Modal
+                </AppButton>
 
                 <AppModal
                     v-model="showModal"
@@ -144,13 +144,15 @@ const tableData = [
                             <AppButton
                                 variant="outline"
                                 @click="showModal = false"
-                                >Cancel</AppButton
                             >
+                                Cancel
+                            </AppButton>
                             <AppButton
                                 variant="primary"
                                 @click="showModal = false"
-                                >Confirm</AppButton
                             >
+                                Confirm
+                            </AppButton>
                         </div>
                     </template>
                 </AppModal>

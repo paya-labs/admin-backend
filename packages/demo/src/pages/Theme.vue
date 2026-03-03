@@ -165,7 +165,7 @@ const copyToClipboard = (text) => {
                                 color.bg,
                                 'h-12 w-16 rounded-md border border-black/10 transition-transform group-hover:scale-105',
                             ]"
-                        />
+                        ></div>
                         <span class="text-muted text-xs">{{ color.name }}</span>
                     </button>
                 </div>
@@ -229,7 +229,7 @@ const copyToClipboard = (text) => {
                                 color.bg,
                                 'h-12 w-16 rounded-md border border-black/10 transition-transform group-hover:scale-105',
                             ]"
-                        />
+                        ></div>
                         <span class="text-muted text-xs">{{ color.name }}</span>
                     </button>
                 </div>
@@ -293,7 +293,7 @@ const copyToClipboard = (text) => {
                                 color.bg,
                                 'h-12 w-20 rounded-md border border-black/10 transition-transform group-hover:scale-105',
                             ]"
-                        />
+                        ></div>
                         <span class="text-muted text-xs">{{ color.name }}</span>
                     </button>
                 </div>
@@ -351,12 +351,14 @@ const copyToClipboard = (text) => {
                                 color.bgClass,
                                 'border-border h-12 w-24 flex-shrink-0 rounded-md border',
                             ]"
-                        />
+                        ></div>
                         <div class="text-left">
                             <code class="text-text text-sm font-medium">{{
                                 color.bgClass
                             }}</code>
-                            <p class="text-muted text-xs">{{ color.desc }}</p>
+                            <p class="text-muted text-xs">
+                                {{ color.desc }}
+                            </p>
                         </div>
                     </button>
                 </div>
