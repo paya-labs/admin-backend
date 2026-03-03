@@ -1,3 +1,5 @@
+import Calendar from '@/pages/Calendar.vue';
+import Editor from '@/pages/Editor.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import Api from '../pages/Api.vue';
 import Auth from '../pages/Auth.vue';
@@ -12,8 +14,6 @@ import Pagination from '../pages/Pagination.vue';
 import Tables from '../pages/Tables.vue';
 import Theme from '../pages/Theme.vue';
 import Toast from '../pages/Toast.vue';
-import Calendar from "@/pages/Calendar.vue";
-import Editor from "@/pages/Editor.vue";
 
 const routes = [
     {

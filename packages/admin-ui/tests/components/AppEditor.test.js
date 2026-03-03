@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import AppEditor from '../../src/components/AppEditor.vue';
 
 // TipTap needs a small delay to initialize the editor
@@ -55,7 +55,9 @@ describe('AppEditor', () => {
         editorEl.element.dispatchEvent(new Event('input'));
 
         // Directly use the editor instance to type content
-        const editorComponent = wrapper.findComponent({ name: 'EditorContent' });
+        const editorComponent = wrapper.findComponent({
+            name: 'EditorContent',
+        });
         expect(editorComponent.exists()).toBe(true);
     });
 
@@ -110,7 +112,9 @@ describe('AppEditor', () => {
         });
         await waitForEditor();
 
-        const container = wrapper.find('.app-editor-wrapper > div:not(:first-child)').exists()
+        const container = wrapper
+            .find('.app-editor-wrapper > div:not(:first-child)')
+            .exists()
             ? wrapper.find('.rounded-md')
             : wrapper.find('.app-editor-wrapper').find('.rounded-md');
         expect(container.classes()).toContain('border-danger');
@@ -143,9 +147,15 @@ describe('AppEditor', () => {
         const buttons = wrapper.findAll('[role="toolbar"] button');
         const labels = buttons.map((b) => b.text());
         expect(labels).toEqual([
-            'H1', 'H2', 'H3',
-            'B', 'I', 'U', 'S',
-            'UL', 'OL',
+            'H1',
+            'H2',
+            'H3',
+            'B',
+            'I',
+            'U',
+            'S',
+            'UL',
+            'OL',
             'Quote',
             'MD',
         ]);
@@ -219,7 +229,9 @@ describe('AppEditor', () => {
         const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
         await mdButton.trigger('click');
 
-        expect(wrapper.find('textarea.app-editor-markdown').exists()).toBe(true);
+        expect(wrapper.find('textarea.app-editor-markdown').exists()).toBe(
+            true,
+        );
         // TipTap editor should be hidden (v-show=false)
         expect(wrapper.find('.tiptap').isVisible()).toBe(false);
     });
@@ -231,11 +243,15 @@ describe('AppEditor', () => {
         const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
         // Enter markdown mode
         await mdButton.trigger('click');
-        expect(wrapper.find('textarea.app-editor-markdown').exists()).toBe(true);
+        expect(wrapper.find('textarea.app-editor-markdown').exists()).toBe(
+            true,
+        );
 
         // Exit markdown mode
         await mdButton.trigger('click');
-        expect(wrapper.find('textarea.app-editor-markdown').exists()).toBe(false);
+        expect(wrapper.find('textarea.app-editor-markdown').exists()).toBe(
+            false,
+        );
         expect(wrapper.find('.tiptap').isVisible()).toBe(true);
     });
 
@@ -246,9 +262,9 @@ describe('AppEditor', () => {
         const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
         await mdButton.trigger('click');
 
-        const formattingButtons = wrapper.findAll('[role="toolbar"] button').filter(
-            (btn) => btn.text() !== 'MD',
-        );
+        const formattingButtons = wrapper
+            .findAll('[role="toolbar"] button')
+            .filter((btn) => btn.text() !== 'MD');
         formattingButtons.forEach((btn) => {
             expect(btn.element.disabled).toBe(true);
         });

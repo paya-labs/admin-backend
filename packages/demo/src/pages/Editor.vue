@@ -85,8 +85,10 @@ const markdownContent = ref('');
             <h2 class="text-text text-lg font-semibold">Markdown Mode</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="max-w-2xl space-y-4">
-                    <p class="text-sm text-muted">
-                        Click the <strong>MD</strong> button at the far right of the toolbar to toggle between rich text and markdown editing.
+                    <p class="text-muted text-sm">
+                        Click the <strong>MD</strong> button at the far right of
+                        the toolbar to toggle between rich text and markdown
+                        editing.
                     </p>
                     <AppEditor
                         v-model="markdownContent"
@@ -123,11 +125,18 @@ const markdownContent = ref('');
                         label="Type something"
                         placeholder="Write here and see the HTML output below..."
                     />
-                    <div class="rounded-md border border-border bg-surface-hover p-4">
-                        <p class="mb-2 text-xs font-semibold uppercase text-muted">
+                    <div
+                        class="border-border bg-surface-hover rounded-md border p-4"
+                    >
+                        <p
+                            class="text-muted mb-2 text-xs font-semibold uppercase"
+                        >
                             HTML Output
                         </p>
-                        <pre class="whitespace-pre-wrap break-all text-xs text-text-secondary">{{ liveContent || '(empty)' }}</pre>
+                        <pre
+                            class="text-text-secondary text-xs break-all whitespace-pre-wrap"
+                            >{{ liveContent || '(empty)' }}</pre
+                        >
                     </div>
                 </div>
             </div>

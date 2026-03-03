@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, useId, onBeforeUnmount, watch } from 'vue';
-import { useEditor, EditorContent } from '@tiptap/vue-3';
-import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from '@tiptap/markdown';
+import StarterKit from '@tiptap/starter-kit';
+import { EditorContent, useEditor } from '@tiptap/vue-3';
+import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
 
 interface Props {
     modelValue?: string;
@@ -51,7 +51,9 @@ const editor = useEditor({
             role: 'textbox',
             'aria-multiline': 'true',
             'aria-label': props.label || 'Rich text editor',
-            ...(props.placeholder ? { 'data-placeholder': props.placeholder } : {}),
+            ...(props.placeholder
+                ? { 'data-placeholder': props.placeholder }
+                : {}),
         },
     },
     onUpdate: ({ editor: ed }) => {
@@ -66,7 +68,10 @@ watch(
         if (!editor.value) return;
         const currentHTML = editor.value.getHTML();
         const normalized = newValue || '';
-        if (currentHTML !== normalized && !(normalized === '' && currentHTML === '<p></p>')) {
+        if (
+            currentHTML !== normalized &&
+            !(normalized === '' && currentHTML === '<p></p>')
+        ) {
             editor.value.commands.setContent(normalized, { emitUpdate: false });
         }
     },
@@ -133,7 +138,8 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                 ariaLabel: 'Heading 1',
                 icon: '',
                 isActive: () => ed.isActive('heading', { level: 1 }),
-                action: () => ed.chain().focus().toggleHeading({ level: 1 }).run(),
+                action: () =>
+                    ed.chain().focus().toggleHeading({ level: 1 }).run(),
             },
             {
                 key: 'h2',
@@ -141,7 +147,8 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                 ariaLabel: 'Heading 2',
                 icon: '',
                 isActive: () => ed.isActive('heading', { level: 2 }),
-                action: () => ed.chain().focus().toggleHeading({ level: 2 }).run(),
+                action: () =>
+                    ed.chain().focus().toggleHeading({ level: 2 }).run(),
             },
             {
                 key: 'h3',
@@ -149,7 +156,8 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                 ariaLabel: 'Heading 3',
                 icon: '',
                 isActive: () => ed.isActive('heading', { level: 3 }),
-                action: () => ed.chain().focus().toggleHeading({ level: 3 }).run(),
+                action: () =>
+                    ed.chain().focus().toggleHeading({ level: 3 }).run(),
             },
         ],
         // Text decoration
@@ -236,7 +244,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
         <!-- Editor container -->
         <div
             :class="[
-                'rounded-md border overflow-hidden',
+                'overflow-hidden rounded-md border',
                 'bg-input-bg',
                 'transition-colors duration-[var(--transition-fast)]',
                 'focus-within:border-transparent focus-within:ring-2 focus-within:ring-focus-ring',
@@ -249,11 +257,14 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
             <!-- Toolbar -->
             <div
                 v-if="editor"
-                class="app-editor-toolbar flex flex-wrap items-center gap-1 border-b border-input-border bg-surface-hover px-2 py-1.5"
+                class="app-editor-toolbar gap-1 px-2 py-1.5 flex flex-wrap items-center border-b border-input-border bg-surface-hover"
                 role="toolbar"
                 aria-label="Formatting options"
             >
-                <template v-for="(group, groupIndex) in toolbarGroups" :key="groupIndex">
+                <template
+                    v-for="(group, groupIndex) in toolbarGroups"
+                    :key="groupIndex"
+                >
                     <div
                         v-if="groupIndex > 0"
                         class="mx-0.5 h-5 w-px bg-border-strong"
@@ -268,7 +279,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                         :disabled="disabled || isMarkdownMode"
                         :class="[
                             'inline-flex items-center justify-center',
-                            'h-7 min-w-[28px] px-1.5',
+                            'h-7 px-1.5 min-w-[28px]',
                             'rounded text-xs font-semibold',
                             'transition-colors duration-[var(--transition-fast)]',
                             'disabled:cursor-not-allowed disabled:opacity-50',
@@ -295,7 +306,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                     :disabled="disabled"
                     :class="[
                         'inline-flex items-center justify-center',
-                        'h-7 min-w-[28px] px-1.5',
+                        'h-7 px-1.5 min-w-[28px]',
                         'rounded text-xs font-semibold',
                         'transition-colors duration-[var(--transition-fast)]',
                         'disabled:cursor-not-allowed disabled:opacity-50',
@@ -321,13 +332,8 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
         </div>
 
         <!-- Footer: error / hint -->
-        <div
-            v-if="error || hint"
-            class="mt-1.5 flex items-start"
-        >
-            <p
-                :class="['text-sm', hasError ? 'text-danger' : 'text-muted']"
-            >
+        <div v-if="error || hint" class="mt-1.5 flex items-start">
+            <p :class="['text-sm', hasError ? 'text-danger' : 'text-muted']">
                 {{ error || hint }}
             </p>
         </div>
@@ -428,7 +434,9 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
     resize: vertical;
     background: transparent;
     color: var(--color-text);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-family:
+        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        'Liberation Mono', 'Courier New', monospace;
     font-size: 0.875rem;
     line-height: 1.625;
 }
