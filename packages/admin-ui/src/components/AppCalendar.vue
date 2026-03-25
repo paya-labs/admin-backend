@@ -3,6 +3,7 @@ import type {
     CalendarApi,
     CalendarOptions,
     DateSelectArg,
+    DatesSetArg,
     EventApi,
     EventClickArg,
     EventContentArg,
@@ -17,15 +18,17 @@ import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import FullCalendar from '@fullcalendar/vue3';
-import { computed, ref, useSlots } from 'vue';
+import { computed, readonly, ref, useSlots, watch } from 'vue';
 import type {
     BusinessHoursInput,
     ButtonText,
     CalendarEvent,
+    CalendarLayoutMode,
     EventColor,
     FrequencyOption,
     HeaderToolbar,
     NewEventData,
+    PanelSize,
     SelectAllowFunc,
     SelectedEvent,
 } from '../types/calendar';
@@ -63,6 +66,24 @@ interface Props {
     // View customization
     views?: Record<string, unknown>;
     buttonText?: ButtonText;
+    // Modal sizes
+    eventDetailsModalSize?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+    addEventModalSize?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+    // Layout mode
+    layoutMode?: CalendarLayoutMode;
+    panelOpen?: boolean;
+    panelSize?: PanelSize;
+    // Scroll preservation during panel transitions
+    preserveScrollPosition?: boolean;
+    // Fullscreen mode
+    fullscreen?: boolean;
+    headerOffset?: string; // CSS value, e.g., '64px' for header height
+    hideBuiltinPanelHeader?: boolean;
+    // Panel behavior
+    panelForceView?: string; // e.g., 'timeGridWeek' - auto-switch when panel opens
+    // Editing event overlay
+    editingEvent?: CalendarEvent | null; // Temporary event to overlay during editing
+    editingEventMode?: 'add' | 'replace'; // How to handle the editing event
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -116,6 +137,24 @@ const props = withDefaults(defineProps<Props>(), {
     // View customization (undefined by default)
     views: undefined,
     buttonText: undefined,
+    // Modal sizes
+    eventDetailsModalSize: 'sm',
+    addEventModalSize: 'sm',
+    // Layout mode
+    layoutMode: 'modal',
+    panelOpen: false,
+    panelSize: 'md',
+    // Scroll preservation
+    preserveScrollPosition: true,
+    // Fullscreen mode
+    fullscreen: false,
+    headerOffset: '0px',
+    hideBuiltinPanelHeader: false,
+    // Panel behavior
+    panelForceView: undefined,
+    // Editing event overlay
+    editingEvent: null,
+    editingEventMode: 'add',
 });
 
 const emit = defineEmits<{
@@ -127,6 +166,9 @@ const emit = defineEmits<{
     addEvent: [event: NewEventData];
     beforeAddEvent: [event: NewEventData, cancel: () => void];
     deleteEvent: [payload: { event: SelectedEvent; calendarEvent: EventApi }];
+    datesSet: [info: DatesSetArg];
+    'update:panelOpen': [value: boolean];
+    panelClose: [];
 }>();
 
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
@@ -150,6 +192,136 @@ const newEventData = ref<NewEventData>({
 // Validation state
 const validationError = ref<string | null>(null);
 
+// Panel mode state (add vs edit)
+const panelMode = ref<'add' | 'edit' | null>(null);
+
+// Scroll preservation state
+const savedScrollTime = ref<string | null>(null);
+
+// Navigation state tracking
+const currentTitle = ref('');
+const currentView = ref(props.initialView);
+
+// Merged events with editing overlay
+const mergedEvents = computed(() => {
+    if (!props.editingEvent) return props.events;
+
+    const events = [...props.events];
+
+    if (props.editingEventMode === 'replace') {
+        const index = events.findIndex((e) => e.id === props.editingEvent!.id);
+        if (index >= 0) {
+            events[index] = props.editingEvent;
+            return events;
+        }
+    }
+
+    // Default: add mode - append the editing event
+    events.push(props.editingEvent);
+    return events;
+});
+
+// Save scroll position before panel changes
+const saveScrollPosition = () => {
+    const api = calendarRef.value?.getApi();
+    if (!api) return;
+
+    const scrollerEl = document.querySelector(
+        '.fc-scroller-liquid-absolute',
+    ) as HTMLElement | null;
+    if (!scrollerEl) return;
+
+    const scrollTop = scrollerEl.scrollTop;
+    const slotsContainer = scrollerEl.querySelector('.fc-timegrid-slots');
+    if (!slotsContainer) return;
+
+    const slots = slotsContainer.querySelectorAll('tr[data-time]');
+    if (slots.length === 0) return;
+
+    // Find the slot closest to the current scroll position
+    for (const slot of slots) {
+        const slotEl = slot as HTMLElement;
+        if (slotEl.offsetTop >= scrollTop) {
+            const time = slotEl.getAttribute('data-time');
+            if (time) {
+                savedScrollTime.value = time;
+                return;
+            }
+        }
+    }
+
+    // Fallback: use the last slot's time
+    const lastSlot = slots[slots.length - 1] as HTMLElement;
+    const lastTime = lastSlot.getAttribute('data-time');
+    if (lastTime) {
+        savedScrollTime.value = lastTime;
+    }
+};
+
+// Restore scroll position
+const restoreScrollPosition = () => {
+    const api = calendarRef.value?.getApi();
+    if (api && savedScrollTime.value) {
+        api.scrollToTime(savedScrollTime.value);
+        savedScrollTime.value = null;
+    }
+};
+
+// Watch panelOpen for scroll preservation and animated resize
+watch(
+    () => props.panelOpen,
+    (newVal, oldVal) => {
+        if (newVal === oldVal) return;
+
+        const api = calendarRef.value?.getApi();
+        if (!api) return;
+
+        // Force view change when panel opens
+        if (newVal && props.panelForceView) {
+            if (api.view.type !== props.panelForceView) {
+                api.changeView(props.panelForceView);
+            }
+        }
+
+        if (!props.preserveScrollPosition) return;
+
+        saveScrollPosition();
+
+        // Animate resize during panel transition (300ms animation)
+        const startTime = performance.now();
+        const animationDuration = 300;
+
+        const animate = () => {
+            api.updateSize();
+            if (performance.now() - startTime < animationDuration) {
+                requestAnimationFrame(animate);
+            } else {
+                api.updateSize();
+                setTimeout(restoreScrollPosition, 50);
+            }
+        };
+
+        requestAnimationFrame(animate);
+    },
+);
+
+// Panel size class
+const panelSizeClass = computed(() => {
+    const sizeMap: Record<PanelSize, string> = {
+        sm: 'app-calendar-panel--sm',
+        md: 'app-calendar-panel--md',
+        lg: 'app-calendar-panel--lg',
+    };
+    return sizeMap[props.panelSize || 'md'];
+});
+
+// Close panel helper
+const closePanel = () => {
+    emit('update:panelOpen', false);
+    emit('panelClose');
+    panelMode.value = null;
+};
+
 const handleEventClick = (info: EventClickArg) => {
     selectedEvent.value = {
         id: info.event.id,
@@ -159,7 +331,11 @@ const handleEventClick = (info: EventClickArg) => {
         allDay: info.event.allDay,
         backgroundColor: info.event.backgroundColor || props.defaultEventColor,
     };
-    if (props.enableEventDetailsModal) {
+
+    if (props.layoutMode === 'panel') {
+        panelMode.value = 'edit';
+        emit('update:panelOpen', true);
+    } else if (props.enableEventDetailsModal) {
         showEventModal.value = true;
     }
     emit('eventClick', info);
@@ -260,7 +436,11 @@ const handleDateClick = (info: DateClickArg) => {
         frequency: 'none',
     };
     validationError.value = null;
-    if (props.enableCreateEventModal) {
+
+    if (props.layoutMode === 'panel') {
+        panelMode.value = 'add';
+        emit('update:panelOpen', true);
+    } else if (props.enableCreateEventModal) {
         showAddEventModal.value = true;
     }
     emit('dateClick', info);
@@ -473,14 +653,14 @@ const calendarOptions = computed<CalendarOptions>(() => ({
     initialView: props.initialView,
     editable: props.editable,
     headerToolbar: props.headerToolbar,
-    events: props.events,
+    events: mergedEvents.value,
     dayMaxEvents: true,
     nowIndicator: true,
     firstDay: props.firstDay,
     hiddenDays: props.hiddenDays,
     weekends: props.weekends,
     eventDisplay: 'block',
-    height: props.height,
+    height: props.fullscreen ? '100%' : props.height,
     buttonText: mergedButtonText.value,
 
     // Business hours and selection constraints
@@ -495,6 +675,11 @@ const calendarOptions = computed<CalendarOptions>(() => ({
     eventResize: (info: EventResizeDoneArg) => emit('eventResize', info),
     select: handleSelect,
     selectable: props.editable, // Link selectable to editable
+    datesSet: (info: DatesSetArg) => {
+        currentTitle.value = info.view.title;
+        currentView.value = info.view.type;
+        emit('datesSet', info);
+    },
 
     // Custom event content rendering
     eventContent: (arg: EventContentArg) => {
@@ -573,345 +758,517 @@ defineExpose({
         showAddEventModal.value = false;
     },
     deleteEvent: handleDeleteEvent,
+    scrollToEvent: (date: Date, paddingMinutes = 30) => {
+        const api = calendarRef.value?.getApi();
+        if (!api) return;
+
+        api.gotoDate(date);
+
+        const totalMinutes = date.getHours() * 60 + date.getMinutes();
+        const scrollMinutes = Math.max(0, totalMinutes - paddingMinutes);
+        const hours = Math.floor(scrollMinutes / 60);
+        const mins = scrollMinutes % 60;
+        api.scrollToTime(
+            `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:00`,
+        );
+    },
+
+    // Navigation state (reactive, read-only)
+    currentTitle: readonly(currentTitle),
+    currentView: readonly(currentView),
+
+    // Navigation methods
+    prev: () => {
+        calendarRef.value?.getApi()?.prev();
+    },
+    next: () => {
+        calendarRef.value?.getApi()?.next();
+    },
+    today: () => {
+        calendarRef.value?.getApi()?.today();
+    },
+    changeView: (view: string) => {
+        calendarRef.value?.getApi()?.changeView(view);
+    },
 });
 </script>
 
 <template>
     <div
-        class="app-calendar-wrapper"
+        class="app-calendar-container"
+        :class="{
+            'app-calendar-panel-mode': layoutMode === 'panel',
+            'app-calendar-fullscreen': fullscreen,
+            'app-calendar-hide-panel-header': hideBuiltinPanelHeader,
+        }"
         :style="
-            props.slotHeight
-                ? { '--app-calendar-slot-height': props.slotHeight }
-                : {}
+            fullscreen ? { '--app-calendar-header-offset': headerOffset } : {}
         "
     >
-        <FullCalendar ref="calendarRef" :options="calendarOptions" />
-
-        <!-- Event Details Modal - only render when we have an event -->
-        <AppModal
-            v-if="selectedEvent"
-            :key="selectedEvent.id"
-            v-model="showEventModal"
-            :title="selectedEvent.title || 'Event Details'"
-            size="sm"
+        <!-- Calendar area -->
+        <div
+            class="app-calendar-main"
+            :class="{
+                'app-calendar-main--with-panel':
+                    layoutMode === 'panel' && panelOpen,
+            }"
         >
-            <!-- Slot for custom modal content, with selectedEvent and formatEventTime as slot props -->
-            <slot
-                name="event-modal"
-                :event="selectedEvent"
-                :format-time="formatEventTime"
-                :close="() => (showEventModal = false)"
-                :delete-event="handleDeleteEvent"
+            <div
+                class="app-calendar-wrapper"
+                :style="
+                    props.slotHeight
+                        ? { '--app-calendar-slot-height': props.slotHeight }
+                        : {}
+                "
             >
-                <!-- Default content when no slot is provided -->
-                <div class="app-calendar-modal-content">
-                    <div
-                        class="app-calendar-modal-color-bar"
-                        :style="{
-                            backgroundColor: selectedEvent.backgroundColor,
-                        }"
-                    />
+                <FullCalendar ref="calendarRef" :options="calendarOptions" />
+            </div>
+        </div>
 
-                    <div class="app-calendar-modal-details">
-                        <div class="app-calendar-modal-row">
-                            <svg
-                                class="app-calendar-modal-icon"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                            >
-                                <rect
-                                    x="3"
-                                    y="4"
-                                    width="18"
-                                    height="18"
-                                    rx="2"
-                                    ry="2"
-                                />
-                                <line x1="16" y1="2" x2="16" y2="6" />
-                                <line x1="8" y1="2" x2="8" y2="6" />
-                                <line x1="3" y1="10" x2="21" y2="10" />
-                            </svg>
-                            <div>
-                                <div class="app-calendar-modal-label">
-                                    {{
-                                        selectedEvent.allDay ? 'Date' : 'Start'
-                                    }}
-                                </div>
-                                <div class="app-calendar-modal-value">
-                                    {{
-                                        formatEventTime(
-                                            selectedEvent.start,
-                                            selectedEvent.allDay,
-                                        )
-                                    }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            v-if="selectedEvent.end && !selectedEvent.allDay"
-                            class="app-calendar-modal-row"
+        <!-- Side Panel (panel mode only) -->
+        <Transition
+            v-if="layoutMode === 'panel'"
+            enter-active-class="app-calendar-panel-enter"
+            leave-active-class="app-calendar-panel-leave"
+            enter-from-class="app-calendar-panel-enter-from"
+            leave-to-class="app-calendar-panel-leave-to"
+        >
+            <div
+                v-if="panelOpen"
+                class="app-calendar-panel"
+                :class="panelSizeClass"
+            >
+                <!-- Panel Header -->
+                <div class="app-calendar-panel-header">
+                    <slot
+                        name="panel-header"
+                        :event="selectedEvent"
+                        :new-event="newEventData"
+                        :mode="panelMode"
+                    >
+                        <h2 class="app-calendar-panel-title">
+                            {{
+                                panelMode === 'add'
+                                    ? 'Add Event'
+                                    : 'Event Details'
+                            }}
+                        </h2>
+                    </slot>
+                    <button
+                        type="button"
+                        class="app-calendar-panel-close"
+                        @click="closePanel"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
                         >
-                            <svg
-                                class="app-calendar-modal-icon"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                            >
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 16 14" />
-                            </svg>
-                            <div>
-                                <div class="app-calendar-modal-label">End</div>
-                                <div class="app-calendar-modal-value">
-                                    {{
-                                        formatEventTime(
-                                            selectedEvent.end,
-                                            false,
-                                        )
-                                    }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            v-if="selectedEvent.allDay"
-                            class="app-calendar-modal-row"
-                        >
-                            <svg
-                                class="app-calendar-modal-icon"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                            >
-                                <path d="M12 2v20M2 12h20" />
-                            </svg>
-                            <div>
-                                <div class="app-calendar-modal-label">Type</div>
-                                <div class="app-calendar-modal-value">
-                                    All-day event
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
                 </div>
-            </slot>
 
-            <!-- Only show default footer if custom event-modal slot is NOT provided -->
-            <template v-if="!slots['event-modal']" #footer>
+                <!-- Panel Body -->
+                <div class="app-calendar-panel-body">
+                    <slot
+                        name="panel"
+                        :event="selectedEvent"
+                        :new-event="newEventData"
+                        :mode="panelMode"
+                        :close="closePanel"
+                    >
+                        <!-- Default content placeholder -->
+                        <div class="app-calendar-panel-default">
+                            <p v-if="panelMode === 'add'">
+                                Configure the panel slot to show your add event
+                                form.
+                            </p>
+                            <p v-else>
+                                Configure the panel slot to show your event
+                                details.
+                            </p>
+                        </div>
+                    </slot>
+                </div>
+
+                <!-- Panel Footer -->
+                <div
+                    v-if="$slots['panel-footer']"
+                    class="app-calendar-panel-footer"
+                >
+                    <slot
+                        name="panel-footer"
+                        :event="selectedEvent"
+                        :new-event="newEventData"
+                        :mode="panelMode"
+                        :close="closePanel"
+                    />
+                </div>
+            </div>
+        </Transition>
+
+        <!-- Modals (modal mode only) -->
+        <template v-if="layoutMode === 'modal'">
+            <!-- Event Details Modal - only render when we have an event -->
+            <AppModal
+                v-if="selectedEvent"
+                :key="selectedEvent.id"
+                v-model="showEventModal"
+                :title="selectedEvent.title || 'Event Details'"
+                :size="props.eventDetailsModalSize"
+            >
+                <!-- Slot for custom modal content, with selectedEvent and formatEventTime as slot props -->
                 <slot
-                    name="event-modal-footer"
+                    name="event-modal"
                     :event="selectedEvent"
+                    :format-time="formatEventTime"
                     :close="() => (showEventModal = false)"
                     :delete-event="handleDeleteEvent"
                 >
-                    <!-- Default footer with delete button when enabled -->
-                    <AppButton
-                        v-if="props.enableEventDeletion"
-                        variant="danger"
-                        @click="handleDeleteEvent"
-                    >
-                        Delete
-                    </AppButton>
-                </slot>
-            </template>
-        </AppModal>
+                    <!-- Default content when no slot is provided -->
+                    <div class="app-calendar-modal-content">
+                        <div
+                            class="app-calendar-modal-color-bar"
+                            :style="{
+                                backgroundColor: selectedEvent.backgroundColor,
+                            }"
+                        />
 
-        <!-- Add Event Modal -->
-        <AppModal v-model="showAddEventModal" title="Add Event" size="sm">
-            <slot
-                name="add-event-modal"
-                :event="newEventData"
-                :close="() => (showAddEventModal = false)"
-                :save="handleAddEvent"
-            >
-                <!-- Default form content -->
-                <div class="app-calendar-modal-content">
-                    <!-- Validation error -->
-                    <div
-                        v-if="validationError"
-                        class="app-calendar-validation-error"
-                        role="alert"
-                    >
-                        {{ validationError }}
-                    </div>
-
-                    <div class="app-calendar-add-form">
-                        <label>
-                            <span class="app-calendar-modal-label">Title</span>
-                            <input
-                                v-model="newEventData.title"
-                                type="text"
-                                class="app-calendar-input"
-                                placeholder="Event title"
-                            />
-                        </label>
-
-                        <label class="app-calendar-checkbox">
-                            <input
-                                v-model="newEventData.allDay"
-                                type="checkbox"
-                            />
-                            <span>All-day event</span>
-                        </label>
-
-                        <!-- Date inputs for all-day events -->
-                        <template v-if="newEventData.allDay">
-                            <label>
-                                <span class="app-calendar-modal-label"
-                                    >Date</span
+                        <div class="app-calendar-modal-details">
+                            <div class="app-calendar-modal-row">
+                                <svg
+                                    class="app-calendar-modal-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
                                 >
-                                <input
-                                    type="date"
-                                    class="app-calendar-input"
-                                    :value="
-                                        formatDateOnlyForInput(
-                                            newEventData.start,
-                                        )
-                                    "
-                                    @input="
-                                        newEventData.start = parseDateFromInput(
-                                            ($event.target as HTMLInputElement)
-                                                .value,
-                                        )
-                                    "
-                                />
-                            </label>
-                        </template>
+                                    <rect
+                                        x="3"
+                                        y="4"
+                                        width="18"
+                                        height="18"
+                                        rx="2"
+                                        ry="2"
+                                    />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                </svg>
+                                <div>
+                                    <div class="app-calendar-modal-label">
+                                        {{
+                                            selectedEvent.allDay
+                                                ? 'Date'
+                                                : 'Start'
+                                        }}
+                                    </div>
+                                    <div class="app-calendar-modal-value">
+                                        {{
+                                            formatEventTime(
+                                                selectedEvent.start,
+                                                selectedEvent.allDay,
+                                            )
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Datetime inputs for timed events -->
-                        <template v-else>
-                            <label>
-                                <span class="app-calendar-modal-label"
-                                    >Start</span
-                                >
-                                <input
-                                    type="datetime-local"
-                                    class="app-calendar-input"
-                                    :value="
-                                        formatDateForInput(newEventData.start)
-                                    "
-                                    @input="
-                                        newEventData.start = parseDateFromInput(
-                                            ($event.target as HTMLInputElement)
-                                                .value,
-                                        )
-                                    "
-                                />
-                            </label>
-
-                            <label>
-                                <span class="app-calendar-modal-label"
-                                    >End</span
-                                >
-                                <input
-                                    type="datetime-local"
-                                    class="app-calendar-input"
-                                    :value="
-                                        formatDateForInput(newEventData.end)
-                                    "
-                                    @input="
-                                        newEventData.end = parseDateFromInput(
-                                            ($event.target as HTMLInputElement)
-                                                .value,
-                                        )
-                                    "
-                                />
-                            </label>
-                        </template>
-
-                        <label>
-                            <span class="app-calendar-modal-label">Repeat</span>
-                            <select
-                                v-model="newEventData.frequency"
-                                class="app-calendar-input app-calendar-select"
-                            >
-                                <option
-                                    v-for="opt in props.frequencyOptions"
-                                    :key="opt.value"
-                                    :value="opt.value"
-                                >
-                                    {{ opt.label }}
-                                </option>
-                            </select>
-                        </label>
-
-                        <div class="app-calendar-color-picker">
-                            <span
-                                id="color-picker-label"
-                                class="app-calendar-modal-label"
-                                >Color</span
-                            >
                             <div
-                                class="app-calendar-color-options"
-                                role="radiogroup"
-                                aria-labelledby="color-picker-label"
+                                v-if="
+                                    selectedEvent.end && !selectedEvent.allDay
+                                "
+                                class="app-calendar-modal-row"
                             >
-                                <button
-                                    v-for="color in props.eventColors"
-                                    :key="color.value"
-                                    type="button"
-                                    role="radio"
-                                    class="app-calendar-color-swatch"
-                                    :class="{
-                                        'app-calendar-color-swatch--selected':
-                                            newEventData.backgroundColor ===
-                                            color.value,
-                                    }"
-                                    :style="{ backgroundColor: color.value }"
-                                    :title="color.name"
-                                    :aria-label="color.name"
-                                    :aria-checked="
-                                        newEventData.backgroundColor ===
-                                        color.value
-                                    "
-                                    @click="
-                                        newEventData.backgroundColor =
-                                            color.value
-                                    "
+                                <svg
+                                    class="app-calendar-modal-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
                                 >
-                                    <svg
-                                        v-if="
-                                            newEventData.backgroundColor ===
-                                            color.value
-                                        "
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="3"
-                                        aria-hidden="true"
-                                    >
-                                        <polyline points="20 6 9 17 4 12" />
-                                    </svg>
-                                </button>
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                                <div>
+                                    <div class="app-calendar-modal-label">
+                                        End
+                                    </div>
+                                    <div class="app-calendar-modal-value">
+                                        {{
+                                            formatEventTime(
+                                                selectedEvent.end,
+                                                false,
+                                            )
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                v-if="selectedEvent.allDay"
+                                class="app-calendar-modal-row"
+                            >
+                                <svg
+                                    class="app-calendar-modal-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+                                    <path d="M12 2v20M2 12h20" />
+                                </svg>
+                                <div>
+                                    <div class="app-calendar-modal-label">
+                                        Type
+                                    </div>
+                                    <div class="app-calendar-modal-value">
+                                        All-day event
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </slot>
+                </slot>
 
-            <!-- Only show default footer if custom add-event-modal slot is NOT provided -->
-            <template v-if="!slots['add-event-modal']" #footer>
+                <!-- Only show default footer if custom event-modal slot is NOT provided -->
+                <template v-if="!slots['event-modal']" #footer>
+                    <slot
+                        name="event-modal-footer"
+                        :event="selectedEvent"
+                        :close="() => (showEventModal = false)"
+                        :delete-event="handleDeleteEvent"
+                    >
+                        <!-- Default footer with delete button when enabled -->
+                        <AppButton
+                            v-if="props.enableEventDeletion"
+                            variant="danger"
+                            @click="handleDeleteEvent"
+                        >
+                            Delete
+                        </AppButton>
+                    </slot>
+                </template>
+            </AppModal>
+
+            <!-- Add Event Modal -->
+            <AppModal
+                v-model="showAddEventModal"
+                title="Add Event"
+                :size="props.addEventModalSize"
+            >
                 <slot
-                    name="add-event-footer"
+                    name="add-event-modal"
+                    :event="newEventData"
                     :close="() => (showAddEventModal = false)"
                     :save="handleAddEvent"
                 >
-                    <AppButton
-                        variant="outline"
-                        @click="showAddEventModal = false"
-                        >Cancel</AppButton
-                    >
-                    <AppButton variant="primary" @click="handleAddEvent"
-                        >Add Event</AppButton
-                    >
+                    <!-- Default form content -->
+                    <div class="app-calendar-modal-content">
+                        <!-- Validation error -->
+                        <div
+                            v-if="validationError"
+                            class="app-calendar-validation-error"
+                            role="alert"
+                        >
+                            {{ validationError }}
+                        </div>
+
+                        <div class="app-calendar-add-form">
+                            <label>
+                                <span class="app-calendar-modal-label"
+                                    >Title</span
+                                >
+                                <input
+                                    v-model="newEventData.title"
+                                    type="text"
+                                    class="app-calendar-input"
+                                    placeholder="Event title"
+                                />
+                            </label>
+
+                            <label class="app-calendar-checkbox">
+                                <input
+                                    v-model="newEventData.allDay"
+                                    type="checkbox"
+                                />
+                                <span>All-day event</span>
+                            </label>
+
+                            <!-- Date inputs for all-day events -->
+                            <template v-if="newEventData.allDay">
+                                <label>
+                                    <span class="app-calendar-modal-label"
+                                        >Date</span
+                                    >
+                                    <input
+                                        type="date"
+                                        class="app-calendar-input"
+                                        :value="
+                                            formatDateOnlyForInput(
+                                                newEventData.start,
+                                            )
+                                        "
+                                        @input="
+                                            newEventData.start =
+                                                parseDateFromInput(
+                                                    (
+                                                        $event.target as HTMLInputElement
+                                                    ).value,
+                                                )
+                                        "
+                                    />
+                                </label>
+                            </template>
+
+                            <!-- Datetime inputs for timed events -->
+                            <template v-else>
+                                <label>
+                                    <span class="app-calendar-modal-label"
+                                        >Start</span
+                                    >
+                                    <input
+                                        type="datetime-local"
+                                        class="app-calendar-input"
+                                        :value="
+                                            formatDateForInput(
+                                                newEventData.start,
+                                            )
+                                        "
+                                        @input="
+                                            newEventData.start =
+                                                parseDateFromInput(
+                                                    (
+                                                        $event.target as HTMLInputElement
+                                                    ).value,
+                                                )
+                                        "
+                                    />
+                                </label>
+
+                                <label>
+                                    <span class="app-calendar-modal-label"
+                                        >End</span
+                                    >
+                                    <input
+                                        type="datetime-local"
+                                        class="app-calendar-input"
+                                        :value="
+                                            formatDateForInput(newEventData.end)
+                                        "
+                                        @input="
+                                            newEventData.end =
+                                                parseDateFromInput(
+                                                    (
+                                                        $event.target as HTMLInputElement
+                                                    ).value,
+                                                )
+                                        "
+                                    />
+                                </label>
+                            </template>
+
+                            <label>
+                                <span class="app-calendar-modal-label"
+                                    >Repeat</span
+                                >
+                                <select
+                                    v-model="newEventData.frequency"
+                                    class="app-calendar-input app-calendar-select"
+                                >
+                                    <option
+                                        v-for="opt in props.frequencyOptions"
+                                        :key="opt.value"
+                                        :value="opt.value"
+                                    >
+                                        {{ opt.label }}
+                                    </option>
+                                </select>
+                            </label>
+
+                            <div class="app-calendar-color-picker">
+                                <span
+                                    id="color-picker-label"
+                                    class="app-calendar-modal-label"
+                                    >Color</span
+                                >
+                                <div
+                                    class="app-calendar-color-options"
+                                    role="radiogroup"
+                                    aria-labelledby="color-picker-label"
+                                >
+                                    <button
+                                        v-for="color in props.eventColors"
+                                        :key="color.value"
+                                        type="button"
+                                        role="radio"
+                                        class="app-calendar-color-swatch"
+                                        :class="{
+                                            'app-calendar-color-swatch--selected':
+                                                newEventData.backgroundColor ===
+                                                color.value,
+                                        }"
+                                        :style="{
+                                            backgroundColor: color.value,
+                                        }"
+                                        :title="color.name"
+                                        :aria-label="color.name"
+                                        :aria-checked="
+                                            newEventData.backgroundColor ===
+                                            color.value
+                                        "
+                                        @click="
+                                            newEventData.backgroundColor =
+                                                color.value
+                                        "
+                                    >
+                                        <svg
+                                            v-if="
+                                                newEventData.backgroundColor ===
+                                                color.value
+                                            "
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="3"
+                                            aria-hidden="true"
+                                        >
+                                            <polyline points="20 6 9 17 4 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </slot>
-            </template>
-        </AppModal>
+
+                <!-- Only show default footer if custom add-event-modal slot is NOT provided -->
+                <template v-if="!slots['add-event-modal']" #footer>
+                    <slot
+                        name="add-event-footer"
+                        :close="() => (showAddEventModal = false)"
+                        :save="handleAddEvent"
+                    >
+                        <AppButton
+                            variant="outline"
+                            @click="showAddEventModal = false"
+                            >Cancel</AppButton
+                        >
+                        <AppButton variant="primary" @click="handleAddEvent"
+                            >Add Event</AppButton
+                        >
+                    </slot>
+                </template>
+            </AppModal>
+        </template>
     </div>
 </template>
 
@@ -920,6 +1277,215 @@ defineExpose({
    APP CALENDAR - FULLCALENDAR THEME
    Uses design system tokens from themes/base.css
    ========================================================================== */
+
+/* ==========================================================================
+   PANEL LAYOUT MODE
+   ========================================================================== */
+
+.app-calendar-container {
+    height: 100%;
+}
+
+/* ==========================================================================
+   FULLSCREEN MODE
+   ========================================================================== */
+
+.app-calendar-container.app-calendar-fullscreen {
+    height: calc(100vh - var(--app-calendar-header-offset, 0px));
+}
+
+.app-calendar-fullscreen .app-calendar-main,
+.app-calendar-fullscreen .app-calendar-wrapper,
+.app-calendar-fullscreen .app-calendar-wrapper .fc {
+    height: 100%;
+}
+
+.app-calendar-hide-panel-header .app-calendar-panel-header {
+    display: none;
+}
+
+.app-calendar-panel-mode {
+    display: flex;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+.app-calendar-main {
+    flex: 1;
+    min-width: 0;
+    /* Smooth transition for flex changes */
+    transition: flex 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-calendar-main--with-panel {
+    /* Calendar shrinks when panel is open */
+}
+
+/* Panel */
+.app-calendar-panel {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--color-border);
+    background: var(--color-surface);
+    overflow: hidden;
+    /* GPU acceleration for smoother animations */
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+/* Panel sizes */
+.app-calendar-panel--sm {
+    width: 320px;
+}
+.app-calendar-panel--md {
+    width: 400px;
+}
+.app-calendar-panel--lg {
+    width: 480px;
+}
+
+.app-calendar-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+}
+
+.app-calendar-panel-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.app-calendar-panel-body {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.app-calendar-panel-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--color-border);
+    flex-shrink: 0;
+}
+
+.app-calendar-panel-close {
+    color: var(--color-muted);
+    padding: 0.25rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-calendar-panel-close:hover {
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+}
+
+.app-calendar-panel-default {
+    padding: 1.5rem;
+    color: var(--color-muted);
+    text-align: center;
+}
+
+/* Panel mode - remove card styling for edge-to-edge appearance */
+.app-calendar-panel-mode .app-calendar-wrapper {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    height: 100%;
+}
+
+.app-calendar-panel-mode .app-calendar-wrapper .fc .fc-scrollgrid {
+    border: none;
+    border-radius: 0;
+}
+
+/* Consistent 1px borders throughout the calendar in panel mode
+   Using --color-border-strong for better visibility */
+.app-calendar-panel-mode .app-calendar-wrapper .fc .fc-col-header-cell {
+    border: none;
+    border-right: 1px solid var(--color-border-strong);
+}
+
+.app-calendar-panel-mode
+    .app-calendar-wrapper
+    .fc
+    .fc-col-header-cell:last-child {
+    border-right: none;
+}
+
+/* Vertical separators between day columns - reset all borders first */
+.app-calendar-panel-mode .app-calendar-wrapper .fc .fc-timegrid-col {
+    border: none;
+    border-right: 1px solid var(--color-border-strong);
+}
+
+.app-calendar-panel-mode .app-calendar-wrapper .fc .fc-timegrid-col:last-child {
+    border-right: none;
+}
+
+/* Horizontal separator below header */
+.app-calendar-panel-mode
+    .app-calendar-wrapper
+    .fc
+    .fc-scrollgrid-section-header {
+    border-bottom: 1px solid var(--color-border-strong);
+}
+
+/* All-day section borders */
+.app-calendar-panel-mode .app-calendar-wrapper .fc .fc-daygrid-body {
+    border-bottom: 1px solid var(--color-border-strong);
+}
+
+/* Time slot horizontal lines - override dark mode color */
+.app-calendar-panel-mode .app-calendar-wrapper .fc .fc-timegrid-slot,
+.dark .app-calendar-panel-mode .app-calendar-wrapper .fc .fc-timegrid-slot {
+    border: none;
+    border-top: 1px solid var(--color-border-strong);
+}
+
+/* Time axis border */
+.app-calendar-panel-mode .app-calendar-wrapper .fc .fc-timegrid-axis {
+    border: none;
+    border-right: 1px solid var(--color-border-strong);
+}
+
+/* Day grid cells in month view for panel mode */
+.app-calendar-panel-mode .app-calendar-wrapper .fc .fc-daygrid-day {
+    border: none;
+    border-right: 1px solid var(--color-border-strong);
+    border-bottom: 1px solid var(--color-border-strong);
+}
+
+.app-calendar-panel-mode .app-calendar-wrapper .fc .fc-daygrid-day:last-child {
+    border-right: none;
+}
+
+/* Panel transitions - animate width for layout + transform for smooth visual */
+.app-calendar-panel-enter,
+.app-calendar-panel-leave {
+    transition:
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.25s ease;
+}
+
+.app-calendar-panel-enter-from,
+.app-calendar-panel-leave-to {
+    width: 0 !important;
+    transform: translateX(100%);
+    opacity: 0;
+}
 
 /* ---------- wrapper card ---------- */
 .app-calendar-wrapper {
@@ -1780,5 +2346,23 @@ defineExpose({
 .dark .app-calendar-input {
     background: var(--color-gray-800);
     border-color: var(--color-border-strong);
+}
+
+/* Panel in dark mode */
+.dark .app-calendar-panel {
+    background: var(--color-surface);
+    border-color: var(--color-border-strong);
+}
+
+.dark .app-calendar-panel-header {
+    border-color: var(--color-border-strong);
+}
+
+.dark .app-calendar-panel-footer {
+    border-color: var(--color-border-strong);
+}
+
+.dark .app-calendar-panel-close:hover {
+    background: var(--color-surface-hover);
 }
 </style>

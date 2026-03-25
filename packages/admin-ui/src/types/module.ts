@@ -14,6 +14,8 @@ export interface ModuleConfig {
     id: string;
     name: string;
     logo?: string | null;
+    locale?: string; // e.g., 'en-CY'
+    timezone?: string; // e.g., 'Asia/Nicosia'
     theme?: ModuleTheme;
     api?: ModuleApi;
     navigation: NavigationItem[];

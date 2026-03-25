@@ -9,11 +9,13 @@ export interface CalendarEvent extends EventInput {
     backgroundColor?: string;
 }
 
-export interface HeaderToolbar {
+export interface HeaderToolbarConfig {
     left?: string;
     center?: string;
     right?: string;
 }
+
+export type HeaderToolbar = HeaderToolbarConfig | false;
 
 export interface EventColor {
     name: string;
@@ -76,3 +78,6 @@ export interface ButtonText {
     timeGridDay?: string;
     listWeek?: string;
 }
+
+export type CalendarLayoutMode = 'modal' | 'panel';
+export type PanelSize = 'sm' | 'md' | 'lg';

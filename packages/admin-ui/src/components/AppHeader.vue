@@ -94,12 +94,29 @@ const getThemeLabel = (): string => {
                     </svg>
                 </AppButton>
 
-                <!-- Breadcrumbs slot -->
-                <slot name="breadcrumbs" />
+                <!-- Left slot (default: breadcrumbs) -->
+                <slot name="left">
+                    <slot name="breadcrumbs" />
+                </slot>
+
+                <!-- Teleport target for external left content -->
+                <div id="header-left" />
+            </div>
+
+            <!-- Center section -->
+            <div class="lg:flex hidden flex-1 justify-center">
+                <slot name="center" />
+                <!-- Teleport target for external center content -->
+                <div id="header-center" />
             </div>
 
             <!-- Right section -->
             <div class="gap-2 lg:gap-3 flex items-center">
+                <!-- Right slot for custom content -->
+                <slot name="right" />
+                <!-- Teleport target for external right content -->
+                <div id="header-right" />
+
                 <!-- Search (desktop) -->
                 <div v-if="showSearch" class="md:block relative hidden">
                     <form @submit.prevent="handleSearch">

@@ -46,6 +46,9 @@ export interface TableAction<T = unknown> {
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
+export type DrawerSize = 'sm' | 'md' | 'lg' | 'xl';
+export type DrawerPosition = 'left' | 'right';
+
 export type InputType =
     | 'text'
     | 'password'
