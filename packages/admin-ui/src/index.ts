@@ -5,9 +5,13 @@ import './style.css';
 import AppBadge from './components/AppBadge.vue';
 import AppButton from './components/AppButton.vue';
 import AppCalendar from './components/AppCalendar.vue';
+import AppCalendarAddEventModal from './components/AppCalendarAddEventModal.vue';
+import AppCalendarEventForm from './components/AppCalendarEventForm.vue';
+import AppCalendarEventModal from './components/AppCalendarEventModal.vue';
 import AppCalendarNavigation from './components/AppCalendarNavigation.vue';
 import AppCalendarViewTabs from './components/AppCalendarViewTabs.vue';
 import AppCard from './components/AppCard.vue';
+import AppColorPicker from './components/AppColorPicker.vue';
 import AppDrawer from './components/AppDrawer.vue';
 import AppEditor from './components/AppEditor.vue';
 import AppForm from './components/AppForm.vue';
@@ -29,6 +33,8 @@ import AdminLayout from './layouts/AdminLayout.vue';
 import { useApi } from './composables/useApi';
 import { useAuth } from './composables/useAuth';
 import { BREAKPOINTS, useBreakpoint } from './composables/useBreakpoint';
+import { useCalendarHelpers } from './composables/useCalendarHelpers';
+import { useCalendarState } from './composables/useCalendarState';
 import {
     useCalendarViewPersistence,
     viewCalendarToUrl,
@@ -71,6 +77,8 @@ export type {
     BreakpointKey,
     UseBreakpointReturn,
 } from './composables/useBreakpoint';
+export type { CalendarHelpersReturn } from './composables/useCalendarHelpers';
+export type { CalendarStateReturn } from './composables/useCalendarState';
 export type {
     UseCalendarViewPersistenceOptions,
     UseCalendarViewPersistenceReturn,
@@ -96,9 +104,13 @@ export {
     AppBadge,
     AppButton,
     AppCalendar,
+    AppCalendarAddEventModal,
+    AppCalendarEventForm,
+    AppCalendarEventModal,
     AppCalendarNavigation,
     AppCalendarViewTabs,
     AppCard,
+    AppColorPicker,
     AppDrawer,
     AppEditor,
     AppForm,
@@ -122,6 +134,8 @@ export {
     useApi,
     useAuth,
     useBreakpoint,
+    useCalendarHelpers,
+    useCalendarState,
     useCalendarViewPersistence,
     useCrud,
     useModuleConfig,
