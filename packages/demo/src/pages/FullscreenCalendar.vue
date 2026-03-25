@@ -17,9 +17,16 @@ const panelOpen = ref(false);
 
 // Computed properties that read from the calendar ref
 const currentTitle = computed(() => calendarRef.value?.currentTitle ?? '');
-const currentView = computed(
-    () => calendarRef.value?.currentView ?? 'timeGridWeek',
-);
+
+// Map internal view to display view (3-day maps to week for UI display)
+const currentView = computed(() => {
+    const view = calendarRef.value?.currentView ?? 'timeGridWeek';
+    // Map 3-day view back to week for the dropdown display
+    if (view === 'timeGrid3Day') {
+        return 'timeGridWeek';
+    }
+    return view;
+});
 
 // Navigation handlers
 const handlePrev = () => calendarRef.value?.prev();
@@ -38,22 +45,27 @@ function onDateClick(info) {
 </script>
 
 <template>
-    <!-- Navigation controls teleported to header-left slot -->
+    <!-- Desktop: Navigation controls teleported to header (hidden on mobile) -->
     <Teleport to="#header-left">
-        <AppCalendarNavigation
-            :title="currentTitle"
-            @prev="handlePrev"
-            @next="handleNext"
-            @today="handleToday"
-        />
+        <div class="hidden items-center gap-2 md:flex">
+            <AppCalendarNavigation
+                @prev="handlePrev"
+                @next="handleNext"
+                @today="handleToday"
+            />
+            <h1 class="text-text text-lg font-semibold">
+                {{ currentTitle }}
+            </h1>
+        </div>
     </Teleport>
 
-    <!-- View tabs teleported to header-right slot -->
     <Teleport to="#header-right">
-        <AppCalendarViewTabs
-            :current-view="currentView"
-            @change="handleViewChange"
-        />
+        <div class="hidden md:block">
+            <AppCalendarViewTabs
+                :current-view="currentView"
+                @change="handleViewChange"
+            />
+        </div>
     </Teleport>
 
     <!-- Fullscreen Calendar -->
@@ -72,6 +84,20 @@ function onDateClick(info) {
         @event-click="onEventClick"
         @date-click="onDateClick"
     >
+        <!-- Mobile toolbar slot -->
+        <template #mobile-toolbar>
+            <AppCalendarNavigation
+                :title="currentTitle"
+                @prev="handlePrev"
+                @next="handleNext"
+                @today="handleToday"
+            />
+            <AppCalendarViewTabs
+                :current-view="currentView"
+                @change="handleViewChange"
+            />
+        </template>
+
         <!-- Custom panel content -->
         <template #panel="{ event, newEvent, mode, close }">
             <div class="space-y-4 p-4">
@@ -119,15 +145,10 @@ function onDateClick(info) {
                         </p>
                     </div>
                     <div class="flex gap-2 pt-4">
-                        <AppButton
-                            variant="outline"
-                            @click="close"
-                        >
+                        <AppButton variant="outline" @click="close">
                             Cancel
                         </AppButton>
-                        <AppButton variant="primary">
-                            Save Event
-                        </AppButton>
+                        <AppButton variant="primary"> Save Event </AppButton>
                     </div>
                 </template>
 
@@ -145,30 +166,19 @@ function onDateClick(info) {
                             <span class="font-medium">Start:</span>
                             {{ event.start?.toLocaleString() }}
                         </p>
-                        <p
-                            v-if="event.end"
-                            class="text-muted text-sm"
-                        >
+                        <p v-if="event.end" class="text-muted text-sm">
                             <span class="font-medium">End:</span>
                             {{ event.end?.toLocaleString() }}
                         </p>
-                        <p
-                            v-if="event.allDay"
-                            class="text-muted text-sm"
-                        >
+                        <p v-if="event.allDay" class="text-muted text-sm">
                             All-day event
                         </p>
                     </div>
                     <div class="flex gap-2 pt-4">
-                        <AppButton
-                            variant="outline"
-                            @click="close"
-                        >
+                        <AppButton variant="outline" @click="close">
                             Close
                         </AppButton>
-                        <AppButton variant="danger">
-                            Delete
-                        </AppButton>
+                        <AppButton variant="danger"> Delete </AppButton>
                     </div>
                 </template>
             </div>

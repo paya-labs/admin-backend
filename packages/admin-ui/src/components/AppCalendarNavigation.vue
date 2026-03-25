@@ -16,7 +16,7 @@ defineEmits<{
 </script>
 
 <template>
-    <div class="gap-3 flex items-center">
+    <div class="gap-1 md:gap-3 flex items-center">
         <!-- Prev/Next buttons -->
         <div class="flex">
             <AppButton
@@ -63,17 +63,14 @@ defineEmits<{
             </AppButton>
         </div>
 
-        <!-- Title: "Mar 30 - Apr 5, 2026" -->
-        <h1 class="text-lg font-semibold text-text">
-            {{ title }}
-        </h1>
-
-        <!-- Current view label -->
-        <span v-if="viewLabel" class="text-sm text-muted">{{ viewLabel }}</span>
-
         <!-- Today button -->
         <AppButton variant="secondary" size="sm" @click="$emit('today')">
             Today
         </AppButton>
+
+        <!-- Current view label (hidden on mobile) -->
+        <span v-if="viewLabel" class="text-sm md:inline hidden text-muted">{{
+            viewLabel
+        }}</span>
     </div>
 </template>

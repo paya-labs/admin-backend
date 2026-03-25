@@ -114,8 +114,8 @@ const getThemeLabel = (): string => {
             <div class="gap-2 lg:gap-3 flex items-center">
                 <!-- Right slot for custom content -->
                 <slot name="right" />
-                <!-- Teleport target for external right content -->
-                <div id="header-right" />
+                <!-- Teleport target for external right content (always visible) -->
+                <div id="header-right" class="flex items-center" />
 
                 <!-- Search (desktop) -->
                 <div v-if="showSearch" class="md:block relative hidden">
