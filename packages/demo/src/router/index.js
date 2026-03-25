@@ -1,5 +1,6 @@
 import Calendar from '@/pages/Calendar.vue';
 import Editor from '@/pages/Editor.vue';
+import FullscreenCalendar from '@/pages/FullscreenCalendar.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import Api from '../pages/Api.vue';
 import Auth from '../pages/Auth.vue';
@@ -90,6 +91,11 @@ const routes = [
         path: '/editor',
         name: 'Editor',
         component: Editor,
+    },
+    {
+        path: '/fullscreen-calendar',
+        name: 'FullscreenCalendar',
+        component: FullscreenCalendar,
     },
 ];
 
