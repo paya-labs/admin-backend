@@ -1,4 +1,5 @@
 import Calendar from '@/pages/Calendar.vue';
+import Editor from '@/pages/Editor.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import Api from '../pages/Api.vue';
 import Auth from '../pages/Auth.vue';
@@ -84,6 +85,11 @@ const routes = [
         path: '/calendar',
         name: 'Calendar',
         component: Calendar,
+    },
+    {
+        path: '/editor',
+        name: 'Editor',
+        component: Editor,
     },
 ];
 

@@ -6,6 +6,7 @@ import AppBadge from './components/AppBadge.vue';
 import AppButton from './components/AppButton.vue';
 import AppCalendar from './components/AppCalendar.vue';
 import AppCard from './components/AppCard.vue';
+import AppEditor from './components/AppEditor.vue';
 import AppForm from './components/AppForm.vue';
 import AppHeader from './components/AppHeader.vue';
 import AppIcon from './components/AppIcon.vue';
@@ -61,6 +62,7 @@ export {
     AppButton,
     AppCalendar,
     AppCard,
+    AppEditor,
     AppForm,
     AppHeader,
     AppIcon,
@@ -113,6 +115,7 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}Icon`, AppIcon);
         app.component(`${prefix}ToastContainer`, AppToastContainer);
         app.component(`${prefix}Calendar`, AppCalendar);
+        app.component(`${prefix}Editor`, AppEditor);
         app.component('AdminLayout', AdminLayout);
 
         // Register directives

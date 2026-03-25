@@ -86,5 +86,10 @@ export const moduleConfig = {
             icon: 'calendar',
             route: '/calendar',
         },
+        {
+            label: 'Editor',
+            icon: 'edit',
+            route: '/editor',
+        },
     ],
 };
