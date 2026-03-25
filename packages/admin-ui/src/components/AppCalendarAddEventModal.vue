@@ -2,9 +2,9 @@
 import type {
     EventColor,
     FrequencyOption,
+    ModalSize,
     NewEventData,
 } from '../types';
-import type { ModalSize } from '../types';
 import AppButton from './AppButton.vue';
 import AppCalendarEventForm from './AppCalendarEventForm.vue';
 import AppModal from './AppModal.vue';

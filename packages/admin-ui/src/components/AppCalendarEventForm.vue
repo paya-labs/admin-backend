@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useCalendarHelpers } from '../composables/useCalendarHelpers';
-import type {
-    EventColor,
-    FrequencyOption,
-    NewEventData,
-} from '../types';
+import type { EventColor, FrequencyOption, NewEventData } from '../types';
 import AppColorPicker from './AppColorPicker.vue';
 
 interface Props {

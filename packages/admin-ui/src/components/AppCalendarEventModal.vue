@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useCalendarHelpers } from '../composables/useCalendarHelpers';
-import type { SelectedEvent } from '../types';
-import type { ModalSize } from '../types';
+import type { ModalSize, SelectedEvent } from '../types';
 import AppButton from './AppButton.vue';
 import AppModal from './AppModal.vue';
 
