@@ -28,6 +28,7 @@ import AdminLayout from './layouts/AdminLayout.vue';
 // Composables
 import { useApi } from './composables/useApi';
 import { useAuth } from './composables/useAuth';
+import { BREAKPOINTS, useBreakpoint } from './composables/useBreakpoint';
 import {
     useCalendarViewPersistence,
     viewCalendarToUrl,
@@ -66,6 +67,10 @@ export * from './types';
 // Re-export composable types
 export type { ApiError, UseApiReturn } from './composables/useApi';
 export type { UseAuthReturn } from './composables/useAuth';
+export type {
+    BreakpointKey,
+    UseBreakpointReturn,
+} from './composables/useBreakpoint';
 export type {
     UseCalendarViewPersistenceOptions,
     UseCalendarViewPersistenceReturn,
@@ -111,10 +116,12 @@ export {
 
 // Re-export composables
 export {
+    BREAKPOINTS,
     getModuleConfig,
     provideModuleConfig,
     useApi,
     useAuth,
+    useBreakpoint,
     useCalendarViewPersistence,
     useCrud,
     useModuleConfig,

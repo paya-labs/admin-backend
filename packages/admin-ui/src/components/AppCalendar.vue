@@ -18,15 +18,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import FullCalendar from '@fullcalendar/vue3';
-import {
-    computed,
-    onMounted,
-    onUnmounted,
-    readonly,
-    ref,
-    useSlots,
-    watch,
-} from 'vue';
+import { computed, onMounted, readonly, ref, useSlots, watch } from 'vue';
+import { useBreakpoint } from '../composables/useBreakpoint';
 import type {
     BusinessHoursInput,
     ButtonText,
@@ -214,24 +207,15 @@ const currentTitle = ref('');
 const currentView = ref(props.initialView);
 
 // Mobile detection
-const isMobile = ref(false);
-const MOBILE_BREAKPOINT = 768;
+const { isMobile } = useBreakpoint();
 
 // Touch/swipe gesture state
 const touchStart = ref<{ x: number; y: number; time: number } | null>(null);
 const SWIPE_THRESHOLD = 50;
 const SWIPE_TIME_LIMIT = 300; // ms
 
-// Initialize mobile detection and auto-switch to 3-day view
+// Auto-switch to 3-day view on mobile after calendar initializes
 onMounted(() => {
-    const checkMobile = () => {
-        isMobile.value = window.innerWidth < MOBILE_BREAKPOINT;
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    onUnmounted(() => window.removeEventListener('resize', checkMobile));
-
-    // Auto-switch to 3-day view on mobile after calendar initializes
     if (isMobile.value) {
         // Small delay to ensure FullCalendar has initialized
         setTimeout(() => {
