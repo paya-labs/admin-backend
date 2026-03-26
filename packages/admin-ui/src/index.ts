@@ -5,7 +5,14 @@ import './style.css';
 import AppBadge from './components/AppBadge.vue';
 import AppButton from './components/AppButton.vue';
 import AppCalendar from './components/AppCalendar.vue';
+import AppCalendarAddEventModal from './components/AppCalendarAddEventModal.vue';
+import AppCalendarEventForm from './components/AppCalendarEventForm.vue';
+import AppCalendarEventModal from './components/AppCalendarEventModal.vue';
+import AppCalendarNavigation from './components/AppCalendarNavigation.vue';
+import AppCalendarViewTabs from './components/AppCalendarViewTabs.vue';
 import AppCard from './components/AppCard.vue';
+import AppColorPicker from './components/AppColorPicker.vue';
+import AppDrawer from './components/AppDrawer.vue';
 import AppEditor from './components/AppEditor.vue';
 import AppForm from './components/AppForm.vue';
 import AppHeader from './components/AppHeader.vue';
@@ -25,11 +32,34 @@ import AdminLayout from './layouts/AdminLayout.vue';
 // Composables
 import { useApi } from './composables/useApi';
 import { useAuth } from './composables/useAuth';
+import { BREAKPOINTS, useBreakpoint } from './composables/useBreakpoint';
+import { useCalendarHelpers } from './composables/useCalendarHelpers';
+import { useCalendarState } from './composables/useCalendarState';
+import {
+    useCalendarViewPersistence,
+    viewCalendarToUrl,
+    viewUrlToCalendar,
+} from './composables/useCalendarViewPersistence';
 import { useCrud } from './composables/useCrud';
+import {
+    getModuleConfig,
+    provideModuleConfig,
+    useModuleConfig,
+} from './composables/useModuleConfig';
 import { usePagination } from './composables/usePagination';
 import { useSidebar } from './composables/useSidebar';
 import { useTheme } from './composables/useTheme';
 import { useToast } from './composables/useToast';
+
+// Utils
+import {
+    formatDate,
+    formatDateShort,
+    formatDateTime,
+    formatDateTimeLocal,
+    formatTime,
+    isValidDate,
+} from './utils/dateFormat';
 
 // Directives
 import { vClickOutside } from './directives/clickOutside';
@@ -43,6 +73,16 @@ export * from './types';
 // Re-export composable types
 export type { ApiError, UseApiReturn } from './composables/useApi';
 export type { UseAuthReturn } from './composables/useAuth';
+export type {
+    BreakpointKey,
+    UseBreakpointReturn,
+} from './composables/useBreakpoint';
+export type { CalendarHelpersReturn } from './composables/useCalendarHelpers';
+export type { CalendarStateReturn } from './composables/useCalendarState';
+export type {
+    UseCalendarViewPersistenceOptions,
+    UseCalendarViewPersistenceReturn,
+} from './composables/useCalendarViewPersistence';
 export type { UseCrudReturn } from './composables/useCrud';
 export type {
     UsePaginationOptions,
@@ -55,13 +95,23 @@ export type { ShowToastOptions, UseToastReturn } from './composables/useToast';
 // Re-export icon types
 export type { IconDefinition } from './icons';
 
+// Re-export component types
+export type { ViewOption } from './components/AppCalendarViewTabs.vue';
+
 // Re-export components
 export {
     AdminLayout,
     AppBadge,
     AppButton,
     AppCalendar,
+    AppCalendarAddEventModal,
+    AppCalendarEventForm,
+    AppCalendarEventModal,
+    AppCalendarNavigation,
+    AppCalendarViewTabs,
     AppCard,
+    AppColorPicker,
+    AppDrawer,
     AppEditor,
     AppForm,
     AppHeader,
@@ -78,13 +128,33 @@ export {
 
 // Re-export composables
 export {
+    BREAKPOINTS,
+    getModuleConfig,
+    provideModuleConfig,
     useApi,
     useAuth,
+    useBreakpoint,
+    useCalendarHelpers,
+    useCalendarState,
+    useCalendarViewPersistence,
     useCrud,
+    useModuleConfig,
     usePagination,
     useSidebar,
     useTheme,
     useToast,
+    viewCalendarToUrl,
+    viewUrlToCalendar,
+};
+
+// Re-export utils
+export {
+    formatDate,
+    formatDateShort,
+    formatDateTime,
+    formatDateTimeLocal,
+    formatTime,
+    isValidDate,
 };
 
 // Re-export directives
@@ -115,6 +185,7 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}Icon`, AppIcon);
         app.component(`${prefix}ToastContainer`, AppToastContainer);
         app.component(`${prefix}Calendar`, AppCalendar);
+        app.component(`${prefix}Drawer`, AppDrawer);
         app.component(`${prefix}Editor`, AppEditor);
         app.component('AdminLayout', AdminLayout);
 

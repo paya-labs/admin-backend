@@ -12,13 +12,15 @@ interface Props {
     logoAlt?: string;
     user?: User;
     showSearch?: boolean;
+    fullscreen?: boolean;
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
     logo: '',
     logoAlt: 'Admin',
     user: () => ({ id: '', name: 'User', email: 'user@example.com' }),
     showSearch: true,
+    fullscreen: false,
 });
 
 const emit = defineEmits<{
@@ -53,9 +55,9 @@ const handleSearch = (query: string): void => {
     <div class="min-h-screen bg-[var(--bg-body)]">
         <!-- Sidebar -->
         <AppSidebar
-            :navigation="navigation"
-            :logo="logo"
-            :logo-alt="logoAlt"
+            :navigation="props.navigation"
+            :logo="props.logo"
+            :logo-alt="props.logoAlt"
             :is-collapsed="isCollapsed"
             :is-open="isOpen"
             @close="close"
@@ -64,15 +66,23 @@ const handleSearch = (query: string): void => {
 
         <!-- Header -->
         <AppHeader
-            :user="user"
+            :user="props.user"
             :is-collapsed="isCollapsed"
-            :show-search="showSearch"
+            :show-search="props.showSearch"
             @toggle-sidebar="toggle"
             @logout="handleLogout"
             @search="handleSearch"
         >
-            <template #breadcrumbs>
-                <slot name="breadcrumbs" />
+            <template #left>
+                <slot name="header-left">
+                    <slot name="breadcrumbs" />
+                </slot>
+            </template>
+            <template #center>
+                <slot name="header-center" />
+            </template>
+            <template #right>
+                <slot name="header-right" />
             </template>
         </AppHeader>
 
@@ -86,7 +96,7 @@ const handleSearch = (query: string): void => {
                     : 'lg:pl-[var(--sidebar-width)]',
             ]"
         >
-            <div class="p-4 lg:p-6">
+            <div :class="props.fullscreen ? '' : 'p-4 lg:p-6'">
                 <slot />
             </div>
         </main>

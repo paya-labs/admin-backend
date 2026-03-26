@@ -91,5 +91,10 @@ export const moduleConfig = {
             icon: 'edit',
             route: '/editor',
         },
+        {
+            label: 'Fullscreen Calendar',
+            icon: 'calendar',
+            route: '/fullscreen-calendar',
+        },
     ],
 };
