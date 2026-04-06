@@ -1,6 +1,7 @@
 <script setup>
 import {
     AppButton,
+    AppColorInput,
     AppForm,
     AppInput,
     AppSelect,
@@ -59,6 +60,23 @@ const departmentOptions = [
     { value: 'marketing', label: 'Marketing' },
     { value: 'sales', label: 'Sales' },
 ];
+
+// Color input examples
+const colorBasic = ref('#4285f4');
+const colorRequired = ref('#d50000');
+const colorWithHint = ref('#33b679');
+const colorCustomPalette = ref('#2563eb');
+const customPalette = [
+    '#dc2626',
+    '#ea580c',
+    '#d97706',
+    '#16a34a',
+    '#0891b2',
+    '#2563eb',
+    '#7c3aed',
+    '#db2777',
+];
+const colorNoPalette = ref('#7c3aed');
 
 // Textarea examples
 const textareaBasic = ref('');
@@ -161,6 +179,47 @@ const handleAppFormSubmit = (data) => {
                         />
                     </div>
                     <AppButton variant="primary"> Search </AppButton>
+                </div>
+            </div>
+        </section>
+
+        <!-- Color Input Section -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Color Input</h2>
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <div class="max-w-md space-y-6">
+                    <AppColorInput v-model="colorBasic" label="Brand Color" />
+                    <AppColorInput
+                        v-model="colorRequired"
+                        label="Required Color"
+                        required
+                    />
+                    <AppColorInput
+                        v-model="colorWithHint"
+                        label="Theme Color"
+                        hint="Choose a color for the application theme"
+                    />
+                    <AppColorInput
+                        label="Error State"
+                        model-value="#e67c73"
+                        error="This color does not meet contrast requirements"
+                    />
+                    <AppColorInput
+                        v-model="colorCustomPalette"
+                        label="Custom Palette"
+                        :palette="customPalette"
+                        hint="Using a custom set of brand colors"
+                    />
+                    <AppColorInput
+                        v-model="colorNoPalette"
+                        label="No Palette"
+                        :palette="false"
+                    />
+                    <AppColorInput
+                        label="Disabled"
+                        model-value="#7986cb"
+                        disabled
+                    />
                 </div>
             </div>
         </section>

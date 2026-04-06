@@ -27,7 +27,6 @@ import type {
     ButtonText,
     CalendarEvent,
     CalendarLayoutMode,
-    EventColor,
     FrequencyOption,
     HeaderToolbar,
     NewEventData,
@@ -52,7 +51,6 @@ interface Props {
     enableCreateEventModal?: boolean;
     enableEventDeletion?: boolean;
     // Customization props
-    eventColors?: EventColor[];
     frequencyOptions?: FrequencyOption[];
     defaultEventColor?: string;
     defaultEventDuration?: number; // in minutes
@@ -105,19 +103,6 @@ const props = withDefaults(defineProps<Props>(), {
     enableEventDetailsModal: true,
     enableCreateEventModal: true,
     enableEventDeletion: true,
-    eventColors: () => [
-        { name: 'Tomato', value: '#d50000' },
-        { name: 'Flamingo', value: '#e67c73' },
-        { name: 'Tangerine', value: '#f4511e' },
-        { name: 'Banana', value: '#f6bf26' },
-        { name: 'Sage', value: '#33b679' },
-        { name: 'Basil', value: '#0b8043' },
-        { name: 'Peacock', value: '#039be5' },
-        { name: 'Blueberry', value: '#4285f4' },
-        { name: 'Lavender', value: '#7986cb' },
-        { name: 'Grape', value: '#8e24aa' },
-        { name: 'Graphite', value: '#616161' },
-    ],
     frequencyOptions: () => [
         { value: 'none', label: 'Does not repeat' },
         { value: 'daily', label: 'Daily' },
@@ -966,7 +951,6 @@ defineExpose({
                 <AppCalendarAddEventModal
                     v-model="showAddEventModal"
                     :event-data="newEventData"
-                    :event-colors="eventColors"
                     :frequency-options="frequencyOptions"
                     :validation-error="validationError"
                     :size="addEventModalSize"
