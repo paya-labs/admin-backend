@@ -194,8 +194,7 @@ describe('AppColorInput', () => {
     it('emits update:modelValue when palette color is selected', async () => {
         const wrapper = mountColorInput({
             modelValue: '#000000',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -289,8 +288,7 @@ describe('AppColorInput', () => {
     it('commits valid hex on Enter', async () => {
         const wrapper = mountColorInput({
             modelValue: '#000000',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -307,8 +305,7 @@ describe('AppColorInput', () => {
     it('commits valid hex on blur', async () => {
         const wrapper = mountColorInput({
             modelValue: '#000000',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -385,8 +382,7 @@ describe('AppColorInput', () => {
     it('ArrowRight on gradient increases saturation', async () => {
         const wrapper = mountColorInput({
             modelValue: '#808080',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -402,8 +398,7 @@ describe('AppColorInput', () => {
     it('ArrowLeft on gradient decreases saturation', async () => {
         const wrapper = mountColorInput({
             modelValue: '#ff0000',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -419,8 +414,7 @@ describe('AppColorInput', () => {
     it('ArrowUp on gradient increases brightness', async () => {
         const wrapper = mountColorInput({
             modelValue: '#808080',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -434,8 +428,7 @@ describe('AppColorInput', () => {
     it('ArrowDown on gradient decreases brightness', async () => {
         const wrapper = mountColorInput({
             modelValue: '#808080',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -449,8 +442,7 @@ describe('AppColorInput', () => {
     it('gradient saturation does not exceed boundaries', async () => {
         const wrapper = mountColorInput({
             modelValue: '#ff0000',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -473,8 +465,7 @@ describe('AppColorInput', () => {
     it('ArrowRight on hue slider increases hue', async () => {
         const wrapper = mountColorInput({
             modelValue: '#ff0000',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -490,8 +481,7 @@ describe('AppColorInput', () => {
     it('ArrowLeft on hue slider decreases hue', async () => {
         const wrapper = mountColorInput({
             modelValue: '#00ff00',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -505,8 +495,7 @@ describe('AppColorInput', () => {
     it('hue slider wraps around at 360 degrees', async () => {
         const wrapper = mountColorInput({
             modelValue: '#ff0000',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
@@ -527,8 +516,7 @@ describe('AppColorInput', () => {
     it('hue slider updates aria-valuenow', async () => {
         const wrapper = mountColorInput({
             modelValue: '#ff0000',
-            'onUpdate:modelValue': (e) =>
-                wrapper.setProps({ modelValue: e }),
+            'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
         });
 
         await openPicker(wrapper);
