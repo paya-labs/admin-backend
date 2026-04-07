@@ -4,6 +4,7 @@ import {
     AppColorInput,
     AppForm,
     AppInput,
+    AppModal,
     AppSelect,
     AppTextarea,
 } from '@paya-labs/admin-ui';
@@ -82,6 +83,28 @@ const colorNoPalette = ref('#7c3aed');
 const textareaBasic = ref('');
 const textareaWithLimit = ref('This is some initial content for the textarea.');
 const textareaBio = ref('');
+
+// Modal form
+const modalOpen = ref(false);
+const modalForm = ref({
+    firstName: '',
+    lastName: '',
+    email: '',
+    country: '',
+});
+
+const countryOptions = [
+    { value: 'us', label: 'United States' },
+    { value: 'uk', label: 'United Kingdom' },
+    { value: 'de', label: 'Germany' },
+    { value: 'fr', label: 'France' },
+    { value: 'es', label: 'Spain' },
+    { value: 'it', label: 'Italy' },
+    { value: 'nl', label: 'Netherlands' },
+    { value: 'pt', label: 'Portugal' },
+    { value: 'se', label: 'Sweden' },
+    { value: 'no', label: 'Norway' },
+];
 
 const formSubmitted = ref(false);
 
@@ -304,6 +327,51 @@ const handleAppFormSubmit = (data) => {
                         </div>
                     </AppForm>
                 </div>
+            </div>
+        </section>
+
+        <!-- Form in Modal Section -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Form in Modal</h2>
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <AppButton variant="primary" @click="modalOpen = true">
+                    Open Form Modal
+                </AppButton>
+
+                <AppModal v-model="modalOpen" title="Add Contact" size="md">
+                    <div class="space-y-4">
+                        <AppInput
+                            v-model="modalForm.firstName"
+                            label="First Name"
+                            placeholder="John"
+                        />
+                        <AppInput
+                            v-model="modalForm.lastName"
+                            label="Last Name"
+                            placeholder="Doe"
+                        />
+                        <AppInput
+                            v-model="modalForm.email"
+                            label="Email"
+                            type="email"
+                            placeholder="john@example.com"
+                        />
+                        <AppSelect
+                            v-model="modalForm.country"
+                            label="Country"
+                            :options="countryOptions"
+                            placeholder="Select country..."
+                        />
+                    </div>
+                    <template #footer>
+                        <AppButton variant="outline" @click="modalOpen = false">
+                            Cancel
+                        </AppButton>
+                        <AppButton variant="primary" @click="modalOpen = false">
+                            Save Contact
+                        </AppButton>
+                    </template>
+                </AppModal>
             </div>
         </section>
 

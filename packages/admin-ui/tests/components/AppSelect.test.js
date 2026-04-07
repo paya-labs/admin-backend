@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
 import AppSelect from '../../src/components/AppSelect.vue';
 
@@ -328,5 +328,140 @@ describe('AppSelect', () => {
         await wrapper.find('button').trigger('keydown', { key: 'ArrowDown' });
 
         expect(wrapper.find('ul[role="listbox"]').isVisible()).toBe(true);
+    });
+
+    it('applies fixed positioning to dropdown when open', async () => {
+        const wrapper = mount(AppSelect, {
+            props: {
+                options: defaultOptions,
+            },
+            attachTo: document.body,
+        });
+
+        await wrapper.find('button').trigger('click');
+        await nextTick();
+
+        const listbox = wrapper.find('ul[role="listbox"]');
+        expect(listbox.element.style.position).toBe('fixed');
+    });
+
+    it('sets dropdown width to match trigger button width', async () => {
+        const wrapper = mount(AppSelect, {
+            props: {
+                options: defaultOptions,
+            },
+            attachTo: document.body,
+        });
+
+        await wrapper.find('button').trigger('click');
+        await nextTick();
+
+        const listbox = wrapper.find('ul[role="listbox"]');
+        // In jsdom getBoundingClientRect returns 0s, so width should be '0px'
+        expect(listbox.element.style.width).toMatch(/^\d+px$/);
+    });
+
+    it('sets dropdown top position below trigger button', async () => {
+        const wrapper = mount(AppSelect, {
+            props: {
+                options: defaultOptions,
+            },
+            attachTo: document.body,
+        });
+
+        await wrapper.find('button').trigger('click');
+        await nextTick();
+
+        const listbox = wrapper.find('ul[role="listbox"]');
+        expect(listbox.element.style.top).toMatch(/^\d+px$/);
+    });
+
+    it('closes dropdown on window scroll', async () => {
+        const wrapper = mount(AppSelect, {
+            props: {
+                options: defaultOptions,
+            },
+            attachTo: document.body,
+        });
+
+        await wrapper.find('button').trigger('click');
+        await nextTick();
+        expect(wrapper.find('button').attributes('aria-expanded')).toBe('true');
+
+        window.dispatchEvent(new Event('scroll'));
+        await nextTick();
+
+        expect(wrapper.find('button').attributes('aria-expanded')).toBe(
+            'false',
+        );
+    });
+
+    it('closes dropdown on window resize', async () => {
+        const wrapper = mount(AppSelect, {
+            props: {
+                options: defaultOptions,
+            },
+            attachTo: document.body,
+        });
+
+        await wrapper.find('button').trigger('click');
+        await nextTick();
+        expect(wrapper.find('button').attributes('aria-expanded')).toBe('true');
+
+        window.dispatchEvent(new Event('resize'));
+        await nextTick();
+
+        expect(wrapper.find('button').attributes('aria-expanded')).toBe(
+            'false',
+        );
+    });
+
+    it('removes scroll and resize listeners after closing', async () => {
+        const removeSpy = vi.spyOn(window, 'removeEventListener');
+        const wrapper = mount(AppSelect, {
+            props: {
+                options: defaultOptions,
+            },
+            attachTo: document.body,
+        });
+
+        await wrapper.find('button').trigger('click');
+        await nextTick();
+
+        await wrapper.find('button').trigger('click');
+        await nextTick();
+
+        expect(removeSpy).toHaveBeenCalledWith(
+            'scroll',
+            expect.any(Function),
+            true,
+        );
+        expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function));
+
+        removeSpy.mockRestore();
+    });
+
+    it('removes scroll and resize listeners on unmount', async () => {
+        const removeSpy = vi.spyOn(window, 'removeEventListener');
+        const wrapper = mount(AppSelect, {
+            props: {
+                options: defaultOptions,
+            },
+            attachTo: document.body,
+        });
+
+        await wrapper.find('button').trigger('click');
+        await nextTick();
+
+        wrapper.unmount();
+
+        expect(removeSpy).toHaveBeenCalledWith(
+            'scroll',
+            expect.any(Function),
+            true,
+        );
+        expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function));
+
+        removeSpy.mockRestore();
     });
 });

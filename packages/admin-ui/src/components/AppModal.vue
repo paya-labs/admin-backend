@@ -151,7 +151,7 @@ onUnmounted(() => {
                         v-if="modelValue"
                         ref="modalRef"
                         :class="[
-                            'relative flex max-h-[90vh] flex-col overflow-hidden rounded-xl bg-surface shadow-[var(--shadow-lg)]',
+                            'relative flex max-h-[90vh] flex-col rounded-xl bg-surface shadow-[var(--shadow-lg)]',
 
                             // Size variants
                             size === 'sm' && 'max-w-sm w-full',

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useId, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
 import { vClickOutside } from '../directives/clickOutside';
 import type { SelectOption } from '../types';
 
@@ -32,6 +32,19 @@ const selectId = useId();
 const isOpen = ref(false);
 const highlightedIndex = ref(-1);
 const listboxRef = ref<HTMLUListElement | null>(null);
+const triggerRef = ref<HTMLButtonElement | null>(null);
+const dropdownPos = ref<Record<string, string>>({});
+
+const updateDropdownPosition = (): void => {
+    if (!triggerRef.value) return;
+    const rect = triggerRef.value.getBoundingClientRect();
+    dropdownPos.value = {
+        position: 'fixed',
+        top: `${rect.bottom + 4}px`,
+        left: `${rect.left}px`,
+        width: `${rect.width}px`,
+    };
+};
 
 const selectedOption = computed(() => {
     return props.options.find((opt) => opt.value === props.modelValue) || null;
@@ -56,6 +69,7 @@ const toggleDropdown = (): void => {
             (opt) => opt.value === props.modelValue,
         );
         highlightedIndex.value = selectedIndex >= 0 ? selectedIndex : 0;
+        updateDropdownPosition();
     }
 };
 
@@ -175,6 +189,27 @@ watch(highlightedIndex, (index) => {
         }
     }
 });
+
+const handleAncestorScroll = (): void => {
+    if (isOpen.value) {
+        closeDropdown();
+    }
+};
+
+watch(isOpen, (open) => {
+    if (open) {
+        window.addEventListener('scroll', handleAncestorScroll, true);
+        window.addEventListener('resize', closeDropdown);
+    } else {
+        window.removeEventListener('scroll', handleAncestorScroll, true);
+        window.removeEventListener('resize', closeDropdown);
+    }
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', handleAncestorScroll, true);
+    window.removeEventListener('resize', closeDropdown);
+});
 </script>
 
 <template>
@@ -191,6 +226,7 @@ watch(highlightedIndex, (index) => {
 
         <!-- Select button -->
         <button
+            ref="triggerRef"
             :id="selectId"
             type="button"
             :disabled="disabled"
@@ -254,7 +290,8 @@ watch(highlightedIndex, (index) => {
                 ref="listboxRef"
                 role="listbox"
                 :aria-labelledby="label ? `${selectId}-label` : undefined"
-                class="mt-1 max-h-60 py-1 absolute z-50 w-full overflow-auto rounded-md border border-border bg-surface shadow-lg"
+                :style="dropdownPos"
+                class="max-h-60 py-1 z-[var(--z-dropdown,70)] overflow-auto rounded-md border border-border bg-surface shadow-lg"
             >
                 <li
                     v-for="(option, index) in options"
