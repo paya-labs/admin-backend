@@ -215,4 +215,11 @@ describe('AppModal', () => {
             'true',
         );
     });
+
+    it('does not apply overflow-hidden on the modal panel', () => {
+        const wrapper = mountModal();
+
+        const dialog = wrapper.find('[role="dialog"]');
+        expect(dialog.classes()).not.toContain('overflow-hidden');
+    });
 });
