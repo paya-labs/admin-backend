@@ -436,10 +436,7 @@ describe('AppSelect', () => {
             expect.any(Function),
             true,
         );
-        expect(removeSpy).toHaveBeenCalledWith(
-            'resize',
-            expect.any(Function),
-        );
+        expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function));
 
         removeSpy.mockRestore();
     });
@@ -463,10 +460,7 @@ describe('AppSelect', () => {
             expect.any(Function),
             true,
         );
-        expect(removeSpy).toHaveBeenCalledWith(
-            'resize',
-            expect.any(Function),
-        );
+        expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function));
 
         removeSpy.mockRestore();
     });

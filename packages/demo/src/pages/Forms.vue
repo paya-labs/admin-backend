@@ -338,11 +338,7 @@ const handleAppFormSubmit = (data) => {
                     Open Form Modal
                 </AppButton>
 
-                <AppModal
-                    v-model="modalOpen"
-                    title="Add Contact"
-                    size="md"
-                >
+                <AppModal v-model="modalOpen" title="Add Contact" size="md">
                     <div class="space-y-4">
                         <AppInput
                             v-model="modalForm.firstName"
@@ -368,16 +364,10 @@ const handleAppFormSubmit = (data) => {
                         />
                     </div>
                     <template #footer>
-                        <AppButton
-                            variant="outline"
-                            @click="modalOpen = false"
-                        >
+                        <AppButton variant="outline" @click="modalOpen = false">
                             Cancel
                         </AppButton>
-                        <AppButton
-                            variant="primary"
-                            @click="modalOpen = false"
-                        >
+                        <AppButton variant="primary" @click="modalOpen = false">
                             Save Contact
                         </AppButton>
                     </template>
