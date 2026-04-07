@@ -59,6 +59,7 @@ import {
     formatDateTimeLocal,
     formatTime,
     isValidDate,
+    localDateTimeToUTC,
 } from './utils/dateFormat';
 
 // Directives
@@ -155,6 +156,7 @@ export {
     formatDateTimeLocal,
     formatTime,
     isValidDate,
+    localDateTimeToUTC,
 };
 
 // Re-export directives
