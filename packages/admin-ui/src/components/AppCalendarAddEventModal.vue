@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import type {
-    EventColor,
-    FrequencyOption,
-    ModalSize,
-    NewEventData,
-} from '../types';
+import type { FrequencyOption, ModalSize, NewEventData } from '../types';
 import AppButton from './AppButton.vue';
 import AppCalendarEventForm from './AppCalendarEventForm.vue';
 import AppModal from './AppModal.vue';
@@ -12,7 +7,6 @@ import AppModal from './AppModal.vue';
 interface Props {
     modelValue: boolean;
     eventData: NewEventData;
-    eventColors: EventColor[];
     frequencyOptions: FrequencyOption[];
     validationError?: string | null;
     size?: ModalSize;
@@ -55,7 +49,6 @@ const handleEventDataUpdate = (value: NewEventData) => {
             <AppCalendarEventForm
                 :model-value="eventData"
                 :frequency-options="frequencyOptions"
-                :event-colors="eventColors"
                 :validation-error="validationError"
                 @update:model-value="handleEventDataUpdate"
                 @submit="handleSave"

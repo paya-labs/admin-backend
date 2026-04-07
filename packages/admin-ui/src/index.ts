@@ -11,7 +11,7 @@ import AppCalendarEventModal from './components/AppCalendarEventModal.vue';
 import AppCalendarNavigation from './components/AppCalendarNavigation.vue';
 import AppCalendarViewTabs from './components/AppCalendarViewTabs.vue';
 import AppCard from './components/AppCard.vue';
-import AppColorPicker from './components/AppColorPicker.vue';
+import AppColorInput from './components/AppColorInput.vue';
 import AppDrawer from './components/AppDrawer.vue';
 import AppEditor from './components/AppEditor.vue';
 import AppForm from './components/AppForm.vue';
@@ -110,7 +110,7 @@ export {
     AppCalendarNavigation,
     AppCalendarViewTabs,
     AppCard,
-    AppColorPicker,
+    AppColorInput,
     AppDrawer,
     AppEditor,
     AppForm,
@@ -185,6 +185,7 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}Icon`, AppIcon);
         app.component(`${prefix}ToastContainer`, AppToastContainer);
         app.component(`${prefix}Calendar`, AppCalendar);
+        app.component(`${prefix}ColorInput`, AppColorInput);
         app.component(`${prefix}Drawer`, AppDrawer);
         app.component(`${prefix}Editor`, AppEditor);
         app.component('AdminLayout', AdminLayout);

@@ -17,11 +17,6 @@ export interface HeaderToolbarConfig {
 
 export type HeaderToolbar = HeaderToolbarConfig | false;
 
-export interface EventColor {
-    name: string;
-    value: string;
-}
-
 export type EventFrequency = 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly';
 
 export interface FrequencyOption {

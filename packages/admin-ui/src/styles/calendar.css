@@ -688,46 +688,6 @@
     margin-bottom: 0.5rem;
 }
 
-.app-calendar-color-picker {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.app-calendar-color-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.app-calendar-color-swatch {
-    width: 1.75rem;
-    height: 1.75rem;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all var(--transition-fast);
-    padding: 0;
-}
-
-.app-calendar-color-swatch:hover {
-    transform: scale(1.1);
-}
-
-.app-calendar-color-swatch--selected {
-    border-color: var(--color-text);
-    box-shadow: 0 0 0 2px var(--color-surface);
-}
-
-.app-calendar-color-swatch svg {
-    width: 1rem;
-    height: 1rem;
-    color: white;
-}
-
 /* "+N more" link */
 .app-calendar-wrapper .fc .fc-daygrid-more-link {
     font-size: 0.75rem;

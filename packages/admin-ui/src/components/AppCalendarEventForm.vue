@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useCalendarHelpers } from '../composables/useCalendarHelpers';
-import type { EventColor, FrequencyOption, NewEventData } from '../types';
-import AppColorPicker from './AppColorPicker.vue';
+import type { FrequencyOption, NewEventData } from '../types';
+import AppColorInput from './AppColorInput.vue';
 
 interface Props {
     modelValue: NewEventData;
     frequencyOptions: FrequencyOption[];
-    eventColors: EventColor[];
     validationError?: string | null;
 }
 
@@ -156,11 +155,7 @@ const handleSubmit = () => {
                 </select>
             </label>
 
-            <AppColorPicker
-                v-model="backgroundColor"
-                :colors="eventColors"
-                label="Color"
-            />
+            <AppColorInput v-model="backgroundColor" label="Color" />
         </div>
     </div>
 </template>
