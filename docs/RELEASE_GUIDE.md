@@ -11,9 +11,9 @@ Both packages publish to **GitHub Packages** (`https://npm.pkg.github.com`).
 - You are on the `main` branch with all changes merged
 - CI is green (lint, build, tests all pass)
 - You are authenticated with GitHub Packages:
-  ```bash
-  npm login --registry=https://npm.pkg.github.com
-  ```
+    ```bash
+    npm login --registry=https://npm.pkg.github.com
+    ```
 
 ---
 
@@ -39,11 +39,11 @@ Fix anything that fails before continuing.
 
 Follow [Semantic Versioning](https://semver.org/):
 
-| Change type               | Bump    | Example         |
-|---------------------------|---------|-----------------|
-| Bug fix (this release)    | patch   | `0.0.4` -> `0.0.5` |
-| New feature, no breaking  | minor   | `0.0.4` -> `0.1.0` |
-| Breaking API change       | major   | `0.0.4` -> `1.0.0` |
+| Change type              | Bump  | Example            |
+| ------------------------ | ----- | ------------------ |
+| Bug fix (this release)   | patch | `0.0.4` -> `0.0.5` |
+| New feature, no breaking | minor | `0.0.4` -> `0.1.0` |
+| Breaking API change      | major | `0.0.4` -> `1.0.0` |
 
 While the project is pre-1.0, minor bumps are fine for features and patch for fixes.
 
