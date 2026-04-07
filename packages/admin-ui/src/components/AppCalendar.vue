@@ -22,6 +22,7 @@ import { computed, onMounted, readonly, ref, useSlots, watch } from 'vue';
 import { useBreakpoint } from '../composables/useBreakpoint';
 import { useCalendarHelpers } from '../composables/useCalendarHelpers';
 import { useCalendarState } from '../composables/useCalendarState';
+import { useModuleConfig } from '../composables/useModuleConfig';
 import type {
     BusinessHoursInput,
     ButtonText,
@@ -88,6 +89,8 @@ interface Props {
     // Editing event overlay
     editingEvent?: CalendarEvent | null; // Temporary event to overlay during editing
     editingEventMode?: 'add' | 'replace'; // How to handle the editing event
+    // Timezone
+    timeZone?: string; // IANA timezone (e.g., 'Asia/Nicosia'). Defaults to module config timezone.
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -146,6 +149,8 @@ const props = withDefaults(defineProps<Props>(), {
     // Editing event overlay
     editingEvent: null,
     editingEventMode: 'add',
+    // Timezone
+    timeZone: undefined,
 });
 
 const emit = defineEmits<{
@@ -162,6 +167,7 @@ const emit = defineEmits<{
     panelClose: [];
 }>();
 
+const moduleConfig = useModuleConfig();
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
 const slots: ReturnType<typeof useSlots> = useSlots();
 
@@ -619,6 +625,7 @@ const mergedButtonText = computed(() => {
 
 const calendarOptions = computed<CalendarOptions>(() => ({
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
+    timeZone: props.timeZone ?? moduleConfig?.timezone ?? 'local',
     initialView: props.initialView,
     editable: props.editable,
     headerToolbar: props.headerToolbar,
@@ -733,7 +740,20 @@ defineExpose({
 
         api.gotoDate(date);
 
-        const totalMinutes = date.getHours() * 60 + date.getMinutes();
+        // Extract hours/minutes in the configured timezone
+        const tz = props.timeZone ?? moduleConfig?.timezone ?? 'UTC';
+        const parts = new Intl.DateTimeFormat('en-US', {
+            timeZone: tz,
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: false,
+        }).formatToParts(date);
+        const get = (type: string) =>
+            parseInt(parts.find((p) => p.type === type)?.value ?? '0');
+        let h = get('hour');
+        if (h === 24) h = 0;
+        const totalMinutes = h * 60 + get('minute');
+
         const scrollMinutes = Math.max(0, totalMinutes - paddingMinutes);
         const hours = Math.floor(scrollMinutes / 60);
         const mins = scrollMinutes % 60;
