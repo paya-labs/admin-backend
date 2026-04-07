@@ -66,7 +66,8 @@ packages/
 
 ## Publishing
 
-See [PUBLISHING.md](./PUBLISHING.md) for instructions on publishing to GitHub Packages and CI/CD setup.
+- [RELEASE_GUIDE.md](./docs/RELEASE_GUIDE.md) -- Step-by-step release workflow (version bump, tag, publish)
+- [REGISTRY_SETUP.md](./docs/REGISTRY_SETUP.md) -- Registry auth setup, CI/CD configuration, and troubleshooting
 
 ## License
 

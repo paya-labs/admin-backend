@@ -1,6 +1,6 @@
-# Publishing to GitHub Packages (Private Registry)
+# Registry Setup (GitHub Packages)
 
-This guide explains how to publish `@paya-labs/admin-ui` and `@paya-labs/create-admin-ui` as private packages to GitHub Packages.
+This guide covers authentication, CI/CD configuration, and troubleshooting for the `@paya-labs` private registry on GitHub Packages.
 
 ## Table of Contents
 
@@ -54,36 +54,7 @@ This should return your GitHub username.
 
 ## Publishing
 
-### Build First
-
-```bash
-npm run lib:build
-```
-
-### Publish Packages
-
-```bash
-# Publish the component library
-npm publish -w @paya-labs/admin-ui
-
-# Publish the CLI tool
-npm publish -w @paya-labs/create-admin-ui
-```
-
-### Version Bumping
-
-Before publishing a new version:
-
-```bash
-# Patch version (0.1.0 → 0.1.1)
-npm version patch -w @paya-labs/admin-ui
-
-# Minor version (0.1.0 → 0.2.0)
-npm version minor -w @paya-labs/admin-ui
-
-# Major version (0.1.0 → 1.0.0)
-npm version major -w @paya-labs/admin-ui
-```
+For the full step-by-step release workflow (version bumping, tagging, building, publishing, and creating GitHub releases), see [RELEASE_GUIDE.md](./RELEASE_GUIDE.md).
 
 ## Installing Private Packages
 
