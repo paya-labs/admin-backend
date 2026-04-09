@@ -6,44 +6,64 @@ updates:
       interval: 'weekly'
       day: 'monday'
       time: '08:00'
-      timezone: 'UTC'
+      timezone: 'Asia/Nicosia'
     allow:
       - dependency-type: 'all'
     groups:
-      vue-ecosystem:
+      all-dependencies:
         patterns:
-          - 'vue'
-          - 'vue-router'
-          - '@vitejs/plugin-vue'
-          - '@vue/*'
-        update-types:
-          - 'minor'
-          - 'patch'
-      vite-deps:
+          - '*'
+    commit-message:
+      prefix: 'deps'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/packages/admin-ui'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Asia/Nicosia'
+    allow:
+      - dependency-type: 'all'
+    groups:
+      all-dependencies:
         patterns:
-          - 'vite'
-          - 'rolldown-vite'
-          - 'vite-plugin-vue-devtools'
-        update-types:
-          - 'minor'
-          - 'patch'
-      tailwind-deps:
+          - '*'
+    commit-message:
+      prefix: 'deps'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/packages/create-admin-ui'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Asia/Nicosia'
+    allow:
+      - dependency-type: 'all'
+    groups:
+      all-dependencies:
         patterns:
-          - 'tailwindcss'
-          - '@tailwindcss/*'
-        update-types:
-          - 'minor'
-          - 'patch'
-      linting-deps:
+          - '*'
+    commit-message:
+      prefix: 'deps'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/packages/demo'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Asia/Nicosia'
+    allow:
+      - dependency-type: 'all'
+    groups:
+      all-dependencies:
         patterns:
-          - 'eslint'
-          - 'eslint-*'
-          - '@eslint/*'
-          - 'prettier'
-          - 'prettier-*'
-        update-types:
-          - 'minor'
-          - 'patch'
+          - '*'
     commit-message:
       prefix: 'deps'
       include: 'scope'
