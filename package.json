@@ -7,6 +7,7 @@
         "packages/*"
     ],
     "scripts": {
+        "prepare": "git config core.hooksPath .githooks",
         "lib:dev": "npm run dev -w @paya-labs/admin-ui",
         "lib:build": "npm run build -w @paya-labs/admin-ui",
         "lib:test": "npm run test -w @paya-labs/admin-ui",

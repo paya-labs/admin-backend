@@ -1,0 +1,46 @@
+#!/bin/sh
+
+echo "Running pre-push hooks..."
+
+# Run security audit
+echo "Running npm audit..."
+npm audit --audit-level=moderate
+if [ $? -ne 0 ]; then
+    echo "npm audit found vulnerabilities. Please fix before pushing."
+    exit 1
+fi
+
+# Run linters
+echo "Running lint..."
+npm run lint
+if [ $? -ne 0 ]; then
+    echo "Lint failed. Please fix the errors before pushing."
+    exit 1
+fi
+
+# Build core library
+echo "Building core library..."
+npm run lib:build
+if [ $? -ne 0 ]; then
+    echo "Library build failed. Please fix the errors before pushing."
+    exit 1
+fi
+
+# Build demo site
+echo "Building demo site..."
+npm run demo:build
+if [ $? -ne 0 ]; then
+    echo "Demo build failed. Please fix the errors before pushing."
+    exit 1
+fi
+
+# Run tests
+echo "Running tests..."
+npm run lib:test
+if [ $? -ne 0 ]; then
+    echo "Tests failed. Please fix the errors before pushing."
+    exit 1
+fi
+
+echo "Pre-push hooks passed!"
+exit 0
