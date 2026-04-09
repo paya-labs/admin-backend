@@ -15,6 +15,12 @@ const calendarRef = ref(null);
 // Panel state
 const panelOpen = ref(false);
 
+// Category dropdown state
+const selectedCategoryId = ref(null);
+
+// Category dropdown options
+const categoryOptions = [{value: 1, label: 'Category 1'}, {value: 2, label: 'Category 2'}, {value: 3, label: 'Category 3'}];
+
 // Computed properties that read from the calendar ref
 const currentTitle = computed(() => calendarRef.value?.currentTitle ?? '');
 
@@ -134,6 +140,43 @@ function onDateClick(info) {
                         label="Event Title"
                         placeholder="Enter event title"
                     />
+
+                  <div>
+                    <p
+                        class="text-muted mb-2 text-xs font-medium tracking-wide uppercase"
+                    >
+                      Category
+                    </p>
+                    <AppSelect
+                        v-model="selectedCategoryId"
+                        :options="categoryOptions"
+                        required
+                    />
+                    <!-- Category pill with color -->
+                    <div
+                        v-if="selectedCategory"
+                        class="mt-2 flex items-center gap-2"
+                    >
+                      <div
+                          class="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
+                          :style="{
+                            backgroundColor: selectedCategory.color + '20',
+                            color: selectedCategory.color,
+                        }"
+                      >
+                        <span
+                            class="h-2 w-2 rounded-full"
+                            :style="{ backgroundColor: selectedCategory.color }"
+                        ></span>
+                        {{ selectedCategory.name }}
+                      </div>
+                      <span class="text-muted text-xs">
+                        {{ selectedCategory.defaultDurationMinutes }} min
+                        default
+                    </span>
+                    </div>
+                  </div>
+
                     <div class="text-muted text-sm">
                         <p>
                             <span class="font-medium">Start:</span>
