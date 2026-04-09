@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
 import AppSelect from '../../src/components/AppSelect.vue';
 
@@ -9,12 +9,21 @@ const defaultOptions = [
     { value: 'opt3', label: 'Option 3' },
 ];
 
+// Helper to find the teleported listbox in document.body
+const findListbox = () => document.querySelector('ul[role="listbox"]');
+const findAllOptions = () => document.querySelectorAll('li[role="option"]');
+
 describe('AppSelect', () => {
+    afterEach(() => {
+        document.body.innerHTML = '';
+    });
+
     it('renders with required options prop', () => {
         const wrapper = mount(AppSelect, {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         expect(wrapper.find('button').exists()).toBe(true);
@@ -26,6 +35,7 @@ describe('AppSelect', () => {
                 options: defaultOptions,
                 placeholder: 'Choose one...',
             },
+            attachTo: document.body,
         });
 
         expect(wrapper.find('button').text()).toContain('Choose one...');
@@ -36,6 +46,7 @@ describe('AppSelect', () => {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         expect(wrapper.find('button').text()).toContain('Select an option');
@@ -47,6 +58,7 @@ describe('AppSelect', () => {
                 options: defaultOptions,
                 modelValue: 'opt2',
             },
+            attachTo: document.body,
         });
 
         expect(wrapper.find('button').text()).toContain('Option 2');
@@ -58,6 +70,7 @@ describe('AppSelect', () => {
                 options: defaultOptions,
                 label: 'Country',
             },
+            attachTo: document.body,
         });
 
         expect(wrapper.find('label').text()).toBe('Country');
@@ -70,6 +83,7 @@ describe('AppSelect', () => {
                 label: 'Country',
                 required: true,
             },
+            attachTo: document.body,
         });
 
         expect(wrapper.find('label').text()).toContain('Country');
@@ -81,6 +95,7 @@ describe('AppSelect', () => {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         expect(wrapper.find('button').attributes('aria-expanded')).toBe(
@@ -98,15 +113,17 @@ describe('AppSelect', () => {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('click');
+        await nextTick();
 
-        const options = wrapper.findAll('li[role="option"]');
+        const options = findAllOptions();
         expect(options.length).toBe(3);
-        expect(options[0].text()).toContain('Option 1');
-        expect(options[1].text()).toContain('Option 2');
-        expect(options[2].text()).toContain('Option 3');
+        expect(options[0].textContent).toContain('Option 1');
+        expect(options[1].textContent).toContain('Option 2');
+        expect(options[2].textContent).toContain('Option 3');
     });
 
     it('emits update:modelValue when option is selected', async () => {
@@ -117,10 +134,15 @@ describe('AppSelect', () => {
                 'onUpdate:modelValue': (e) =>
                     wrapper.setProps({ modelValue: e }),
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('click');
-        await wrapper.findAll('li[role="option"]')[1].trigger('click');
+        await nextTick();
+
+        const options = findAllOptions();
+        options[1].click();
+        await nextTick();
 
         expect(wrapper.emitted('update:modelValue')).toBeTruthy();
         expect(wrapper.emitted('update:modelValue')[0]).toEqual(['opt2']);
@@ -131,13 +153,15 @@ describe('AppSelect', () => {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('click');
         await nextTick();
         expect(wrapper.find('button').attributes('aria-expanded')).toBe('true');
 
-        await wrapper.findAll('li[role="option"]')[0].trigger('click');
+        const options = findAllOptions();
+        options[0].click();
         await nextTick();
         expect(wrapper.find('button').attributes('aria-expanded')).toBe(
             'false',
@@ -150,6 +174,7 @@ describe('AppSelect', () => {
                 options: defaultOptions,
                 error: 'Please select an option',
             },
+            attachTo: document.body,
         });
 
         const helperText = wrapper.find('p');
@@ -163,6 +188,7 @@ describe('AppSelect', () => {
                 options: defaultOptions,
                 hint: 'Select your preferred option',
             },
+            attachTo: document.body,
         });
 
         const helperText = wrapper.find('p');
@@ -176,6 +202,7 @@ describe('AppSelect', () => {
                 options: defaultOptions,
                 disabled: true,
             },
+            attachTo: document.body,
         });
 
         expect(wrapper.find('button').element.disabled).toBe(true);
@@ -187,11 +214,14 @@ describe('AppSelect', () => {
                 options: defaultOptions,
                 disabled: true,
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('click');
+        await nextTick();
 
-        expect(wrapper.find('ul[role="listbox"]').isVisible()).toBe(false);
+        const listbox = findListbox();
+        expect(listbox.style.display).toBe('none');
     });
 
     it('renders disabled options with correct styling', async () => {
@@ -205,12 +235,14 @@ describe('AppSelect', () => {
             props: {
                 options: optionsWithDisabled,
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('click');
+        await nextTick();
 
-        const options = wrapper.findAll('li[role="option"]');
-        expect(options[1].attributes('aria-disabled')).toBe('true');
+        const options = findAllOptions();
+        expect(options[1].getAttribute('aria-disabled')).toBe('true');
     });
 
     it('does not select disabled options', async () => {
@@ -225,10 +257,15 @@ describe('AppSelect', () => {
                 options: optionsWithDisabled,
                 modelValue: '',
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('click');
-        await wrapper.findAll('li[role="option"]')[1].trigger('click');
+        await nextTick();
+
+        const options = findAllOptions();
+        options[1].click();
+        await nextTick();
 
         expect(wrapper.emitted('update:modelValue')).toBeFalsy();
     });
@@ -239,12 +276,14 @@ describe('AppSelect', () => {
                 options: defaultOptions,
                 modelValue: 'opt2',
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('click');
+        await nextTick();
 
-        const selectedOption = wrapper.findAll('li[role="option"]')[1];
-        expect(selectedOption.find('svg').exists()).toBe(true);
+        const options = findAllOptions();
+        expect(options[1].querySelector('svg')).not.toBeNull();
     });
 
     it('sets aria-expanded correctly', async () => {
@@ -252,6 +291,7 @@ describe('AppSelect', () => {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         expect(wrapper.find('button').attributes('aria-expanded')).toBe(
@@ -268,6 +308,7 @@ describe('AppSelect', () => {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         expect(wrapper.find('button').attributes('aria-haspopup')).toBe(
@@ -280,11 +321,14 @@ describe('AppSelect', () => {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('keydown', { key: 'Enter' });
+        await nextTick();
 
-        expect(wrapper.find('ul[role="listbox"]').isVisible()).toBe(true);
+        const listbox = findListbox();
+        expect(listbox.style.display).not.toBe('none');
     });
 
     it('opens dropdown on Space key', async () => {
@@ -292,11 +336,14 @@ describe('AppSelect', () => {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('keydown', { key: ' ' });
+        await nextTick();
 
-        expect(wrapper.find('ul[role="listbox"]').isVisible()).toBe(true);
+        const listbox = findListbox();
+        expect(listbox.style.display).not.toBe('none');
     });
 
     it('closes dropdown on Escape key', async () => {
@@ -304,6 +351,7 @@ describe('AppSelect', () => {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('click');
@@ -323,11 +371,14 @@ describe('AppSelect', () => {
             props: {
                 options: defaultOptions,
             },
+            attachTo: document.body,
         });
 
         await wrapper.find('button').trigger('keydown', { key: 'ArrowDown' });
+        await nextTick();
 
-        expect(wrapper.find('ul[role="listbox"]').isVisible()).toBe(true);
+        const listbox = findListbox();
+        expect(listbox.style.display).not.toBe('none');
     });
 
     it('applies fixed positioning to dropdown when open', async () => {
@@ -341,8 +392,8 @@ describe('AppSelect', () => {
         await wrapper.find('button').trigger('click');
         await nextTick();
 
-        const listbox = wrapper.find('ul[role="listbox"]');
-        expect(listbox.element.style.position).toBe('fixed');
+        const listbox = findListbox();
+        expect(listbox.style.position).toBe('fixed');
     });
 
     it('sets dropdown width to match trigger button width', async () => {
@@ -356,9 +407,9 @@ describe('AppSelect', () => {
         await wrapper.find('button').trigger('click');
         await nextTick();
 
-        const listbox = wrapper.find('ul[role="listbox"]');
+        const listbox = findListbox();
         // In jsdom getBoundingClientRect returns 0s, so width should be '0px'
-        expect(listbox.element.style.width).toMatch(/^\d+px$/);
+        expect(listbox.style.width).toMatch(/^\d+px$/);
     });
 
     it('sets dropdown top position below trigger button', async () => {
@@ -372,8 +423,8 @@ describe('AppSelect', () => {
         await wrapper.find('button').trigger('click');
         await nextTick();
 
-        const listbox = wrapper.find('ul[role="listbox"]');
-        expect(listbox.element.style.top).toMatch(/^\d+px$/);
+        const listbox = findListbox();
+        expect(listbox.style.top).toMatch(/^\d+px$/);
     });
 
     it('closes dropdown on window scroll', async () => {

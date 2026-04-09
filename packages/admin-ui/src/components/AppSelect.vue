@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
-import { vClickOutside } from '../directives/clickOutside';
 import type { SelectOption } from '../types';
 
 interface Props {
@@ -33,6 +32,7 @@ const isOpen = ref(false);
 const highlightedIndex = ref(-1);
 const listboxRef = ref<HTMLUListElement | null>(null);
 const triggerRef = ref<HTMLButtonElement | null>(null);
+const wrapperRef = ref<HTMLDivElement | null>(null);
 const dropdownPos = ref<Record<string, string>>({});
 
 const updateDropdownPosition = (): void => {
@@ -196,24 +196,36 @@ const handleAncestorScroll = (): void => {
     }
 };
 
+const handleClickOutside = (event: MouseEvent): void => {
+    const target = event.target as Node;
+    const isInsideWrapper = wrapperRef.value?.contains(target);
+    const isInsideListbox = listboxRef.value?.contains(target);
+    if (!isInsideWrapper && !isInsideListbox) {
+        closeDropdown();
+    }
+};
+
 watch(isOpen, (open) => {
     if (open) {
         window.addEventListener('scroll', handleAncestorScroll, true);
         window.addEventListener('resize', closeDropdown);
+        document.addEventListener('click', handleClickOutside);
     } else {
         window.removeEventListener('scroll', handleAncestorScroll, true);
         window.removeEventListener('resize', closeDropdown);
+        document.removeEventListener('click', handleClickOutside);
     }
 });
 
 onBeforeUnmount(() => {
     window.removeEventListener('scroll', handleAncestorScroll, true);
     window.removeEventListener('resize', closeDropdown);
+    document.removeEventListener('click', handleClickOutside);
 });
 </script>
 
 <template>
-    <div v-click-outside="closeDropdown" class="relative w-full">
+    <div ref="wrapperRef" class="relative w-full">
         <!-- Label -->
         <label
             v-if="label"
@@ -276,80 +288,84 @@ onBeforeUnmount(() => {
             </svg>
         </button>
 
-        <!-- Dropdown list -->
-        <Transition
-            enter-active-class="transition duration-100 ease-out"
-            enter-from-class="opacity-0 scale-95"
-            enter-to-class="opacity-100 scale-100"
-            leave-active-class="transition duration-75 ease-in"
-            leave-from-class="opacity-100 scale-100"
-            leave-to-class="opacity-0 scale-95"
-        >
-            <ul
-                v-show="isOpen"
-                ref="listboxRef"
-                role="listbox"
-                :aria-labelledby="label ? `${selectId}-label` : undefined"
-                :style="dropdownPos"
-                class="max-h-60 py-1 z-[var(--z-dropdown,70)] overflow-auto rounded-md border border-border bg-surface shadow-lg"
+        <!-- Dropdown list (teleported to body to escape overflow/transform contexts) -->
+        <Teleport to="body">
+            <Transition
+                enter-active-class="transition duration-100 ease-out"
+                enter-from-class="opacity-0 scale-95"
+                enter-to-class="opacity-100 scale-100"
+                leave-active-class="transition duration-75 ease-in"
+                leave-from-class="opacity-100 scale-100"
+                leave-to-class="opacity-0 scale-95"
             >
-                <li
-                    v-for="(option, index) in options"
-                    :key="option.value"
-                    role="option"
-                    :aria-selected="option.value === modelValue"
-                    :aria-disabled="option.disabled"
-                    :class="[
-                        'px-3 py-2.5 text-sm relative cursor-pointer',
-                        'select-none',
-
-                        // Disabled state
-                        option.disabled &&
-                            'cursor-not-allowed text-muted opacity-50',
-
-                        // Selected state
-                        !option.disabled &&
-                            option.value === modelValue &&
-                            'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300',
-
-                        // Highlighted state (keyboard navigation)
-                        !option.disabled &&
-                            index === highlightedIndex &&
-                            option.value !== modelValue &&
-                            'bg-surface-hover text-text',
-
-                        // Default state
-                        !option.disabled &&
-                            option.value !== modelValue &&
-                            index !== highlightedIndex &&
-                            'text-text hover:bg-surface-hover',
-                    ]"
-                    @click="selectOption(option)"
-                    @mouseenter="!option.disabled && (highlightedIndex = index)"
+                <ul
+                    v-show="isOpen"
+                    ref="listboxRef"
+                    role="listbox"
+                    :aria-labelledby="label ? `${selectId}-label` : undefined"
+                    :style="dropdownPos"
+                    class="max-h-60 py-1 z-[var(--z-dropdown,9999)] overflow-auto rounded-md border border-border bg-surface shadow-lg"
                 >
-                    <span class="block truncate">{{ option.label }}</span>
+                    <li
+                        v-for="(option, index) in options"
+                        :key="option.value"
+                        role="option"
+                        :aria-selected="option.value === modelValue"
+                        :aria-disabled="option.disabled"
+                        :class="[
+                            'px-3 py-2.5 text-sm relative cursor-pointer',
+                            'select-none',
 
-                    <!-- Checkmark for selected option -->
-                    <span
-                        v-if="option.value === modelValue"
-                        class="inset-y-0 right-0 pr-3 absolute flex items-center text-primary-600 dark:text-primary-400"
+                            // Disabled state
+                            option.disabled &&
+                                'cursor-not-allowed text-muted opacity-50',
+
+                            // Selected state
+                            !option.disabled &&
+                                option.value === modelValue &&
+                                'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300',
+
+                            // Highlighted state (keyboard navigation)
+                            !option.disabled &&
+                                index === highlightedIndex &&
+                                option.value !== modelValue &&
+                                'bg-surface-hover text-text',
+
+                            // Default state
+                            !option.disabled &&
+                                option.value !== modelValue &&
+                                index !== highlightedIndex &&
+                                'text-text hover:bg-surface-hover',
+                        ]"
+                        @click="selectOption(option)"
+                        @mouseenter="
+                            !option.disabled && (highlightedIndex = index)
+                        "
                     >
-                        <svg
-                            class="h-5 w-5"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
+                        <span class="block truncate">{{ option.label }}</span>
+
+                        <!-- Checkmark for selected option -->
+                        <span
+                            v-if="option.value === modelValue"
+                            class="inset-y-0 right-0 pr-3 absolute flex items-center text-primary-600 dark:text-primary-400"
                         >
-                            <path
-                                fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
-                    </span>
-                </li>
-            </ul>
-        </Transition>
+                            <svg
+                                class="h-5 w-5"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </span>
+                    </li>
+                </ul>
+            </Transition>
+        </Teleport>
 
         <!-- Helper text -->
         <p
