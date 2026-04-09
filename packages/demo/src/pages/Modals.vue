@@ -59,17 +59,27 @@ const termsAccepted = ref(false);
 
 <template>
     <div class="space-y-8">
-        <h1 class="text-text text-2xl font-bold">Modal Patterns</h1>
+        <h1 class="text-text text-2xl font-bold">
+            Modal Patterns
+        </h1>
 
         <!-- Basic Modal -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Basic Modal</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Basic Modal
+            </h2>
             <div class="border-border bg-surface rounded-lg border p-6">
-                <AppButton variant="primary" @click="showBasicModal = true">
+                <AppButton
+                    variant="primary"
+                    @click="showBasicModal = true"
+                >
                     Open Basic Modal
                 </AppButton>
 
-                <AppModal v-model="showBasicModal" title="Basic Modal">
+                <AppModal
+                    v-model="showBasicModal"
+                    title="Basic Modal"
+                >
                     <p class="text-muted">
                         This is a basic modal with a title and content. You can
                         close it by clicking the X button, clicking the
@@ -81,9 +91,14 @@ const termsAccepted = ref(false);
 
         <!-- Confirmation Dialog -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Confirmation Dialog</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Confirmation Dialog
+            </h2>
             <div class="border-border bg-surface rounded-lg border p-6">
-                <AppButton variant="danger" @click="showConfirmModal = true">
+                <AppButton
+                    variant="danger"
+                    @click="showConfirmModal = true"
+                >
                     Delete Item
                 </AppButton>
 
@@ -117,14 +132,25 @@ const termsAccepted = ref(false);
 
         <!-- Form Modal -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Form Modal</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Form Modal
+            </h2>
             <div class="border-border bg-surface rounded-lg border p-6">
-                <AppButton variant="primary" @click="showFormModal = true">
+                <AppButton
+                    variant="primary"
+                    @click="showFormModal = true"
+                >
                     Add New User
                 </AppButton>
 
-                <AppModal v-model="showFormModal" title="Add New User">
-                    <AppForm v-model="formData" @submit="handleFormSubmit">
+                <AppModal
+                    v-model="showFormModal"
+                    title="Add New User"
+                >
+                    <AppForm
+                        v-model="formData"
+                        @submit="handleFormSubmit"
+                    >
                         <div class="space-y-4">
                             <AppInput
                                 v-model="formData.name"
@@ -152,7 +178,10 @@ const termsAccepted = ref(false);
                         >
                             Cancel
                         </AppButton>
-                        <AppButton variant="primary" @click="handleFormSubmit">
+                        <AppButton
+                            variant="primary"
+                            @click="handleFormSubmit"
+                        >
                             Save User
                         </AppButton>
                     </template>
@@ -162,22 +191,39 @@ const termsAccepted = ref(false);
 
         <!-- Size Variants -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Size Variants</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Size Variants
+            </h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="flex flex-wrap gap-3">
-                    <AppButton variant="outline" @click="showSmallModal = true">
+                    <AppButton
+                        variant="outline"
+                        @click="showSmallModal = true"
+                    >
                         Small (sm)
                     </AppButton>
-                    <AppButton variant="outline" @click="showBasicModal = true">
+                    <AppButton
+                        variant="outline"
+                        @click="showBasicModal = true"
+                    >
                         Medium (md) - Default
                     </AppButton>
-                    <AppButton variant="outline" @click="showLargeModal = true">
+                    <AppButton
+                        variant="outline"
+                        @click="showLargeModal = true"
+                    >
                         Large (lg)
                     </AppButton>
-                    <AppButton variant="outline" @click="showXLModal = true">
+                    <AppButton
+                        variant="outline"
+                        @click="showXLModal = true"
+                    >
                         Extra Large (xl)
                     </AppButton>
-                    <AppButton variant="outline" @click="showFullModal = true">
+                    <AppButton
+                        variant="outline"
+                        @click="showFullModal = true"
+                    >
                         Full Screen
                     </AppButton>
                 </div>
@@ -238,7 +284,9 @@ const termsAccepted = ref(false);
 
         <!-- Scrollable Content -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Scrollable Content</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Scrollable Content
+            </h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <AppButton
                     variant="outline"
@@ -309,7 +357,9 @@ const termsAccepted = ref(false);
 
         <!-- Non-Closable Modal -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Non-Closable Modal</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Non-Closable Modal
+            </h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <p class="text-muted mb-4 text-sm">
                     This modal can only be closed by accepting the terms.

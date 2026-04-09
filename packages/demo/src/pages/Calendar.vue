@@ -209,7 +209,9 @@ function onDeleteEvent(payload) {
         <!-- Section: Weekdays Only -->
         <section class="space-y-4">
             <div>
-                <h2 class="text-text text-lg font-semibold">Weekdays Only</h2>
+                <h2 class="text-text text-lg font-semibold">
+                    Weekdays Only
+                </h2>
                 <p class="text-muted text-sm">
                     Calendar with weekends hidden using :weekends="false".
                 </p>
@@ -346,11 +348,17 @@ function onDeleteEvent(payload) {
                     controls.
                 </p>
             </div>
-            <AppCalendar :events="events" height="500px">
+            <AppCalendar
+                :events="events"
+                height="500px"
+            >
                 <template
                     #event-modal="{ event, formatTime, close, deleteEvent }"
                 >
-                    <div v-if="event" class="space-y-4">
+                    <div
+                        v-if="event"
+                        class="space-y-4"
+                    >
                         <div class="flex items-center gap-3">
                             <div
                                 class="h-4 w-4 rounded-full"
@@ -373,9 +381,7 @@ function onDeleteEvent(payload) {
                                 v-if="event?.end && !event?.allDay"
                                 class="text-muted text-sm"
                             >
-                                <span class="text-text font-medium"
-                                    >Until:</span
-                                >
+                                <span class="text-text font-medium">Until:</span>
                                 {{ formatTime(event?.end, false) }}
                             </p>
                         </div>
@@ -451,7 +457,10 @@ function onDeleteEvent(payload) {
                     styling.
                 </p>
             </div>
-            <AppCalendar :events="events" height="500px">
+            <AppCalendar
+                :events="events"
+                height="500px"
+            >
                 <template #add-event-modal="{ event, close, save }">
                     <div class="space-y-4">
                         <AppInput
@@ -467,10 +476,16 @@ function onDeleteEvent(payload) {
                         <div
                             class="border-border flex justify-end gap-2 border-t pt-4"
                         >
-                            <AppButton variant="outline" @click="close">
+                            <AppButton
+                                variant="outline"
+                                @click="close"
+                            >
                                 Cancel
                             </AppButton>
-                            <AppButton variant="primary" @click="save">
+                            <AppButton
+                                variant="primary"
+                                @click="save"
+                            >
                                 Create Event
                             </AppButton>
                         </div>
@@ -514,7 +529,9 @@ function onDeleteEvent(payload) {
         <!-- Section: Event Deletion -->
         <section class="space-y-4">
             <div>
-                <h2 class="text-text text-lg font-semibold">Event Deletion</h2>
+                <h2 class="text-text text-lg font-semibold">
+                    Event Deletion
+                </h2>
                 <p class="text-muted text-sm">
                     Click on an event to see the delete button. The
                     @delete-event emit is fired when deleting.

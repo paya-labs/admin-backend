@@ -114,12 +114,19 @@ const stripedRows = [
 
 <template>
     <div class="space-y-8">
-        <h1 class="text-text text-2xl font-bold">Table Patterns</h1>
+        <h1 class="text-text text-2xl font-bold">
+            Table Patterns
+        </h1>
 
         <!-- Basic Table -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Basic Table</h2>
-            <AppTable :columns="basicColumns" :rows="basicRows" />
+            <h2 class="text-text text-lg font-semibold">
+                Basic Table
+            </h2>
+            <AppTable
+                :columns="basicColumns"
+                :rows="basicRows"
+            />
         </section>
 
         <!-- Table with Actions -->
@@ -139,7 +146,10 @@ const stripedRows = [
             <h2 class="text-text text-lg font-semibold">
                 Table with Custom Cell Slots
             </h2>
-            <AppTable :columns="statusColumns" :rows="statusRows">
+            <AppTable
+                :columns="statusColumns"
+                :rows="statusRows"
+            >
                 <template #cell-status="{ value }">
                     <AppBadge :variant="getStatusVariant(value)">
                         {{ value }}
@@ -150,7 +160,9 @@ const stripedRows = [
 
         <!-- Loading State -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Loading State</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Loading State
+            </h2>
             <div class="flex items-center gap-4">
                 <AppButton
                     variant="outline"
@@ -172,7 +184,9 @@ const stripedRows = [
 
         <!-- Empty State -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Empty State</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Empty State
+            </h2>
             <AppTable
                 :columns="emptyColumns"
                 :rows="[]"
@@ -182,12 +196,23 @@ const stripedRows = [
 
         <!-- Custom Empty Slot -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Custom Empty Slot</h2>
-            <AppTable :columns="emptyColumns" :rows="[]">
+            <h2 class="text-text text-lg font-semibold">
+                Custom Empty Slot
+            </h2>
+            <AppTable
+                :columns="emptyColumns"
+                :rows="[]"
+            >
                 <template #empty>
                     <div class="py-4 text-center">
-                        <p class="text-muted">No users found</p>
-                        <AppButton variant="primary" size="sm" class="mt-3">
+                        <p class="text-muted">
+                            No users found
+                        </p>
+                        <AppButton
+                            variant="primary"
+                            size="sm"
+                            class="mt-3"
+                        >
                             Add First User
                         </AppButton>
                     </div>
@@ -197,8 +222,14 @@ const stripedRows = [
 
         <!-- Striped Table -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Striped Table</h2>
-            <AppTable :columns="basicColumns" :rows="stripedRows" striped />
+            <h2 class="text-text text-lg font-semibold">
+                Striped Table
+            </h2>
+            <AppTable
+                :columns="basicColumns"
+                :rows="stripedRows"
+                striped
+            />
         </section>
     </div>
 </template>

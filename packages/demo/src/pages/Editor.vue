@@ -17,11 +17,15 @@ const markdownContent = ref('');
 
 <template>
     <div class="space-y-8">
-        <h1 class="text-text text-2xl font-bold">Rich Text Editor</h1>
+        <h1 class="text-text text-2xl font-bold">
+            Rich Text Editor
+        </h1>
 
         <!-- Basic Editor -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Basic Editor</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Basic Editor
+            </h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="max-w-2xl">
                     <AppEditor
@@ -52,7 +56,9 @@ const markdownContent = ref('');
 
         <!-- With Validation Error -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Validation Error</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Validation Error
+            </h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="max-w-2xl">
                     <AppEditor
@@ -82,7 +88,9 @@ const markdownContent = ref('');
 
         <!-- Markdown Mode -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Markdown Mode</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Markdown Mode
+            </h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="max-w-2xl space-y-4">
                     <p class="text-muted text-sm">
@@ -101,7 +109,9 @@ const markdownContent = ref('');
 
         <!-- Disabled State -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">Disabled</h2>
+            <h2 class="text-text text-lg font-semibold">
+                Disabled
+            </h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="max-w-2xl">
                     <AppEditor
@@ -135,8 +145,7 @@ const markdownContent = ref('');
                         </p>
                         <pre
                             class="text-text-secondary text-xs break-all whitespace-pre-wrap"
-                            >{{ liveContent || '(empty)' }}</pre
-                        >
+                        >{{ liveContent || '(empty)' }}</pre>
                     </div>
                 </div>
             </div>

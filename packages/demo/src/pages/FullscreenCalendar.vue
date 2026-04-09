@@ -195,10 +195,15 @@ function onDateClick(info) {
                         </p>
                     </div>
                     <div class="flex gap-2 pt-4">
-                        <AppButton variant="outline" @click="close">
+                        <AppButton
+                            variant="outline"
+                            @click="close"
+                        >
                             Cancel
                         </AppButton>
-                        <AppButton variant="primary"> Save Event </AppButton>
+                        <AppButton variant="primary">
+                            Save Event
+                        </AppButton>
                     </div>
                 </template>
 
@@ -216,19 +221,30 @@ function onDateClick(info) {
                             <span class="font-medium">Start:</span>
                             {{ event.start?.toLocaleString() }}
                         </p>
-                        <p v-if="event.end" class="text-muted text-sm">
+                        <p
+                            v-if="event.end"
+                            class="text-muted text-sm"
+                        >
                             <span class="font-medium">End:</span>
                             {{ event.end?.toLocaleString() }}
                         </p>
-                        <p v-if="event.allDay" class="text-muted text-sm">
+                        <p
+                            v-if="event.allDay"
+                            class="text-muted text-sm"
+                        >
                             All-day event
                         </p>
                     </div>
                     <div class="flex gap-2 pt-4">
-                        <AppButton variant="outline" @click="close">
+                        <AppButton
+                            variant="outline"
+                            @click="close"
+                        >
                             Close
                         </AppButton>
-                        <AppButton variant="danger"> Delete </AppButton>
+                        <AppButton variant="danger">
+                            Delete
+                        </AppButton>
                     </div>
                 </template>
             </div>
