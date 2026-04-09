@@ -1,69 +1,69 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "08:00"
-      timezone: "Asia/Nicosia"
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Asia/Nicosia'
     allow:
-      - dependency-type: "all"
+      - dependency-type: 'all'
     groups:
       all-dependencies:
         patterns:
-          - "*"
+          - '*'
     commit-message:
-      prefix: "deps"
-      include: "scope"
+      prefix: 'deps'
+      include: 'scope'
 
-  - package-ecosystem: "npm"
-    directory: "/packages/admin-ui"
+  - package-ecosystem: 'npm'
+    directory: '/packages/admin-ui'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "08:00"
-      timezone: "Asia/Nicosia"
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Asia/Nicosia'
     allow:
-      - dependency-type: "all"
+      - dependency-type: 'all'
     groups:
       all-dependencies:
         patterns:
-          - "*"
+          - '*'
     commit-message:
-      prefix: "deps"
-      include: "scope"
+      prefix: 'deps'
+      include: 'scope'
 
-  - package-ecosystem: "npm"
-    directory: "/packages/create-admin-ui"
+  - package-ecosystem: 'npm'
+    directory: '/packages/create-admin-ui'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "08:00"
-      timezone: "Asia/Nicosia"
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Asia/Nicosia'
     allow:
-      - dependency-type: "all"
+      - dependency-type: 'all'
     groups:
       all-dependencies:
         patterns:
-          - "*"
+          - '*'
     commit-message:
-      prefix: "deps"
-      include: "scope"
+      prefix: 'deps'
+      include: 'scope'
 
-  - package-ecosystem: "npm"
-    directory: "/packages/demo"
+  - package-ecosystem: 'npm'
+    directory: '/packages/demo'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "08:00"
-      timezone: "Asia/Nicosia"
+      interval: 'weekly'
+      day: 'monday'
+      time: '08:00'
+      timezone: 'Asia/Nicosia'
     allow:
-      - dependency-type: "all"
+      - dependency-type: 'all'
     groups:
       all-dependencies:
         patterns:
-          - "*"
+          - '*'
     commit-message:
-      prefix: "deps"
-      include: "scope"
+      prefix: 'deps'
+      include: 'scope'
