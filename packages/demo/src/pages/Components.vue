@@ -36,79 +36,41 @@ const tableData = [
 
 <template>
     <div class="space-y-8">
-        <h1 class="text-text text-2xl font-bold">
-            Component Showcase
-        </h1>
+        <h1 class="text-text text-2xl font-bold">Component Showcase</h1>
 
         <!-- Buttons Section -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Buttons
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Buttons</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="flex flex-wrap gap-4">
-                    <AppButton variant="primary">
-                        Primary
-                    </AppButton>
-                    <AppButton variant="secondary">
-                        Secondary
-                    </AppButton>
-                    <AppButton variant="outline">
-                        Outline
-                    </AppButton>
-                    <AppButton variant="ghost">
-                        Ghost
-                    </AppButton>
-                    <AppButton variant="danger">
-                        Danger
-                    </AppButton>
-                    <AppButton
-                        variant="primary"
-                        disabled
-                    >
-                        Disabled
-                    </AppButton>
-                    <AppButton
-                        variant="primary"
-                        loading
-                    >
-                        Loading
-                    </AppButton>
+                    <AppButton variant="primary"> Primary </AppButton>
+                    <AppButton variant="secondary"> Secondary </AppButton>
+                    <AppButton variant="outline"> Outline </AppButton>
+                    <AppButton variant="ghost"> Ghost </AppButton>
+                    <AppButton variant="danger"> Danger </AppButton>
+                    <AppButton variant="primary" disabled> Disabled </AppButton>
+                    <AppButton variant="primary" loading> Loading </AppButton>
                 </div>
             </div>
         </section>
 
         <!-- Badges Section -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Badges
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Badges</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="flex flex-wrap gap-4">
-                    <AppBadge variant="primary">
-                        Primary
-                    </AppBadge>
-                    <AppBadge variant="secondary">
-                        Secondary
-                    </AppBadge>
-                    <AppBadge variant="success">
-                        Success
-                    </AppBadge>
-                    <AppBadge variant="warning">
-                        Warning
-                    </AppBadge>
-                    <AppBadge variant="danger">
-                        Danger
-                    </AppBadge>
+                    <AppBadge variant="primary"> Primary </AppBadge>
+                    <AppBadge variant="secondary"> Secondary </AppBadge>
+                    <AppBadge variant="success"> Success </AppBadge>
+                    <AppBadge variant="warning"> Warning </AppBadge>
+                    <AppBadge variant="danger"> Danger </AppBadge>
                 </div>
             </div>
         </section>
 
         <!-- Inputs Section -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Form Inputs
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Form Inputs</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="grid max-w-md gap-4">
                     <AppInput
@@ -133,9 +95,7 @@ const tableData = [
 
         <!-- Cards Section -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Cards
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Cards</h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <AppCard
                     title="Users"
@@ -149,40 +109,24 @@ const tableData = [
                     trend="-5%"
                     trend-direction="down"
                 />
-                <AppCard
-                    title="Orders"
-                    value="89"
-                />
-                <AppCard
-                    title="Visitors"
-                    value="12,345"
-                />
+                <AppCard title="Orders" value="89" />
+                <AppCard title="Visitors" value="12,345" />
             </div>
         </section>
 
         <!-- Table Section -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Table
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Table</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
-                <AppTable
-                    :columns="tableColumns"
-                    :data="tableData"
-                />
+                <AppTable :columns="tableColumns" :data="tableData" />
             </div>
         </section>
 
         <!-- Modal Section -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Modal
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Modal</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
-                <AppButton
-                    variant="primary"
-                    @click="showModal = true"
-                >
+                <AppButton variant="primary" @click="showModal = true">
                     Open Modal
                 </AppButton>
 

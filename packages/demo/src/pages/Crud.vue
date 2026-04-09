@@ -115,9 +115,7 @@ const tableActions = [
 <template>
     <div class="space-y-8">
         <div>
-            <h1 class="text-text text-2xl font-bold">
-                CRUD Operations
-            </h1>
+            <h1 class="text-text text-2xl font-bold">CRUD Operations</h1>
             <p class="text-muted mt-1">
                 The
                 <code class="bg-surface-hover rounded px-1">useCrud</code>
@@ -147,10 +145,7 @@ const tableActions = [
                 >
                     {{ posts.deleting.value ? 'Deleting...' : 'Delete idle' }}
                 </AppBadge>
-                <AppBadge
-                    v-if="posts.error.value"
-                    variant="danger"
-                >
+                <AppBadge v-if="posts.error.value" variant="danger">
                     Error: {{ posts.error.value.message }}
                 </AppBadge>
             </div>
@@ -159,13 +154,8 @@ const tableActions = [
         <!-- Posts Table -->
         <section class="space-y-4">
             <div class="flex items-center justify-between">
-                <h2 class="text-text text-lg font-semibold">
-                    Posts
-                </h2>
-                <AppButton
-                    variant="primary"
-                    @click="openCreate"
-                >
+                <h2 class="text-text text-lg font-semibold">Posts</h2>
+                <AppButton variant="primary" @click="openCreate">
                     + New Post
                 </AppButton>
             </div>
@@ -199,9 +189,7 @@ const tableActions = [
 
         <!-- Code Example -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Usage
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Usage</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <pre
                     class="bg-surface-hover text-muted overflow-x-auto rounded-md p-4 text-xs"
@@ -231,103 +219,135 @@ posts.pagination       // Pagination composable</code></pre>
 
         <!-- API Reference -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                API Reference
-            </h2>
+            <h2 class="text-text text-lg font-semibold">API Reference</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-6">
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            Options
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">Options</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">baseUrl</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >baseUrl</code
+                                >
                                 - API base URL
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">resource</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >resource</code
+                                >
                                 - Resource endpoint name
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">pageSize</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >pageSize</code
+                                >
                                 - Items per page (default: 10)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">autoRefresh</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >autoRefresh</code
+                                >
                                 - Refresh list after mutations (default: true)
                             </p>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            State
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">State</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">items</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >items</code
+                                >
                                 - Current page items
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">current</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >current</code
+                                >
                                 - Selected item from fetchOne
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">loading</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >loading</code
+                                >
                                 - Any operation loading
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">listLoading</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >listLoading</code
+                                >
                                 /
-                                <code class="bg-surface-hover rounded px-1">itemLoading</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >itemLoading</code
+                                >
                                 /
-                                <code class="bg-surface-hover rounded px-1">saving</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >saving</code
+                                >
                                 /
-                                <code class="bg-surface-hover rounded px-1">deleting</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >deleting</code
+                                >
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">error</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >error</code
+                                >
                                 - Last error
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">pagination</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >pagination</code
+                                >
                                 - Full usePagination instance
                             </p>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            Methods
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">Methods</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">fetchList(params?)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >fetchList(params?)</code
+                                >
                                 - Fetch paginated list
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">refresh()</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >refresh()</code
+                                >
                                 - Refresh with last params
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">fetchOne(id)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >fetchOne(id)</code
+                                >
                                 - Fetch single item
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">create(data)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >create(data)</code
+                                >
                                 - POST new item
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">update(id, data)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >update(id, data)</code
+                                >
                                 - PUT existing item
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">remove(id)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >remove(id)</code
+                                >
                                 - DELETE item
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">reset()</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >reset()</code
+                                >
                                 - Reset all state
                             </p>
                         </div>
@@ -337,10 +357,7 @@ posts.pagination       // Pagination composable</code></pre>
         </section>
 
         <!-- Create Modal -->
-        <AppModal
-            v-model="showCreateModal"
-            title="Create Post"
-        >
+        <AppModal v-model="showCreateModal" title="Create Post">
             <div class="space-y-4">
                 <AppInput
                     v-model="formData.title"
@@ -355,10 +372,7 @@ posts.pagination       // Pagination composable</code></pre>
                 />
             </div>
             <template #footer>
-                <AppButton
-                    variant="outline"
-                    @click="showCreateModal = false"
-                >
+                <AppButton variant="outline" @click="showCreateModal = false">
                     Cancel
                 </AppButton>
                 <AppButton
@@ -372,10 +386,7 @@ posts.pagination       // Pagination composable</code></pre>
         </AppModal>
 
         <!-- Edit Modal -->
-        <AppModal
-            v-model="showEditModal"
-            title="Edit Post"
-        >
+        <AppModal v-model="showEditModal" title="Edit Post">
             <div class="space-y-4">
                 <AppInput
                     v-model="formData.title"
@@ -390,10 +401,7 @@ posts.pagination       // Pagination composable</code></pre>
                 />
             </div>
             <template #footer>
-                <AppButton
-                    variant="outline"
-                    @click="showEditModal = false"
-                >
+                <AppButton variant="outline" @click="showEditModal = false">
                     Cancel
                 </AppButton>
                 <AppButton
@@ -407,20 +415,13 @@ posts.pagination       // Pagination composable</code></pre>
         </AppModal>
 
         <!-- Delete Confirmation Modal -->
-        <AppModal
-            v-model="showDeleteModal"
-            title="Delete Post"
-            size="sm"
-        >
+        <AppModal v-model="showDeleteModal" title="Delete Post" size="sm">
             <p class="text-muted">
                 Are you sure you want to delete this post? This action cannot be
                 undone.
             </p>
             <template #footer>
-                <AppButton
-                    variant="outline"
-                    @click="showDeleteModal = false"
-                >
+                <AppButton variant="outline" @click="showDeleteModal = false">
                     Cancel
                 </AppButton>
                 <AppButton

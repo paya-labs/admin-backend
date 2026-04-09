@@ -7,7 +7,7 @@ export default [
         ignores: ['dist/**', 'node_modules/**'],
     },
     js.configs.recommended,
-    ...pluginVue.configs['flat/recommended'],
+    ...pluginVue.configs['flat/essential'],
     {
         languageOptions: {
             globals: {
@@ -17,17 +17,6 @@ export default [
         },
         rules: {
             'vue/multi-word-component-names': 'off',
-            'vue/html-indent': ['error', 4],
-            'vue/html-self-closing': [
-                'error',
-                {
-                    html: {
-                        void: 'always',
-                        normal: 'never',
-                        component: 'always',
-                    },
-                },
-            ],
         },
     },
 ];

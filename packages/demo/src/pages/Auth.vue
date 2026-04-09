@@ -67,9 +67,7 @@ const roleChecks = ['admin', 'editor', 'viewer'];
 <template>
     <div class="space-y-8">
         <div>
-            <h1 class="text-text text-2xl font-bold">
-                Authentication
-            </h1>
+            <h1 class="text-text text-2xl font-bold">Authentication</h1>
             <p class="text-muted mt-1">
                 The
                 <code class="bg-surface-hover rounded px-1">useAuth</code>
@@ -79,9 +77,7 @@ const roleChecks = ['admin', 'editor', 'viewer'];
 
         <!-- Auth State -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Current State
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Current State</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="flex flex-wrap items-center gap-3">
                     <AppBadge
@@ -95,27 +91,16 @@ const roleChecks = ['admin', 'editor', 'viewer'];
                                 : 'Not authenticated'
                         }}
                     </AppBadge>
-                    <AppBadge
-                        v-if="auth.loading.value"
-                        variant="warning"
-                    >
+                    <AppBadge v-if="auth.loading.value" variant="warning">
                         Loading...
                     </AppBadge>
-                    <AppBadge
-                        v-if="auth.error.value"
-                        variant="danger"
-                    >
+                    <AppBadge v-if="auth.error.value" variant="danger">
                         {{ auth.error.value.message }}
                     </AppBadge>
                 </div>
 
-                <div
-                    v-if="auth.user.value"
-                    class="mt-4"
-                >
-                    <p class="text-text text-sm font-medium">
-                        Current User:
-                    </p>
+                <div v-if="auth.user.value" class="mt-4">
+                    <p class="text-text text-sm font-medium">Current User:</p>
                     <pre
                         class="bg-surface-hover text-muted mt-2 overflow-auto rounded-md p-4 text-xs"
                     ><code>{{ JSON.stringify(auth.user.value, null, 2) }}</code></pre>
@@ -124,13 +109,8 @@ const roleChecks = ['admin', 'editor', 'viewer'];
         </section>
 
         <!-- Login Form -->
-        <section
-            v-if="!auth.isAuthenticated.value"
-            class="space-y-4"
-        >
-            <h2 class="text-text text-lg font-semibold">
-                Login
-            </h2>
+        <section v-if="!auth.isAuthenticated.value" class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Login</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="max-w-sm space-y-4">
                     <AppInput
@@ -161,13 +141,8 @@ const roleChecks = ['admin', 'editor', 'viewer'];
         </section>
 
         <!-- Logged In Actions -->
-        <section
-            v-if="auth.isAuthenticated.value"
-            class="space-y-4"
-        >
-            <h2 class="text-text text-lg font-semibold">
-                Session
-            </h2>
+        <section v-if="auth.isAuthenticated.value" class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Session</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="flex items-center gap-4">
                     <div>
@@ -178,10 +153,7 @@ const roleChecks = ['admin', 'editor', 'viewer'];
                             {{ auth.user.value.email }}
                         </p>
                     </div>
-                    <AppButton
-                        variant="outline"
-                        @click="handleLogout"
-                    >
+                    <AppButton variant="outline" @click="handleLogout">
                         Sign Out
                     </AppButton>
                 </div>
@@ -189,16 +161,13 @@ const roleChecks = ['admin', 'editor', 'viewer'];
         </section>
 
         <!-- Role Checks -->
-        <section
-            v-if="auth.isAuthenticated.value"
-            class="space-y-4"
-        >
-            <h2 class="text-text text-lg font-semibold">
-                Role Checks
-            </h2>
+        <section v-if="auth.isAuthenticated.value" class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Role Checks</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <p class="text-muted mb-4 text-sm">
-                    <code class="bg-surface-hover rounded px-1">auth.hasRole('admin')</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >auth.hasRole('admin')</code
+                    >
                 </p>
                 <div class="flex flex-wrap gap-2">
                     <div
@@ -222,16 +191,13 @@ const roleChecks = ['admin', 'editor', 'viewer'];
         </section>
 
         <!-- Permission Checks -->
-        <section
-            v-if="auth.isAuthenticated.value"
-            class="space-y-4"
-        >
-            <h2 class="text-text text-lg font-semibold">
-                Permission Checks
-            </h2>
+        <section v-if="auth.isAuthenticated.value" class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Permission Checks</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <p class="text-muted mb-4 text-sm">
-                    <code class="bg-surface-hover rounded px-1">auth.hasPermission('users.create')</code>
+                    <code class="bg-surface-hover rounded px-1"
+                        >auth.hasPermission('users.create')</code
+                    >
                 </p>
                 <div class="flex flex-wrap gap-2">
                     <div
@@ -258,9 +224,7 @@ const roleChecks = ['admin', 'editor', 'viewer'];
 
         <!-- Usage Code -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Usage
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Usage</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <pre
                     class="bg-surface-hover text-muted overflow-x-auto rounded-md p-4 text-xs"
@@ -298,100 +262,128 @@ auth.hasPermission('users.create')</code></pre>
 
         <!-- API Reference -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                API Reference
-            </h2>
+            <h2 class="text-text text-lg font-semibold">API Reference</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-6">
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            Options
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">Options</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">baseUrl</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >baseUrl</code
+                                >
                                 - API base URL
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">loginEndpoint</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >loginEndpoint</code
+                                >
                                 - Login endpoint (default: /auth/login)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">logoutEndpoint</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >logoutEndpoint</code
+                                >
                                 - Logout endpoint (default: /auth/logout)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">userEndpoint</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >userEndpoint</code
+                                >
                                 - Get user endpoint (default: /auth/user)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">csrfEndpoint</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >csrfEndpoint</code
+                                >
                                 - CSRF cookie endpoint (optional)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">onLogin</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >onLogin</code
+                                >
                                 /
-                                <code class="bg-surface-hover rounded px-1">onLogout</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >onLogout</code
+                                >
                                 - Callbacks
                             </p>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            State
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">State</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">user</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >user</code
+                                >
                                 - Current user (Ref)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">isAuthenticated</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >isAuthenticated</code
+                                >
                                 - Auth status (ComputedRef)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">loading</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >loading</code
+                                >
                                 - Operation loading
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">initializing</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >initializing</code
+                                >
                                 - Initial auth check
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">error</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >error</code
+                                >
                                 - Last error
                             </p>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            Methods
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">Methods</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">login(credentials)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >login(credentials)</code
+                                >
                                 - Login with email/password
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">logout()</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >logout()</code
+                                >
                                 - End session
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">fetchUser()</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >fetchUser()</code
+                                >
                                 - Refresh user data
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">initialize()</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >initialize()</code
+                                >
                                 - Check existing session
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">hasRole(role)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >hasRole(role)</code
+                                >
                                 - Check user role
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">hasPermission(perm)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >hasPermission(perm)</code
+                                >
                                 - Check permission
                             </p>
                         </div>
@@ -402,25 +394,29 @@ auth.hasPermission('users.create')</code></pre>
 
         <!-- Security Note -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Security
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Security</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="text-muted space-y-2 text-sm">
                     <p>
                         This composable uses
-                        <strong class="text-text">cookie-based authentication</strong>
+                        <strong class="text-text"
+                            >cookie-based authentication</strong
+                        >
                         where tokens are stored in HTTP-only cookies by the
                         server.
                     </p>
                     <p>
                         All requests use
-                        <code class="bg-surface-hover rounded px-1">credentials: 'include'</code>
+                        <code class="bg-surface-hover rounded px-1"
+                            >credentials: 'include'</code
+                        >
                         to send cookies automatically.
                     </p>
                     <p>
                         The frontend
-                        <strong class="text-text">never handles or stores tokens</strong>
+                        <strong class="text-text"
+                            >never handles or stores tokens</strong
+                        >
                         - this protects against XSS attacks.
                     </p>
                 </div>

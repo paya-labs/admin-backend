@@ -63,9 +63,7 @@ const formatJson = (obj) => {
 <template>
     <div class="space-y-8">
         <div>
-            <h1 class="text-text text-2xl font-bold">
-                API Client
-            </h1>
+            <h1 class="text-text text-2xl font-bold">API Client</h1>
             <p class="text-muted mt-1">
                 The
                 <code class="bg-surface-hover rounded px-1">useApi</code>
@@ -75,9 +73,7 @@ const formatJson = (obj) => {
 
         <!-- GET Request Demo -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                GET Request
-            </h2>
+            <h2 class="text-text text-lg font-semibold">GET Request</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-4">
                     <div class="flex items-end gap-4">
@@ -117,13 +113,8 @@ const formatJson = (obj) => {
                     </div>
 
                     <!-- Response -->
-                    <div
-                        v-if="getApi.data.value"
-                        class="space-y-2"
-                    >
-                        <p class="text-text text-sm font-medium">
-                            Response:
-                        </p>
+                    <div v-if="getApi.data.value" class="space-y-2">
+                        <p class="text-text text-sm font-medium">Response:</p>
                         <pre
                             class="bg-surface-hover text-muted max-h-64 overflow-auto rounded-md p-4 text-xs"
                         ><code>{{ formatJson(getApi.data.value) }}</code></pre>
@@ -140,9 +131,7 @@ await api.get(`/users/${userId}`);</code></pre>
 
         <!-- POST Request Demo -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                POST Request
-            </h2>
+            <h2 class="text-text text-lg font-semibold">POST Request</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-4">
                     <div class="grid max-w-md gap-4">
@@ -189,10 +178,7 @@ await api.get(`/users/${userId}`);</code></pre>
                     </div>
 
                     <!-- Response -->
-                    <div
-                        v-if="postApi.data.value"
-                        class="space-y-2"
-                    >
+                    <div v-if="postApi.data.value" class="space-y-2">
                         <p class="text-text text-sm font-medium">
                             Created (response includes generated ID):
                         </p>
@@ -210,9 +196,7 @@ await api.get(`/users/${userId}`);</code></pre>
 
         <!-- Error Handling Demo -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                Error Handling
-            </h2>
+            <h2 class="text-text text-lg font-semibold">Error Handling</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-4">
                     <p class="text-muted text-sm">
@@ -246,10 +230,7 @@ await api.get(`/users/${userId}`);</code></pre>
                         >
                             Status: {{ errorApi.status.value }}
                         </AppBadge>
-                        <AppBadge
-                            v-if="errorApi.error.value"
-                            variant="danger"
-                        >
+                        <AppBadge v-if="errorApi.error.value" variant="danger">
                             Error!
                         </AppBadge>
                     </div>
@@ -278,86 +259,106 @@ await api.get(`/users/${userId}`);</code></pre>
 
         <!-- API Reference -->
         <section class="space-y-4">
-            <h2 class="text-text text-lg font-semibold">
-                API Reference
-            </h2>
+            <h2 class="text-text text-lg font-semibold">API Reference</h2>
             <div class="border-border bg-surface rounded-lg border p-6">
                 <div class="space-y-6">
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            Options
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">Options</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">baseUrl</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >baseUrl</code
+                                >
                                 - Base URL for all requests
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">headers</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >headers</code
+                                >
                                 - Default headers for all requests
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">responseHandler</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >responseHandler</code
+                                >
                                 - Custom response parser
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">onError</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >onError</code
+                                >
                                 - Global error callback
                             </p>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            State
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">State</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">data</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >data</code
+                                >
                                 - Response data (Ref)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">error</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >error</code
+                                >
                                 - Error object if failed (Ref)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">loading</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >loading</code
+                                >
                                 - Loading state (Ref)
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">status</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >status</code
+                                >
                                 - HTTP status code (Ref)
                             </p>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-text mb-2 font-medium">
-                            Methods
-                        </h3>
+                        <h3 class="text-text mb-2 font-medium">Methods</h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">get(url, options?)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >get(url, options?)</code
+                                >
                                 - GET request
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">post(url, body?, options?)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >post(url, body?, options?)</code
+                                >
                                 - POST request
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">put(url, body?, options?)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >put(url, body?, options?)</code
+                                >
                                 - PUT request
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">patch(url, body?, options?)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >patch(url, body?, options?)</code
+                                >
                                 - PATCH request
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">del(url, options?)</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >del(url, options?)</code
+                                >
                                 - DELETE request
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">reset()</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >reset()</code
+                                >
                                 - Reset all state
                             </p>
                         </div>
@@ -369,15 +370,21 @@ await api.get(`/users/${userId}`);</code></pre>
                         </h3>
                         <div class="text-muted space-y-1 text-sm">
                             <p>
-                                <code class="bg-surface-hover rounded px-1">params</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >params</code
+                                >
                                 - URL query parameters
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">headers</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >headers</code
+                                >
                                 - Request-specific headers
                             </p>
                             <p>
-                                <code class="bg-surface-hover rounded px-1">signal</code>
+                                <code class="bg-surface-hover rounded px-1"
+                                    >signal</code
+                                >
                                 - AbortController signal
                             </p>
                         </div>
