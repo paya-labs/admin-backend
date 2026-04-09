@@ -338,7 +338,9 @@ onBeforeUnmount(() => {
                                 'text-text hover:bg-surface-hover',
                         ]"
                         @click="selectOption(option)"
-                        @mouseenter="!option.disabled && (highlightedIndex = index)"
+                        @mouseenter="
+                            !option.disabled && (highlightedIndex = index)
+                        "
                     >
                         <span class="block truncate">{{ option.label }}</span>
 

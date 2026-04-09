@@ -11,8 +11,7 @@ const defaultOptions = [
 
 // Helper to find the teleported listbox in document.body
 const findListbox = () => document.querySelector('ul[role="listbox"]');
-const findAllOptions = () =>
-    document.querySelectorAll('li[role="option"]');
+const findAllOptions = () => document.querySelectorAll('li[role="option"]');
 
 describe('AppSelect', () => {
     afterEach(() => {
