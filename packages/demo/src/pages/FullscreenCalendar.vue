@@ -178,9 +178,7 @@ function onDateClick(info) {
                                 {{ selectedCategory.name }}
                             </div>
                             <span class="text-muted text-xs">
-                                {{
-                                    selectedCategory.defaultDurationMinutes
-                                }}
+                                {{ selectedCategory.defaultDurationMinutes }}
                                 min default
                             </span>
                         </div>
