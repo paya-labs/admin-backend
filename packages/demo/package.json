@@ -12,16 +12,16 @@
     },
     "dependencies": {
         "@paya-labs/admin-ui": "*",
-        "vue": "^3.5.0",
-        "vue-router": "^4.6.0"
+        "vue": "^3.5.32",
+        "vue-router": "^5.0.4"
     },
     "devDependencies": {
-        "@eslint/js": "^9.39.0",
-        "@tailwindcss/vite": "^4.1.0",
-        "@vitejs/plugin-vue": "^6.0.0",
-        "eslint": "^9.39.0",
-        "eslint-plugin-vue": "^10.7.0",
-        "globals": "^17.0.0",
+        "@eslint/js": "^10.0.1",
+        "@tailwindcss/vite": "^4.2.2",
+        "@vitejs/plugin-vue": "^6.0.5",
+        "eslint": "^10.2.0",
+        "eslint-plugin-vue": "^10.8.0",
+        "globals": "^17.4.0",
         "prettier": "^3.8.1",
         "prettier-plugin-organize-imports": "^4.3.0",
         "prettier-plugin-tailwindcss": "^0.7.0",
