@@ -190,8 +190,14 @@ watch(highlightedIndex, (index) => {
     }
 });
 
-const handleAncestorScroll = (): void => {
+const handleAncestorScroll = (event: Event): void => {
     if (isOpen.value) {
+        if (
+            event.target instanceof Node &&
+            listboxRef.value?.contains(event.target)
+        ) {
+            return;
+        }
         closeDropdown();
     }
 };
