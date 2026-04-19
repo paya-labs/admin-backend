@@ -189,5 +189,81 @@ describe('AppTable', () => {
             const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
             expect(mobileLayout.findAll('.animate-pulse').length).toBeGreaterThan(0);
         });
+
+        it('renders action buttons in mobile layout', async () => {
+            const handler = vi.fn();
+            const wrapper = mount(AppTable, {
+                props: {
+                    columns: defaultColumns,
+                    rows: defaultRows,
+                    actions: [{ label: 'Edit', handler }],
+                },
+            });
+
+            const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
+            const actionBtn = mobileLayout.findAll('button').find(
+                (b) => b.text() === 'Edit',
+            );
+            expect(actionBtn).toBeTruthy();
+
+            await actionBtn.trigger('click');
+            expect(handler).toHaveBeenCalledWith(defaultRows[0]);
+        });
+
+        it('action click does not emit row-click', async () => {
+            const handler = vi.fn();
+            const wrapper = mount(AppTable, {
+                props: {
+                    columns: defaultColumns,
+                    rows: defaultRows,
+                    actions: [{ label: 'Edit', handler }],
+                },
+            });
+
+            const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
+            const actionBtn = mobileLayout.findAll('button').find(
+                (b) => b.text() === 'Edit',
+            );
+            await actionBtn.trigger('click');
+
+            expect(wrapper.emitted('row-click')).toBeFalsy();
+        });
+
+        it('uses mobile-row override slot when provided', () => {
+            const wrapper = mount(AppTable, {
+                props: { columns: defaultColumns, rows: defaultRows },
+                slots: {
+                    'mobile-row': ({ row }) => `Override: ${row.name}`,
+                },
+            });
+
+            const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
+            expect(mobileLayout.text()).toContain('Override: John Doe');
+            expect(mobileLayout.text()).toContain('Override: Jane Smith');
+        });
+
+        it('applies striped class to mobile rows', () => {
+            const wrapper = mount(AppTable, {
+                props: {
+                    columns: defaultColumns,
+                    rows: defaultRows,
+                    striped: true,
+                },
+            });
+
+            const mobileRows = wrapper.findAll('[data-testid="mobile-row"]');
+            expect(mobileRows[1].classes()).toContain('bg-surface-hover/50');
+        });
+
+        it('renders footer in responsive mode', () => {
+            const wrapper = mount(AppTable, {
+                props: { columns: defaultColumns, rows: defaultRows },
+                slots: {
+                    footer: 'Pagination here',
+                },
+            });
+
+            expect(wrapper.text()).toContain('Pagination here');
+        });
     });
 });
