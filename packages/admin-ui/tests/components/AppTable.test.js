@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import AppTable from '../../src/components/AppTable.vue';
 
 const defaultColumns = [
@@ -94,5 +94,100 @@ describe('AppTable', () => {
         });
 
         expect(wrapper.text()).toContain('Footer content');
+    });
+
+    describe('responsive mode', () => {
+        it('renders mobile layout by default', () => {
+            const wrapper = mount(AppTable, {
+                props: { columns: defaultColumns, rows: defaultRows },
+            });
+
+            const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
+            expect(mobileLayout.exists()).toBe(true);
+        });
+
+        it('hides mobile layout when responsive is false', () => {
+            const wrapper = mount(AppTable, {
+                props: {
+                    columns: defaultColumns,
+                    rows: defaultRows,
+                    responsive: false,
+                },
+            });
+
+            const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
+            expect(mobileLayout.exists()).toBe(false);
+        });
+
+        it('renders column labels in mobile layout', () => {
+            const wrapper = mount(AppTable, {
+                props: { columns: defaultColumns, rows: defaultRows },
+            });
+
+            const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
+            expect(mobileLayout.text()).toContain('Name');
+            expect(mobileLayout.text()).toContain('Email');
+        });
+
+        it('renders cell values in mobile layout', () => {
+            const wrapper = mount(AppTable, {
+                props: { columns: defaultColumns, rows: defaultRows },
+            });
+
+            const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
+            expect(mobileLayout.text()).toContain('John Doe');
+            expect(mobileLayout.text()).toContain('john@example.com');
+        });
+
+        it('renders all rows as stacked blocks', () => {
+            const wrapper = mount(AppTable, {
+                props: { columns: defaultColumns, rows: defaultRows },
+            });
+
+            const mobileRows = wrapper.findAll('[data-testid="mobile-row"]');
+            expect(mobileRows).toHaveLength(2);
+        });
+
+        it('uses cell slots in mobile layout', () => {
+            const wrapper = mount(AppTable, {
+                props: { columns: defaultColumns, rows: defaultRows },
+                slots: {
+                    'cell-name': ({ value }) => `Custom: ${value}`,
+                },
+            });
+
+            const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
+            expect(mobileLayout.text()).toContain('Custom: John Doe');
+        });
+
+        it('emits row-click from mobile row', async () => {
+            const wrapper = mount(AppTable, {
+                props: { columns: defaultColumns, rows: defaultRows },
+            });
+
+            const mobileRows = wrapper.findAll('[data-testid="mobile-row"]');
+            await mobileRows[0].trigger('click');
+
+            expect(wrapper.emitted('row-click')).toBeTruthy();
+            expect(wrapper.emitted('row-click')[0]).toEqual([defaultRows[0]]);
+        });
+
+        it('shows empty state in mobile layout when no rows', () => {
+            const wrapper = mount(AppTable, {
+                props: { columns: defaultColumns, rows: [] },
+            });
+
+            const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
+            expect(mobileLayout.text()).toContain('No data available');
+        });
+
+        it('shows loading skeleton in mobile layout', () => {
+            const wrapper = mount(AppTable, {
+                props: { columns: defaultColumns, loading: true },
+            });
+
+            const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
+            expect(mobileLayout.findAll('.animate-pulse').length).toBeGreaterThan(0);
+        });
     });
 });
