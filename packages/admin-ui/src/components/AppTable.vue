@@ -51,7 +51,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
 <template>
     <div class="overflow-hidden rounded-lg border border-border bg-surface">
         <!-- Table wrapper for horizontal scroll on mobile -->
-        <div :class="['overflow-x-auto', responsive && 'hidden md:block']">
+        <div :class="['overflow-x-auto', responsive && 'md:block hidden']">
             <table class="w-full min-w-[600px]">
                 <!-- Header -->
                 <thead class="border-b border-border bg-surface-hover">
@@ -193,14 +193,14 @@ const handleRowClick = (row: Record<string, unknown>): void => {
         <div
             v-if="responsive"
             data-testid="mobile-layout"
-            class="block md:hidden"
+            class="md:hidden block"
         >
             <!-- Mobile loading state -->
             <template v-if="loading">
                 <div
                     v-for="n in 5"
                     :key="n"
-                    class="border-b border-border p-4 last:border-b-0"
+                    class="p-4 border-b border-border last:border-b-0"
                 >
                     <div
                         v-for="column in columns"
@@ -234,9 +234,10 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                     :key="(row[rowKey] as string | number) ?? index"
                     data-testid="mobile-row"
                     :class="[
-                        'border-b border-border p-4 last:border-b-0',
+                        'p-4 border-b border-border last:border-b-0',
                         striped && index % 2 === 1 && 'bg-surface-hover/50',
-                        hoverable && 'cursor-pointer transition-colors hover:bg-surface-hover',
+                        hoverable &&
+                            'cursor-pointer transition-colors hover:bg-surface-hover',
                     ]"
                     @click="handleRowClick(row)"
                 >
@@ -246,7 +247,9 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                             :key="column.key"
                             class="mb-3 last:mb-0"
                         >
-                            <div class="mb-0.5 text-xs font-semibold tracking-wider text-muted uppercase">
+                            <div
+                                class="mb-0.5 text-xs font-semibold tracking-wider text-muted uppercase"
+                            >
                                 {{ column.label }}
                             </div>
                             <div class="text-sm text-text">
@@ -263,7 +266,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                         <!-- Mobile actions -->
                         <div
                             v-if="hasActions"
-                            class="mt-3 flex items-center justify-end gap-2 border-t border-border pt-3"
+                            class="mt-3 gap-2 pt-3 flex items-center justify-end border-t border-border"
                             @click.stop
                         >
                             <AppButton
@@ -278,7 +281,9 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                                     class="h-4 w-4 [&>svg]:h-full [&>svg]:w-full"
                                     v-html="action.icon"
                                 />
-                                <span v-if="action.label && !action.icon">{{ action.label }}</span>
+                                <span v-if="action.label && !action.icon">{{
+                                    action.label
+                                }}</span>
                             </AppButton>
                         </div>
                     </slot>

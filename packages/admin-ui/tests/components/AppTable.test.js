@@ -187,7 +187,9 @@ describe('AppTable', () => {
             });
 
             const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
-            expect(mobileLayout.findAll('.animate-pulse').length).toBeGreaterThan(0);
+            expect(
+                mobileLayout.findAll('.animate-pulse').length,
+            ).toBeGreaterThan(0);
         });
 
         it('renders action buttons in mobile layout', async () => {
@@ -201,9 +203,9 @@ describe('AppTable', () => {
             });
 
             const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
-            const actionBtn = mobileLayout.findAll('button').find(
-                (b) => b.text() === 'Edit',
-            );
+            const actionBtn = mobileLayout
+                .findAll('button')
+                .find((b) => b.text() === 'Edit');
             expect(actionBtn).toBeTruthy();
 
             await actionBtn.trigger('click');
@@ -221,9 +223,9 @@ describe('AppTable', () => {
             });
 
             const mobileLayout = wrapper.find('[data-testid="mobile-layout"]');
-            const actionBtn = mobileLayout.findAll('button').find(
-                (b) => b.text() === 'Edit',
-            );
+            const actionBtn = mobileLayout
+                .findAll('button')
+                .find((b) => b.text() === 'Edit');
             await actionBtn.trigger('click');
 
             expect(wrapper.emitted('row-click')).toBeFalsy();

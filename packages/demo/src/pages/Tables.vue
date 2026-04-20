@@ -213,8 +213,9 @@ const stripedRows = [
                 Responsive Table (resize browser to see mobile layout)
             </h2>
             <p class="text-muted text-sm">
-                Default behavior — tables stack into label-value blocks below 768px.
-                Custom cell slots (like the status badge) are re-used automatically.
+                Default behavior — tables stack into label-value blocks below
+                768px. Custom cell slots (like the status badge) are re-used
+                automatically.
             </p>
             <AppTable
                 :columns="statusColumns"
@@ -262,17 +263,24 @@ const stripedRows = [
                 Custom Mobile Row (#mobile-row slot)
             </h2>
             <p class="text-muted text-sm">
-                Use the <code class="rounded bg-surface-hover px-1 py-0.5 text-xs">#mobile-row</code> slot
-                to fully customize how each row renders on mobile.
+                Use the
+                <code class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                    >#mobile-row</code
+                >
+                slot to fully customize how each row renders on mobile.
             </p>
             <AppTable :columns="basicColumns" :rows="basicRows">
                 <template #mobile-row="{ row }">
                     <div class="flex items-center justify-between">
                         <div>
-                            <div class="text-sm font-medium text-text">{{ row.name }}</div>
-                            <div class="text-xs text-muted">{{ row.email }}</div>
+                            <div class="text-text text-sm font-medium">
+                                {{ row.name }}
+                            </div>
+                            <div class="text-muted text-xs">
+                                {{ row.email }}
+                            </div>
                         </div>
-                        <div class="text-xs text-muted">{{ row.role }}</div>
+                        <div class="text-muted text-xs">{{ row.role }}</div>
                     </div>
                 </template>
             </AppTable>
@@ -284,7 +292,10 @@ const stripedRows = [
                 Non-Responsive Table (horizontal scroll on mobile)
             </h2>
             <p class="text-muted text-sm">
-                Set <code class="rounded bg-surface-hover px-1 py-0.5 text-xs">:responsive="false"</code>
+                Set
+                <code class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                    >:responsive="false"</code
+                >
                 to keep the default horizontal scroll behavior.
             </p>
             <AppTable
