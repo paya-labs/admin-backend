@@ -1,6 +1,6 @@
 {
     "name": "@paya-labs/create-admin-ui",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "CLI to scaffold new admin projects using @paya-labs/admin-ui",
     "type": "module",
     "bin": {
