@@ -95,6 +95,12 @@ setTimeout(() => {
     isLoading.value = false;
 }, 3000);
 
+// Responsive loading state
+const isResponsiveLoading = ref(true);
+setTimeout(() => {
+    isResponsiveLoading.value = false;
+}, 3000);
+
 // Empty state
 const emptyColumns = [
     { key: 'id', label: 'ID' },
@@ -199,6 +205,104 @@ const stripedRows = [
         <section class="space-y-4">
             <h2 class="text-text text-lg font-semibold">Striped Table</h2>
             <AppTable :columns="basicColumns" :rows="stripedRows" striped />
+        </section>
+
+        <!-- Responsive Table (Mobile Stacked) -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">
+                Responsive Table (resize browser to see mobile layout)
+            </h2>
+            <p class="text-muted text-sm">
+                Default behavior — tables stack into label-value blocks below
+                768px. Custom cell slots (like the status badge) are re-used
+                automatically.
+            </p>
+            <AppTable
+                :columns="statusColumns"
+                :rows="statusRows"
+                :actions="tableActions"
+            >
+                <template #cell-status="{ value }">
+                    <AppBadge :variant="getStatusVariant(value)">
+                        {{ value }}
+                    </AppBadge>
+                </template>
+            </AppTable>
+        </section>
+
+        <!-- Responsive Table with Loading State -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">
+                Responsive Loading State
+            </h2>
+            <p class="text-muted text-sm">
+                Loading skeletons adapt to the stacked layout on mobile.
+            </p>
+            <div class="flex items-center gap-4">
+                <AppButton
+                    variant="outline"
+                    size="sm"
+                    @click="isResponsiveLoading = !isResponsiveLoading"
+                >
+                    Toggle Loading
+                </AppButton>
+                <span class="text-muted text-sm">
+                    {{ isResponsiveLoading ? 'Loading...' : 'Loaded' }}
+                </span>
+            </div>
+            <AppTable
+                :columns="basicColumns"
+                :rows="basicRows"
+                :loading="isResponsiveLoading"
+            />
+        </section>
+
+        <!-- Custom Mobile Row Override -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">
+                Custom Mobile Row (#mobile-row slot)
+            </h2>
+            <p class="text-muted text-sm">
+                Use the
+                <code class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                    >#mobile-row</code
+                >
+                slot to fully customize how each row renders on mobile.
+            </p>
+            <AppTable :columns="basicColumns" :rows="basicRows">
+                <template #mobile-row="{ row }">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-text text-sm font-medium">
+                                {{ row.name }}
+                            </div>
+                            <div class="text-muted text-xs">
+                                {{ row.email }}
+                            </div>
+                        </div>
+                        <div class="text-muted text-xs">{{ row.role }}</div>
+                    </div>
+                </template>
+            </AppTable>
+        </section>
+
+        <!-- Non-Responsive Table (scroll on mobile) -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">
+                Non-Responsive Table (horizontal scroll on mobile)
+            </h2>
+            <p class="text-muted text-sm">
+                Set
+                <code class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                    >:responsive="false"</code
+                >
+                to keep the default horizontal scroll behavior.
+            </p>
+            <AppTable
+                :columns="basicColumns"
+                :rows="basicRows"
+                :responsive="false"
+            />
         </section>
     </div>
 </template>
