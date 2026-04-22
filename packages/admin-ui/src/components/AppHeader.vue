@@ -122,7 +122,7 @@ const getThemeLabel = (): string => {
 
                 <!-- Search (desktop) -->
                 <div v-if="showSearch" class="md:block relative hidden">
-                    <form @submit.prevent="handleSearch">
+                    <form class="relative z-10" @submit.prevent="handleSearch">
                         <input
                             v-model="searchQuery"
                             type="search"
