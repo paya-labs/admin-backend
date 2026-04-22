@@ -156,7 +156,9 @@ describe('AppCheckbox', () => {
             attachTo: document.body,
         });
 
-        expect(wrapper.find('div[aria-hidden="true"] svg').exists()).toBe(false);
+        expect(wrapper.find('div[aria-hidden="true"] svg').exists()).toBe(
+            false,
+        );
     });
 
     it('sets aria-invalid when error is present', () => {

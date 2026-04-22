@@ -42,11 +42,11 @@ const toggle = (): void => {
 </script>
 
 <template>
-    <div :class="['relative', disabled && 'opacity-50 cursor-not-allowed']">
+    <div :class="['relative', disabled && 'cursor-not-allowed opacity-50']">
         <label
             :for="checkboxId"
             :class="[
-                'flex items-start gap-3',
+                'gap-3 flex items-start',
                 disabled ? 'cursor-not-allowed' : 'cursor-pointer',
             ]"
         >
@@ -66,7 +66,7 @@ const toggle = (): void => {
             <!-- Visual checkbox -->
             <div
                 :class="[
-                    'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center',
+                    'mt-0.5 h-5 w-5 flex shrink-0 items-center justify-center',
                     'rounded border',
                     'transition-colors duration-[var(--transition-fast)]',
                     'peer-focus:ring-2 peer-focus:ring-focus-ring peer-focus:ring-offset-2',
