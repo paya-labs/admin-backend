@@ -106,6 +106,13 @@ const countryOptions = [
     { value: 'no', label: 'Norway' },
 ];
 
+// Long list demo — pre-selected value deep in the list
+const longListSelected = ref('item-18');
+const longListOptions = Array.from({ length: 30 }, (_, i) => ({
+    value: `item-${i + 1}`,
+    label: `Option ${i + 1}`,
+}));
+
 const formSubmitted = ref(false);
 
 const handleAppFormSubmit = (data) => {
@@ -372,6 +379,26 @@ const handleAppFormSubmit = (data) => {
                         </AppButton>
                     </template>
                 </AppModal>
+            </div>
+        </section>
+
+        <!-- Long List Scroll Demo -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">
+                Select — Scroll to Selected
+            </h2>
+            <p class="text-muted text-sm">
+                The dropdown scrolls the pre-selected option (Option 18) to the
+                top when opened, so the user immediately sees their selection.
+            </p>
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <div class="max-w-md">
+                    <AppSelect
+                        v-model="longListSelected"
+                        label="Long list (30 items, #18 selected)"
+                        :options="longListOptions"
+                    />
+                </div>
             </div>
         </section>
 
