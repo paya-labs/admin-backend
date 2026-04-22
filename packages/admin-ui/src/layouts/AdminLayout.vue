@@ -26,6 +26,9 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
     logout: [];
     search: [query: string];
+    'search-input': [query: string];
+    'search-focus': [];
+    'search-blur': [];
 }>();
 
 const { isOpen, isCollapsed, isMobile, toggle, toggleCollapse, close } =
@@ -48,6 +51,18 @@ const handleLogout = (): void => {
 
 const handleSearch = (query: string): void => {
     emit('search', query);
+};
+
+const handleSearchInput = (query: string): void => {
+    emit('search-input', query);
+};
+
+const handleSearchFocus = (): void => {
+    emit('search-focus');
+};
+
+const handleSearchBlur = (): void => {
+    emit('search-blur');
 };
 </script>
 
@@ -72,6 +87,9 @@ const handleSearch = (query: string): void => {
             @toggle-sidebar="toggle"
             @logout="handleLogout"
             @search="handleSearch"
+            @search-input="handleSearchInput"
+            @search-focus="handleSearchFocus"
+            @search-blur="handleSearchBlur"
         >
             <template #left>
                 <slot name="header-left">
@@ -83,6 +101,9 @@ const handleSearch = (query: string): void => {
             </template>
             <template #right>
                 <slot name="header-right" />
+            </template>
+            <template #search-dropdown>
+                <slot name="search-dropdown" />
             </template>
         </AppHeader>
 
