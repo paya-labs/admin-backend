@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
 import type { SelectOption } from '../types';
 
 interface Props {
@@ -60,6 +60,15 @@ const enabledOptions = computed(() => {
     return props.options.filter((opt) => !opt.disabled);
 });
 
+const scrollSelectedIntoView = (): void => {
+    if (!listboxRef.value) return;
+    const items = listboxRef.value.querySelectorAll('[role="option"]');
+    const item = items[highlightedIndex.value];
+    if (item && typeof item.scrollIntoView === 'function') {
+        item.scrollIntoView({ block: 'start' });
+    }
+};
+
 const toggleDropdown = (): void => {
     if (props.disabled) return;
     isOpen.value = !isOpen.value;
@@ -70,6 +79,7 @@ const toggleDropdown = (): void => {
         );
         highlightedIndex.value = selectedIndex >= 0 ? selectedIndex : 0;
         updateDropdownPosition();
+        nextTick(scrollSelectedIntoView);
     }
 };
 

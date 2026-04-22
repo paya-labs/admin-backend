@@ -492,6 +492,34 @@ describe('AppSelect', () => {
         removeSpy.mockRestore();
     });
 
+    it('scrolls selected option to top when dropdown opens', async () => {
+        const manyOptions = Array.from({ length: 20 }, (_, i) => ({
+            value: `opt${i + 1}`,
+            label: `Option ${i + 1}`,
+        }));
+
+        const wrapper = mount(AppSelect, {
+            props: {
+                options: manyOptions,
+                modelValue: 'opt15',
+            },
+            attachTo: document.body,
+        });
+
+        // Mock scrollIntoView on all option elements before opening
+        const scrollIntoViewMock = vi.fn();
+        const allOptions = findAllOptions();
+        allOptions.forEach((opt) => {
+            opt.scrollIntoView = scrollIntoViewMock;
+        });
+
+        await wrapper.find('button').trigger('click');
+        await nextTick();
+
+        // scrollIntoView should be called with block: 'start' on the selected option (index 14)
+        expect(scrollIntoViewMock).toHaveBeenCalledWith({ block: 'start' });
+    });
+
     it('removes scroll and resize listeners on unmount', async () => {
         const removeSpy = vi.spyOn(window, 'removeEventListener');
         const wrapper = mount(AppSelect, {
