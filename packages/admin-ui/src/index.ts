@@ -11,6 +11,7 @@ import AppCalendarEventModal from './components/AppCalendarEventModal.vue';
 import AppCalendarNavigation from './components/AppCalendarNavigation.vue';
 import AppCalendarViewTabs from './components/AppCalendarViewTabs.vue';
 import AppCard from './components/AppCard.vue';
+import AppCheckbox from './components/AppCheckbox.vue';
 import AppColorInput from './components/AppColorInput.vue';
 import AppDrawer from './components/AppDrawer.vue';
 import AppEditor from './components/AppEditor.vue';
@@ -111,6 +112,7 @@ export {
     AppCalendarNavigation,
     AppCalendarViewTabs,
     AppCard,
+    AppCheckbox,
     AppColorInput,
     AppDrawer,
     AppEditor,
@@ -178,6 +180,7 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}Textarea`, AppTextarea);
         app.component(`${prefix}Badge`, AppBadge);
         app.component(`${prefix}Card`, AppCard);
+        app.component(`${prefix}Checkbox`, AppCheckbox);
         app.component(`${prefix}Table`, AppTable);
         app.component(`${prefix}Header`, AppHeader);
         app.component(`${prefix}Sidebar`, AppSidebar);

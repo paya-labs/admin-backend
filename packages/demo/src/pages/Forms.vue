@@ -1,6 +1,7 @@
 <script setup>
 import {
     AppButton,
+    AppCheckbox,
     AppColorInput,
     AppForm,
     AppInput,
@@ -105,6 +106,12 @@ const countryOptions = [
     { value: 'se', label: 'Sweden' },
     { value: 'no', label: 'Norway' },
 ];
+
+// Checkbox examples
+const checkboxBasic = ref(false);
+const checkboxDescribed = ref(true);
+const checkboxRequired = ref(false);
+const checkboxDisabledChecked = ref(true);
 
 // Long list demo — pre-selected value deep in the list
 const longListSelected = ref('item-18');
@@ -379,6 +386,49 @@ const handleAppFormSubmit = (data) => {
                         </AppButton>
                     </template>
                 </AppModal>
+            </div>
+        </section>
+
+        <!-- Checkbox Section -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Checkbox</h2>
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <div class="max-w-md space-y-5">
+                    <AppCheckbox
+                        v-model="checkboxBasic"
+                        label="Basic checkbox"
+                    />
+                    <AppCheckbox
+                        v-model="checkboxDescribed"
+                        label="Email notifications"
+                        description="Receive email updates about your account activity and security alerts."
+                    />
+                    <AppCheckbox
+                        v-model="checkboxRequired"
+                        label="Accept terms and conditions"
+                        required
+                        :error="
+                            !checkboxRequired
+                                ? 'You must accept the terms to continue'
+                                : ''
+                        "
+                    />
+                    <AppCheckbox
+                        :model-value="false"
+                        label="With hint"
+                        hint="This is a helpful hint"
+                    />
+                    <AppCheckbox
+                        :model-value="false"
+                        label="Disabled unchecked"
+                        disabled
+                    />
+                    <AppCheckbox
+                        v-model="checkboxDisabledChecked"
+                        label="Disabled checked"
+                        disabled
+                    />
+                </div>
             </div>
         </section>
 
