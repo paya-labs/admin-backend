@@ -26,6 +26,9 @@ const emit = defineEmits<{
     toggleSidebar: [];
     logout: [];
     search: [query: string];
+    'search-input': [query: string];
+    'search-focus': [];
+    'search-blur': [];
 }>();
 
 const { mode, toggleTheme } = useTheme();
@@ -125,6 +128,9 @@ const getThemeLabel = (): string => {
                             type="search"
                             placeholder="Search..."
                             class="w-64 py-2 pr-4 pl-10 text-sm rounded-lg border border-border bg-surface text-text transition-colors placeholder:text-muted focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none"
+                            @input="emit('search-input', searchQuery)"
+                            @focus="emit('search-focus')"
+                            @blur="emit('search-blur')"
                         />
                         <svg
                             class="left-3 h-5 w-5 absolute top-1/2 -translate-y-1/2 text-muted"
@@ -141,6 +147,7 @@ const getThemeLabel = (): string => {
                             />
                         </svg>
                     </form>
+                    <slot name="search-dropdown" />
                 </div>
 
                 <!-- Theme toggle -->
