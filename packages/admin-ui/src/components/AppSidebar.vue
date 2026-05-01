@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
-import type { NavigationItem } from '../types';
+import { vClickOutside } from '../directives/clickOutside';
+import type { NavigationItem, User } from '../types';
 import AppIcon from './AppIcon.vue';
 
 interface SidebarNavigationItem extends NavigationItem {
@@ -15,6 +16,7 @@ interface Props {
     logoAlt?: string;
     isCollapsed?: boolean;
     isOpen?: boolean;
+    user?: User;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -22,11 +24,18 @@ withDefaults(defineProps<Props>(), {
     logoAlt: 'Logo',
     isCollapsed: false,
     isOpen: false,
+    user: () => ({
+        id: '',
+        name: 'User',
+        email: 'user@example.com',
+        avatar: '',
+    }),
 });
 
 const emit = defineEmits<{
     close: [];
     toggleCollapse: [];
+    logout: [];
 }>();
 
 const route = useRoute();
@@ -51,6 +60,18 @@ const getItemPath = (item: SidebarNavigationItem): string =>
 
 const hasActiveChild = (children?: SidebarNavigationItem[]): boolean => {
     return children?.some((child) => isActive(getItemPath(child))) || false;
+};
+
+const isUserMenuOpen = ref(false);
+const toggleUserMenu = (): void => {
+    isUserMenuOpen.value = !isUserMenuOpen.value;
+};
+const closeUserMenu = (): void => {
+    isUserMenuOpen.value = false;
+};
+const handleLogout = (): void => {
+    closeUserMenu();
+    emit('logout');
 };
 </script>
 
@@ -292,6 +313,95 @@ const hasActiveChild = (children?: SidebarNavigationItem[]): boolean => {
                 </li>
             </ul>
         </nav>
+
+        <!-- User menu -->
+        <div
+            v-click-outside="closeUserMenu"
+            :class="[
+                'relative border-t border-border',
+                isCollapsed ? 'p-2' : 'p-3',
+            ]"
+        >
+            <button
+                type="button"
+                :class="[
+                    'flex w-full items-center rounded-md transition-colors hover:bg-surface-hover',
+                    isCollapsed ? 'p-1.5 justify-center' : 'gap-3 px-2 py-1.5',
+                ]"
+                aria-haspopup="true"
+                :aria-expanded="isUserMenuOpen"
+                :title="isCollapsed ? user.name : undefined"
+                @click="toggleUserMenu"
+            >
+                <div
+                    class="h-9 w-9 text-sm font-medium flex flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300"
+                >
+                    <img
+                        v-if="user.avatar"
+                        :src="user.avatar"
+                        :alt="user.name"
+                        class="h-full w-full object-cover"
+                    />
+                    <span v-else>{{
+                        user.name?.charAt(0)?.toUpperCase() || 'U'
+                    }}</span>
+                </div>
+                <div v-if="!isCollapsed" class="min-w-0 flex-1 text-left">
+                    <p class="text-sm font-medium truncate text-text">
+                        {{ user.name }}
+                    </p>
+                    <p class="text-xs truncate text-muted">
+                        {{ user.email }}
+                    </p>
+                </div>
+                <AppIcon
+                    v-if="!isCollapsed"
+                    name="chevron-up"
+                    size="sm"
+                    class="flex-shrink-0 text-muted"
+                />
+            </button>
+
+            <!-- Dropdown menu (opens upward) -->
+            <Transition
+                enter-active-class="transition duration-150 ease-out"
+                enter-from-class="transform translate-y-1 opacity-0"
+                enter-to-class="transform translate-y-0 opacity-100"
+                leave-active-class="transition duration-100 ease-in"
+                leave-from-class="transform translate-y-0 opacity-100"
+                leave-to-class="transform translate-y-1 opacity-0"
+            >
+                <div
+                    v-if="isUserMenuOpen"
+                    :class="[
+                        'mb-2 w-56 py-1 absolute bottom-full rounded-lg border border-border bg-surface shadow-[var(--shadow-lg)]',
+                        isCollapsed ? 'left-2' : 'left-3 right-3',
+                    ]"
+                    role="menu"
+                >
+                    <div
+                        v-if="isCollapsed"
+                        class="px-3 py-2 border-b border-border"
+                    >
+                        <p class="text-sm font-medium truncate text-text">
+                            {{ user.name }}
+                        </p>
+                        <p class="text-xs truncate text-muted">
+                            {{ user.email }}
+                        </p>
+                    </div>
+                    <button
+                        type="button"
+                        class="min-h-10 gap-3 px-3 py-2 text-sm flex w-full items-center text-danger hover:bg-surface-hover"
+                        role="menuitem"
+                        @click="handleLogout"
+                    >
+                        <AppIcon name="logout" size="sm" />
+                        Sign out
+                    </button>
+                </div>
+            </Transition>
+        </div>
 
         <!-- Expand button when collapsed (desktop) -->
         <div

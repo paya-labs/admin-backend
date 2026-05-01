@@ -53,17 +53,14 @@ const handleLogout = (): void => {
             :logo-alt="props.logoAlt"
             :is-collapsed="isCollapsed"
             :is-open="isOpen"
+            :user="props.user"
             @close="close"
             @toggle-collapse="toggleCollapse"
+            @logout="handleLogout"
         />
 
         <!-- Header -->
-        <AppHeader
-            :user="props.user"
-            :is-collapsed="isCollapsed"
-            @toggle-sidebar="toggle"
-            @logout="handleLogout"
-        />
+        <AppHeader :is-collapsed="isCollapsed" @toggle-sidebar="toggle" />
 
         <!-- Main content -->
         <main
