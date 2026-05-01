@@ -13,6 +13,7 @@ import AppCalendarViewTabs from './components/AppCalendarViewTabs.vue';
 import AppCard from './components/AppCard.vue';
 import AppCheckbox from './components/AppCheckbox.vue';
 import AppColorInput from './components/AppColorInput.vue';
+import AppCombobox from './components/AppCombobox.vue';
 import AppDrawer from './components/AppDrawer.vue';
 import AppEditor from './components/AppEditor.vue';
 import AppForm from './components/AppForm.vue';
@@ -32,6 +33,7 @@ import AdminLayout from './layouts/AdminLayout.vue';
 
 // Composables
 import { useApi } from './composables/useApi';
+import { useAsyncSearch } from './composables/useAsyncSearch';
 import { useAuth } from './composables/useAuth';
 import { BREAKPOINTS, useBreakpoint } from './composables/useBreakpoint';
 import { useCalendarHelpers } from './composables/useCalendarHelpers';
@@ -74,6 +76,10 @@ export * from './types';
 
 // Re-export composable types
 export type { ApiError, UseApiReturn } from './composables/useApi';
+export type {
+    UseAsyncSearchOptions,
+    UseAsyncSearchReturn,
+} from './composables/useAsyncSearch';
 export type { UseAuthReturn } from './composables/useAuth';
 export type {
     BreakpointKey,
@@ -114,6 +120,7 @@ export {
     AppCard,
     AppCheckbox,
     AppColorInput,
+    AppCombobox,
     AppDrawer,
     AppEditor,
     AppForm,
@@ -135,6 +142,7 @@ export {
     getModuleConfig,
     provideModuleConfig,
     useApi,
+    useAsyncSearch,
     useAuth,
     useBreakpoint,
     useCalendarHelpers,
