@@ -111,7 +111,7 @@ const getThemeLabel = (): string => {
                 <div class="relative">
                     <button
                         type="button"
-                        class="gap-2 px-2 py-1.5 flex min-h-[44px] items-center rounded-md transition-colors hover:bg-surface-hover"
+                        class="gap-2 px-2 py-1.5 flex min-h-11 items-center rounded-md transition-colors hover:bg-surface-hover"
                         aria-haspopup="true"
                         :aria-expanded="isUserMenuOpen"
                         @click="toggleUserMenu"
@@ -130,7 +130,7 @@ const getThemeLabel = (): string => {
                             }}</span>
                         </div>
                         <span
-                            class="text-sm font-medium lg:block hidden max-w-[120px] truncate text-text"
+                            class="text-sm font-medium lg:block hidden max-w-30 truncate text-text"
                         >
                             {{ user.name }}
                         </span>
@@ -167,31 +167,10 @@ const getThemeLabel = (): string => {
                                 </p>
                             </div>
 
-                            <div class="py-1">
-                                <RouterLink
-                                    to="/profile"
-                                    class="gap-3 px-4 py-2 text-sm flex min-h-[40px] items-center text-text-secondary hover:bg-surface-hover hover:text-text"
-                                    role="menuitem"
-                                    @click="closeUserMenu"
-                                >
-                                    <AppIcon name="user" size="sm" />
-                                    Profile
-                                </RouterLink>
-                                <RouterLink
-                                    to="/settings"
-                                    class="gap-3 px-4 py-2 text-sm flex min-h-[40px] items-center text-text-secondary hover:bg-surface-hover hover:text-text"
-                                    role="menuitem"
-                                    @click="closeUserMenu"
-                                >
-                                    <AppIcon name="cog" size="sm" />
-                                    Settings
-                                </RouterLink>
-                            </div>
-
                             <div class="pt-1 border-t border-border">
                                 <button
                                     type="button"
-                                    class="gap-3 px-4 py-2 text-sm flex min-h-[40px] w-full items-center text-danger hover:bg-surface-hover"
+                                    class="gap-3 px-4 py-2 text-sm flex min-h-10 w-full items-center text-danger hover:bg-surface-hover"
                                     role="menuitem"
                                     @click="
                                         closeUserMenu();
