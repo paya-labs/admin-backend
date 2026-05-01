@@ -84,28 +84,22 @@ const getThemeLabel = (): string => {
                     </svg>
                 </AppButton>
 
-                <!-- Left slot (default: breadcrumbs) -->
-                <slot name="left">
-                    <slot name="breadcrumbs" />
-                </slot>
-
-                <!-- Teleport target for external left content -->
-                <div id="header-left" />
+                <!-- Teleport target: page-level header content (left) -->
+                <div id="header-left" class="flex items-center" />
             </div>
 
             <!-- Center section -->
             <div class="lg:flex hidden flex-1 justify-center">
-                <slot name="center" />
-                <!-- Teleport target for external center content -->
-                <div id="header-center" />
+                <!-- Teleport target: page-level header content (center) -->
+                <div id="header-center" class="flex items-center" />
             </div>
 
             <!-- Right section -->
             <div class="gap-2 lg:gap-3 flex items-center">
-                <!-- Teleport target for external right content (always visible) -->
+                <!-- Teleport target: page-level header content (right) -->
                 <div id="header-right" class="flex items-center" />
-                <!-- Right slot for custom content (rendered to the right of teleported content) -->
-                <slot name="right" />
+                <!-- Teleport target: app-level trailing content (search, etc.) -->
+                <div id="header-end" class="flex items-center" />
 
                 <!-- Theme toggle -->
                 <AppButton
