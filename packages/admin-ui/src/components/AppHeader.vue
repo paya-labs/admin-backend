@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
 import { useTheme } from '../composables/useTheme';
 import { vClickOutside } from '../directives/clickOutside';
 import type { User } from '../types';
@@ -111,7 +110,7 @@ const getThemeLabel = (): string => {
                 <div class="relative">
                     <button
                         type="button"
-                        class="gap-2 px-2 py-1.5 flex min-h-11 items-center rounded-md transition-colors hover:bg-surface-hover"
+                        class="gap-2 px-2 py-1.5 min-h-11 flex items-center rounded-md transition-colors hover:bg-surface-hover"
                         aria-haspopup="true"
                         :aria-expanded="isUserMenuOpen"
                         @click="toggleUserMenu"
@@ -130,7 +129,7 @@ const getThemeLabel = (): string => {
                             }}</span>
                         </div>
                         <span
-                            class="text-sm font-medium lg:block hidden max-w-30 truncate text-text"
+                            class="text-sm font-medium lg:block max-w-30 hidden truncate text-text"
                         >
                             {{ user.name }}
                         </span>
@@ -170,7 +169,7 @@ const getThemeLabel = (): string => {
                             <div class="pt-1 border-t border-border">
                                 <button
                                     type="button"
-                                    class="gap-3 px-4 py-2 text-sm flex min-h-10 w-full items-center text-danger hover:bg-surface-hover"
+                                    class="gap-3 px-4 py-2 text-sm min-h-10 flex w-full items-center text-danger hover:bg-surface-hover"
                                     role="menuitem"
                                     @click="
                                         closeUserMenu();
