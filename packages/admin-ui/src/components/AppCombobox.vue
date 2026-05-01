@@ -4,6 +4,8 @@ import { useAsyncSearch } from '../composables/useAsyncSearch';
 import { vClickOutside } from '../directives/clickOutside';
 import AppIcon from './AppIcon.vue';
 
+type ComboboxSize = 'sm' | 'md' | 'lg';
+
 export interface AppComboboxProps<T> {
     modelValue?: T | T[] | null;
     fetcher: (_query: string) => Promise<T[]>;
@@ -18,6 +20,7 @@ export interface AppComboboxProps<T> {
     error?: string;
     disabled?: boolean;
     minLengthHint?: string;
+    size?: ComboboxSize;
 }
 
 const props = withDefaults(defineProps<AppComboboxProps<T>>(), {
@@ -36,6 +39,40 @@ const props = withDefaults(defineProps<AppComboboxProps<T>>(), {
     error: '',
     disabled: false,
     minLengthHint: '',
+    size: 'md',
+});
+
+const sizeClasses = computed(() => {
+    const map: Record<
+        ComboboxSize,
+        { input: string; icon: 'sm' | 'md'; trailingPad: string }
+    > = {
+        sm: {
+            input: 'min-h-9 py-1.5 pl-8 pr-9 text-sm',
+            icon: 'sm',
+            trailingPad: 'pr-2',
+        },
+        md: {
+            input: 'min-h-11 py-2.5 pl-9 pr-10 text-sm',
+            icon: 'sm',
+            trailingPad: 'pr-3',
+        },
+        lg: {
+            input: 'min-h-12 py-3 pl-10 pr-11 text-base',
+            icon: 'md',
+            trailingPad: 'pr-3',
+        },
+    };
+    return map[props.size];
+});
+
+const leadingIconLeftClass = computed(() => {
+    const map: Record<ComboboxSize, string> = {
+        sm: 'left-2.5',
+        md: 'left-3',
+        lg: 'left-3',
+    };
+    return map[props.size];
 });
 
 const emit = defineEmits<{
@@ -223,8 +260,11 @@ defineExpose({
             <slot name="leading-icon">
                 <AppIcon
                     name="search"
-                    size="sm"
-                    class="left-3 pointer-events-none absolute top-1/2 -translate-y-1/2 text-muted"
+                    :size="sizeClasses.icon"
+                    :class="[
+                        'pointer-events-none absolute top-1/2 -translate-y-1/2 text-muted',
+                        leadingIconLeftClass,
+                    ]"
                 />
             </slot>
             <input
@@ -234,13 +274,13 @@ defineExpose({
                 :placeholder="placeholder"
                 :disabled="disabled"
                 :class="[
-                    'min-h-11 py-2.5 w-full',
+                    'w-full',
                     'rounded-md border bg-input-bg text-text',
                     'placeholder:text-muted',
                     'transition-colors duration-[var(--transition-fast)]',
                     'focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none',
-                    'pr-10 pl-9',
                     'disabled:cursor-not-allowed disabled:opacity-60',
+                    sizeClasses.input,
                     error
                         ? 'border-danger focus:ring-danger'
                         : 'border-input-border',
@@ -249,7 +289,12 @@ defineExpose({
                 @focus="handleFocus"
                 @keydown="handleKeydown"
             />
-            <div class="inset-y-0 right-0 pr-3 absolute flex items-center">
+            <div
+                :class="[
+                    'inset-y-0 right-0 absolute flex items-center',
+                    sizeClasses.trailingPad,
+                ]"
+            >
                 <slot
                     name="trailing"
                     :query="search.query.value"
