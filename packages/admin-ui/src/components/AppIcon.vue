@@ -42,6 +42,10 @@ const sizeClasses = computed(() => {
             stroke-linecap="round"
             stroke-linejoin="round"
             :d="icon.path2"
+            :transform="icon.path2Transform"
+            :vector-effect="
+                icon.path2Transform ? 'non-scaling-stroke' : undefined
+            "
         />
     </svg>
     <span

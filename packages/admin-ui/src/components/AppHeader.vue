@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
 import { useTheme } from '../composables/useTheme';
 import { vClickOutside } from '../directives/clickOutside';
 import type { User } from '../types';
 import AppButton from './AppButton.vue';
+import AppIcon from './AppIcon.vue';
 
 interface Props {
     user?: User;
-    showSearch?: boolean;
     isCollapsed?: boolean;
 }
 
@@ -18,23 +17,17 @@ withDefaults(defineProps<Props>(), {
         email: 'user@example.com',
         avatar: '',
     }),
-    showSearch: true,
     isCollapsed: false,
 });
 
 const emit = defineEmits<{
     toggleSidebar: [];
     logout: [];
-    search: [query: string];
-    'search-input': [query: string];
-    'search-focus': [];
-    'search-blur': [];
 }>();
 
 const { mode, toggleTheme } = useTheme();
 
 const isUserMenuOpen = ref(false);
-const searchQuery = ref('');
 
 const toggleUserMenu = (): void => {
     isUserMenuOpen.value = !isUserMenuOpen.value;
@@ -42,12 +35,6 @@ const toggleUserMenu = (): void => {
 
 const closeUserMenu = (): void => {
     isUserMenuOpen.value = false;
-};
-
-const handleSearch = (): void => {
-    if (searchQuery.value.trim()) {
-        emit('search', searchQuery.value);
-    }
 };
 
 const getThemeLabel = (): string => {
@@ -81,74 +68,25 @@ const getThemeLabel = (): string => {
                     aria-label="Toggle sidebar"
                     @click="emit('toggleSidebar')"
                 >
-                    <svg
-                        class="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                        />
-                    </svg>
+                    <AppIcon name="menu" size="lg" />
                 </AppButton>
 
-                <!-- Left slot (default: breadcrumbs) -->
-                <slot name="left">
-                    <slot name="breadcrumbs" />
-                </slot>
-
-                <!-- Teleport target for external left content -->
-                <div id="header-left" />
+                <!-- Teleport target: page-level header content (left) -->
+                <div id="header-left" class="flex items-center" />
             </div>
 
             <!-- Center section -->
             <div class="lg:flex hidden flex-1 justify-center">
-                <slot name="center" />
-                <!-- Teleport target for external center content -->
-                <div id="header-center" />
+                <!-- Teleport target: page-level header content (center) -->
+                <div id="header-center" class="flex items-center" />
             </div>
 
             <!-- Right section -->
             <div class="gap-2 lg:gap-3 flex items-center">
-                <!-- Right slot for custom content -->
-                <slot name="right" />
-                <!-- Teleport target for external right content (always visible) -->
+                <!-- Teleport target: page-level header content (right) -->
                 <div id="header-right" class="flex items-center" />
-
-                <!-- Search (desktop) -->
-                <div v-if="showSearch" class="md:block relative hidden">
-                    <form class="relative z-10" @submit.prevent="handleSearch">
-                        <input
-                            v-model="searchQuery"
-                            type="search"
-                            placeholder="Search..."
-                            class="w-64 py-2 pr-4 pl-10 text-sm rounded-lg border border-border bg-surface text-text transition-colors placeholder:text-muted focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none"
-                            @input="emit('search-input', searchQuery)"
-                            @focus="emit('search-focus')"
-                            @blur="emit('search-blur')"
-                        />
-                        <svg
-                            class="left-3 h-5 w-5 absolute top-1/2 -translate-y-1/2 text-muted"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                            />
-                        </svg>
-                    </form>
-                    <slot name="search-dropdown" />
-                </div>
+                <!-- Teleport target: app-level trailing content (search, etc.) -->
+                <div id="header-end" class="flex items-center" />
 
                 <!-- Theme toggle -->
                 <AppButton
@@ -159,61 +97,20 @@ const getThemeLabel = (): string => {
                     aria-label="Toggle theme"
                     @click="toggleTheme"
                 >
-                    <!-- Sun icon (light mode) -->
-                    <svg
-                        v-if="mode === 'light'"
-                        class="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                        />
-                    </svg>
-                    <!-- Moon icon (dark mode) -->
-                    <svg
+                    <AppIcon v-if="mode === 'light'" name="sun" size="md" />
+                    <AppIcon
                         v-else-if="mode === 'dark'"
-                        class="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                        />
-                    </svg>
-                    <!-- System icon -->
-                    <svg
-                        v-else
-                        class="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
-                    </svg>
+                        name="moon"
+                        size="md"
+                    />
+                    <AppIcon v-else name="desktop-computer" size="md" />
                 </AppButton>
 
                 <!-- User menu -->
                 <div class="relative">
                     <button
                         type="button"
-                        class="gap-2 px-2 py-1.5 flex min-h-[44px] items-center rounded-md transition-colors hover:bg-surface-hover"
+                        class="gap-2 px-2 py-1.5 min-h-11 flex items-center rounded-md transition-colors hover:bg-surface-hover"
                         aria-haspopup="true"
                         :aria-expanded="isUserMenuOpen"
                         @click="toggleUserMenu"
@@ -232,24 +129,15 @@ const getThemeLabel = (): string => {
                             }}</span>
                         </div>
                         <span
-                            class="text-sm font-medium lg:block hidden max-w-[120px] truncate text-text"
+                            class="text-sm font-medium lg:block max-w-30 hidden truncate text-text"
                         >
                             {{ user.name }}
                         </span>
-                        <svg
-                            class="h-4 w-4 lg:block hidden text-muted"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M19 9l-7 7-7-7"
-                            />
-                        </svg>
+                        <AppIcon
+                            name="chevron-down"
+                            size="sm"
+                            class="lg:block hidden text-muted"
+                        />
                     </button>
 
                     <!-- Dropdown menu -->
@@ -278,83 +166,17 @@ const getThemeLabel = (): string => {
                                 </p>
                             </div>
 
-                            <div class="py-1">
-                                <RouterLink
-                                    to="/profile"
-                                    class="gap-3 px-4 py-2 text-sm flex min-h-[40px] items-center text-text-secondary hover:bg-surface-hover hover:text-text"
-                                    role="menuitem"
-                                    @click="closeUserMenu"
-                                >
-                                    <svg
-                                        class="h-4 w-4"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                        />
-                                    </svg>
-                                    Profile
-                                </RouterLink>
-                                <RouterLink
-                                    to="/settings"
-                                    class="gap-3 px-4 py-2 text-sm flex min-h-[40px] items-center text-text-secondary hover:bg-surface-hover hover:text-text"
-                                    role="menuitem"
-                                    @click="closeUserMenu"
-                                >
-                                    <svg
-                                        class="h-4 w-4"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                                        />
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                        />
-                                    </svg>
-                                    Settings
-                                </RouterLink>
-                            </div>
-
                             <div class="pt-1 border-t border-border">
                                 <button
                                     type="button"
-                                    class="gap-3 px-4 py-2 text-sm flex min-h-[40px] w-full items-center text-danger hover:bg-surface-hover"
+                                    class="gap-3 px-4 py-2 text-sm min-h-10 flex w-full items-center text-danger hover:bg-surface-hover"
                                     role="menuitem"
                                     @click="
                                         closeUserMenu();
                                         emit('logout');
                                     "
                                 >
-                                    <svg
-                                        class="h-4 w-4"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                                        />
-                                    </svg>
+                                    <AppIcon name="logout" size="sm" />
                                     Sign out
                                 </button>
                             </div>
