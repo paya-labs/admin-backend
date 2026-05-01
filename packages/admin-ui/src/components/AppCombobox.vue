@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T extends Record<string, unknown>">
+<script setup lang="ts" generic="T extends object">
 import { computed, nextTick, useTemplateRef, watch } from 'vue';
 import { useAsyncSearch } from '../composables/useAsyncSearch';
 import { vClickOutside } from '../directives/clickOutside';
@@ -8,11 +8,18 @@ import AppIcon from './AppIcon.vue';
 const props = withDefaults(defineProps<AppComboboxProps<T>>(), {
     modelValue: null,
     multiple: false,
-    getKey: (item: T) => (item.id as string | number) ?? JSON.stringify(item),
-    getLabel: (item: T) =>
-        (item.label as string) ??
-        (item.name as string) ??
-        String(item.id ?? ''),
+    getKey: (item: T) => {
+        const record = item as Record<string, unknown>;
+        return (record.id as string | number) ?? JSON.stringify(item);
+    },
+    getLabel: (item: T) => {
+        const record = item as Record<string, unknown>;
+        return (
+            (record.label as string) ??
+            (record.name as string) ??
+            String(record.id ?? '')
+        );
+    },
     placeholder: 'Search...',
     minChars: 2,
     debounceMs: 300,
