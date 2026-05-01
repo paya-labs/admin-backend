@@ -8,7 +8,6 @@ import AppButton from './AppButton.vue';
 
 interface Props {
     user?: User;
-    showSearch?: boolean;
     isCollapsed?: boolean;
 }
 
@@ -18,23 +17,17 @@ withDefaults(defineProps<Props>(), {
         email: 'user@example.com',
         avatar: '',
     }),
-    showSearch: true,
     isCollapsed: false,
 });
 
 const emit = defineEmits<{
     toggleSidebar: [];
     logout: [];
-    search: [query: string];
-    'search-input': [query: string];
-    'search-focus': [];
-    'search-blur': [];
 }>();
 
 const { mode, toggleTheme } = useTheme();
 
 const isUserMenuOpen = ref(false);
-const searchQuery = ref('');
 
 const toggleUserMenu = (): void => {
     isUserMenuOpen.value = !isUserMenuOpen.value;
@@ -42,12 +35,6 @@ const toggleUserMenu = (): void => {
 
 const closeUserMenu = (): void => {
     isUserMenuOpen.value = false;
-};
-
-const handleSearch = (): void => {
-    if (searchQuery.value.trim()) {
-        emit('search', searchQuery.value);
-    }
 };
 
 const getThemeLabel = (): string => {
@@ -119,36 +106,6 @@ const getThemeLabel = (): string => {
                 <slot name="right" />
                 <!-- Teleport target for external right content (always visible) -->
                 <div id="header-right" class="flex items-center" />
-
-                <!-- Search (desktop) -->
-                <div v-if="showSearch" class="md:block relative hidden">
-                    <form class="relative z-10" @submit.prevent="handleSearch">
-                        <input
-                            v-model="searchQuery"
-                            type="search"
-                            placeholder="Search..."
-                            class="w-64 py-2 pr-4 pl-10 text-sm rounded-lg border border-border bg-surface text-text transition-colors placeholder:text-muted focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none"
-                            @input="emit('search-input', searchQuery)"
-                            @focus="emit('search-focus')"
-                            @blur="emit('search-blur')"
-                        />
-                        <svg
-                            class="left-3 h-5 w-5 absolute top-1/2 -translate-y-1/2 text-muted"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                            />
-                        </svg>
-                    </form>
-                    <slot name="search-dropdown" />
-                </div>
 
                 <!-- Theme toggle -->
                 <AppButton
