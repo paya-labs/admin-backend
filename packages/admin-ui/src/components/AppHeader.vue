@@ -102,10 +102,10 @@ const getThemeLabel = (): string => {
 
             <!-- Right section -->
             <div class="gap-2 lg:gap-3 flex items-center">
-                <!-- Right slot for custom content -->
-                <slot name="right" />
                 <!-- Teleport target for external right content (always visible) -->
                 <div id="header-right" class="flex items-center" />
+                <!-- Right slot for custom content (rendered to the right of teleported content) -->
+                <slot name="right" />
 
                 <!-- Theme toggle -->
                 <AppButton
