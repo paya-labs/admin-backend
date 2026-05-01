@@ -4,7 +4,7 @@ import { useAsyncSearch } from '../composables/useAsyncSearch';
 import { vClickOutside } from '../directives/clickOutside';
 import AppIcon from './AppIcon.vue';
 
-interface Props {
+export interface AppComboboxProps<T> {
     modelValue?: T | T[] | null;
     fetcher: (_query: string) => Promise<T[]>;
     multiple?: boolean;
@@ -20,7 +20,7 @@ interface Props {
     minLengthHint?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<AppComboboxProps<T>>(), {
     modelValue: null,
     multiple: false,
     getKey: (item: T) => (item.id as string | number) ?? JSON.stringify(item),

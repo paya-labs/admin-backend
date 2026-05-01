@@ -3,6 +3,7 @@ import {
     AppButton,
     AppCheckbox,
     AppColorInput,
+    AppCombobox,
     AppForm,
     AppInput,
     AppModal,
@@ -119,6 +120,76 @@ const longListOptions = Array.from({ length: 30 }, (_, i) => ({
     value: `item-${i + 1}`,
     label: `Option ${i + 1}`,
 }));
+
+// AppCombobox examples — mock async backend
+const demoUsers = [
+    { id: '1', name: 'Ada Lovelace', email: 'ada@example.com', role: 'Admin' },
+    { id: '2', name: 'Alan Turing', email: 'alan@example.com', role: 'Editor' },
+    {
+        id: '3',
+        name: 'Grace Hopper',
+        email: 'grace@example.com',
+        role: 'Admin',
+    },
+    {
+        id: '4',
+        name: 'Linus Torvalds',
+        email: 'linus@example.com',
+        role: 'Editor',
+    },
+    {
+        id: '5',
+        name: 'Margaret Hamilton',
+        email: 'margaret@example.com',
+        role: 'Admin',
+    },
+    {
+        id: '6',
+        name: 'Dennis Ritchie',
+        email: 'dennis@example.com',
+        role: 'Viewer',
+    },
+    { id: '7', name: 'Ken Thompson', email: 'ken@example.com', role: 'Editor' },
+    {
+        id: '8',
+        name: 'Donald Knuth',
+        email: 'donald@example.com',
+        role: 'Viewer',
+    },
+    {
+        id: '9',
+        name: 'Edsger Dijkstra',
+        email: 'edsger@example.com',
+        role: 'Admin',
+    },
+    {
+        id: '10',
+        name: 'Barbara Liskov',
+        email: 'barbara@example.com',
+        role: 'Editor',
+    },
+];
+
+const fakeFetch = async (query) => {
+    // Simulate network latency so the loading state is visible
+    await new Promise((resolve) => setTimeout(resolve, 250));
+    const q = query.toLowerCase();
+    return demoUsers.filter(
+        (u) =>
+            u.name.toLowerCase().includes(q) ||
+            u.email.toLowerCase().includes(q),
+    );
+};
+
+const navigatePickedUser = ref(null);
+const handleUserSelect = (user) => {
+    // In a real app: router.push(`/users/${user.id}`)
+    navigatePickedUser.value = user;
+    setTimeout(() => (navigatePickedUser.value = null), 2500);
+};
+
+const selectedAttendees = ref([]);
+const formFieldUser = ref(null);
 
 const formSubmitted = ref(false);
 
@@ -294,6 +365,134 @@ const handleAppFormSubmit = (data) => {
                         :rows="2"
                         disabled
                     />
+                </div>
+            </div>
+        </section>
+
+        <!-- AppCombobox Section -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">
+                Combobox (async search)
+            </h2>
+            <p class="text-muted text-sm">
+                Async-fetch combobox. Pass a
+                <code class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                    >fetcher: (query) =&gt; Promise&lt;T[]&gt;</code
+                >
+                — admin-ui stays HTTP-agnostic. Supports single-pick (with
+                <code class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                    >clear-on-select</code
+                >
+                +
+                <code class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                    >@select</code
+                >
+                for navigate-style flows) or multi-pick (with
+                <code class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                    >multiple</code
+                >
+                + v-model array, chips below).
+            </p>
+
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <div class="max-w-md space-y-2">
+                    <label class="text-text mb-1 block text-sm font-medium">
+                        Single — navigate on pick
+                        <span class="text-muted font-normal"
+                            >(use for global search, command palettes)</span
+                        >
+                    </label>
+                    <AppCombobox
+                        :fetcher="fakeFetch"
+                        :min-chars="1"
+                        clear-on-select
+                        placeholder="Search users..."
+                        @select="handleUserSelect"
+                    >
+                        <template #item="{ item }">
+                            <div class="text-text font-medium">
+                                {{ item.name }}
+                            </div>
+                            <div class="text-muted text-xs">
+                                {{ item.email }} · {{ item.role }}
+                            </div>
+                        </template>
+                    </AppCombobox>
+                    <p
+                        v-if="navigatePickedUser"
+                        class="text-primary-600 dark:text-primary-400 mt-2 text-sm"
+                    >
+                        Would navigate to:
+                        <strong>{{ navigatePickedUser.name }}</strong>
+                        ({{ navigatePickedUser.email }})
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <div class="max-w-md space-y-2">
+                    <label class="text-text mb-1 block text-sm font-medium">
+                        Multi — v-model array with chips
+                        <span class="text-muted font-normal"
+                            >(use for tag pickers, attendee lists)</span
+                        >
+                    </label>
+                    <AppCombobox
+                        v-model="selectedAttendees"
+                        multiple
+                        :fetcher="fakeFetch"
+                        :min-chars="1"
+                        placeholder="Search users..."
+                    >
+                        <template #item="{ item }">
+                            <div class="text-text font-medium">
+                                {{ item.name }}
+                            </div>
+                            <div class="text-muted text-xs">
+                                {{ item.email }}
+                            </div>
+                        </template>
+                    </AppCombobox>
+                    <p
+                        v-if="selectedAttendees.length > 0"
+                        class="text-muted mt-2 text-xs"
+                    >
+                        Selected ({{ selectedAttendees.length }}):
+                        {{ selectedAttendees.map((u) => u.id).join(', ') }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <div class="max-w-md space-y-2">
+                    <label class="text-text mb-1 block text-sm font-medium">
+                        Single — v-model (form field)
+                        <span class="text-muted font-normal"
+                            >(use as a typeahead form input)</span
+                        >
+                    </label>
+                    <AppCombobox
+                        v-model="formFieldUser"
+                        :fetcher="fakeFetch"
+                        :min-chars="1"
+                        placeholder="Pick a user..."
+                    >
+                        <template #item="{ item }">
+                            <div class="text-text font-medium">
+                                {{ item.name }}
+                            </div>
+                            <div class="text-muted text-xs">
+                                {{ item.email }}
+                            </div>
+                        </template>
+                    </AppCombobox>
+                    <p v-if="formFieldUser" class="text-muted mt-2 text-xs">
+                        Bound value:
+                        <code
+                            class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                            >{{ formFieldUser.name }}</code
+                        >
+                    </p>
                 </div>
             </div>
         </section>
