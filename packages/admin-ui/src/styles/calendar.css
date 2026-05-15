@@ -532,7 +532,6 @@
 .app-calendar-event-title {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .app-calendar-event-time {
