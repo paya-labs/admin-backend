@@ -81,6 +81,7 @@ export function useApi<T = unknown>(
         try {
             const fullUrl = buildUrl(url, params);
             const response = await fetch(fullUrl, {
+                credentials: 'include',
                 ...rest,
                 headers: {
                     'Content-Type': 'application/json',
