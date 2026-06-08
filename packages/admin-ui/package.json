@@ -5,10 +5,10 @@
     "type": "module",
     "main": "./dist/admin-ui.umd.cjs",
     "module": "./dist/admin-ui.js",
-    "types": "./dist/admin-ui.d.ts",
+    "types": "./dist/src/index.d.ts",
     "exports": {
         ".": {
-            "types": "./dist/admin-ui.d.ts",
+            "types": "./dist/src/index.d.ts",
             "import": "./dist/admin-ui.js",
             "require": "./dist/admin-ui.umd.cjs"
         },
