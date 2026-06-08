@@ -32,6 +32,10 @@ import AppToastContainer from './components/AppToastContainer.vue';
 import AdminLayout from './layouts/AdminLayout.vue';
 
 // Composables
+import {
+    getGlobalApiErrorHandler,
+    setGlobalApiErrorHandler,
+} from './composables/globalApiError';
 import { useApi } from './composables/useApi';
 import { useAsyncSearch } from './composables/useAsyncSearch';
 import { useAuth } from './composables/useAuth';
@@ -70,6 +74,7 @@ import { vClickOutside } from './directives/clickOutside';
 
 // Types
 import type { App, Plugin } from 'vue';
+import type { ApiError } from './composables/useApi';
 
 // Re-export types
 export * from './types';
@@ -143,8 +148,10 @@ export {
 // Re-export composables
 export {
     BREAKPOINTS,
+    getGlobalApiErrorHandler,
     getModuleConfig,
     provideModuleConfig,
+    setGlobalApiErrorHandler,
     useApi,
     useAsyncSearch,
     useAuth,
@@ -179,11 +186,16 @@ export { vClickOutside };
 // Plugin for global registration
 export interface AdminUIPluginOptions {
     prefix?: string;
+    onApiError?: (error: ApiError) => void;
 }
 
 export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
     install(app: App, options: AdminUIPluginOptions = {}) {
         const prefix = options.prefix ?? 'App';
+
+        if (options.onApiError) {
+            setGlobalApiErrorHandler(options.onApiError);
+        }
 
         // Register components globally
         app.component(`${prefix}Button`, AppButton);

@@ -1,5 +1,6 @@
 import { ref, shallowRef, type Ref } from 'vue';
 import type { RequestOptions, UseApiOptions } from '../types';
+import { getGlobalApiErrorHandler } from './globalApiError';
 
 export interface ApiError extends Error {
     status?: number;
@@ -115,6 +116,14 @@ export function useApi<T = unknown>(
             error.value = e;
             if (onError) {
                 onError(e);
+            }
+            const globalHandler = getGlobalApiErrorHandler();
+            if (globalHandler) {
+                try {
+                    globalHandler(e as ApiError);
+                } catch {
+                    // A faulty global handler must not mask the original API error.
+                }
             }
             throw e;
         } finally {
