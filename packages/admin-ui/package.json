@@ -35,7 +35,7 @@
     "devDependencies": {
         "@tailwindcss/vite": "^4.3.0",
         "@vitejs/plugin-vue": "^6.0.7",
-        "@vue/test-utils": "^2.4.10",
+        "@vue/test-utils": "^2.4.11",
         "jsdom": "^29.1.1",
         "tailwindcss": "^4.1.0",
         "vite": "npm:rolldown-vite@7.2.5",
@@ -65,9 +65,9 @@
         "@fullcalendar/list": "^6.1.20",
         "@fullcalendar/timegrid": "^6.1.20",
         "@fullcalendar/vue3": "^6.1.20",
-        "@tiptap/markdown": "^3.24.0",
+        "@tiptap/markdown": "^3.26.0",
         "@tiptap/pm": "^3.24.0",
-        "@tiptap/starter-kit": "^3.24.0",
-        "@tiptap/vue-3": "^3.24.0"
+        "@tiptap/starter-kit": "^3.26.0",
+        "@tiptap/vue-3": "^3.26.0"
     }
 }
