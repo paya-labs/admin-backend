@@ -32,6 +32,7 @@ import AppToastContainer from './components/AppToastContainer.vue';
 import AdminLayout from './layouts/AdminLayout.vue';
 
 // Composables
+import { getAuthToken, setAuthToken } from './composables/authToken';
 import {
     getGlobalApiErrorHandler,
     setGlobalApiErrorHandler,
@@ -148,9 +149,11 @@ export {
 // Re-export composables
 export {
     BREAKPOINTS,
+    getAuthToken,
     getGlobalApiErrorHandler,
     getModuleConfig,
     provideModuleConfig,
+    setAuthToken,
     setGlobalApiErrorHandler,
     useApi,
     useAsyncSearch,

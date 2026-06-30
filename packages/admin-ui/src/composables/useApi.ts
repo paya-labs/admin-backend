@@ -1,5 +1,6 @@
 import { ref, shallowRef, type Ref } from 'vue';
 import type { RequestOptions, UseApiOptions } from '../types';
+import { authHeader } from './authToken';
 import { getGlobalApiErrorHandler } from './globalApiError';
 
 export interface ApiError extends Error {
@@ -86,6 +87,7 @@ export function useApi<T = unknown>(
                 ...rest,
                 headers: {
                     'Content-Type': 'application/json',
+                    ...authHeader(),
                     ...defaultHeaders,
                     ...requestHeaders,
                 },
