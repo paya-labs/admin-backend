@@ -1,4 +1,5 @@
 import { computed, type ComputedRef, ref, type Ref, shallowRef } from 'vue';
+import { authHeader, setAuthToken } from './authToken';
 
 export interface UseAuthOptions {
     baseUrl?: string;
@@ -79,6 +80,7 @@ export function useAuth<TUser = Record<string, unknown>>(
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
+                ...authHeader(),
                 ...options.headers,
             },
         });
@@ -131,6 +133,10 @@ export function useAuth<TUser = Record<string, unknown>>(
                 unknown
             >;
 
+            if (typeof data.token === 'string') {
+                setAuthToken(data.token);
+            }
+
             if (data.user) {
                 user.value = data.user as TUser;
             } else if (data.id || data.email) {
@@ -167,6 +173,7 @@ export function useAuth<TUser = Record<string, unknown>>(
         } catch {
             // Ignore logout errors - clear state anyway
         } finally {
+            setAuthToken(null);
             user.value = null;
             loading.value = false;
 
@@ -186,6 +193,7 @@ export function useAuth<TUser = Record<string, unknown>>(
             });
 
             if (response.status === 401) {
+                setAuthToken(null);
                 user.value = null;
                 return null;
             }
