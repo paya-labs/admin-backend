@@ -72,7 +72,7 @@ const toggle = (): void => {
                     'peer-focus:ring-2 peer-focus:ring-focus-ring peer-focus:ring-offset-2',
 
                     modelValue
-                        ? 'border-primary-600 bg-primary-600 dark:border-primary-500 dark:bg-primary-500'
+                        ? 'border-primary-600 bg-primary-600'
                         : hasError
                           ? 'border-danger bg-input-bg'
                           : 'border-input-border bg-input-bg',

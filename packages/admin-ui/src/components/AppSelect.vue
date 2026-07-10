@@ -339,7 +339,7 @@ onBeforeUnmount(() => {
                             // Selected state
                             !option.disabled &&
                                 option.value === modelValue &&
-                                'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300',
+                                'bg-primary-subtle text-on-primary-soft',
 
                             // Highlighted state (keyboard navigation)
                             !option.disabled &&
@@ -363,7 +363,7 @@ onBeforeUnmount(() => {
                         <!-- Checkmark for selected option -->
                         <span
                             v-if="option.value === modelValue"
-                            class="inset-y-0 right-0 pr-3 absolute flex items-center text-primary-600 dark:text-primary-400"
+                            class="inset-y-0 right-0 pr-3 absolute flex items-center text-on-primary-soft"
                         >
                             <svg
                                 class="h-5 w-5"

@@ -61,7 +61,7 @@ const handleClick = (event: MouseEvent): void => {
             {
                 'text-white bg-primary-600 hover:bg-primary-700 active:bg-primary-800':
                     variant === 'primary',
-                'bg-gray-100 text-text hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700':
+                'bg-secondary text-text hover:bg-secondary-hover':
                     variant === 'secondary',
                 'text-white bg-danger hover:opacity-90 active:opacity-80':
                     variant === 'danger',

@@ -39,12 +39,10 @@ const isRight = computed(() => props.position.includes('right'));
 
 const getVariantClasses = (variant: ToastVariant): string => {
     const variants: Record<ToastVariant, string> = {
-        success:
-            'bg-success/10 border-success/30 text-success dark:bg-success/20',
-        error: 'bg-danger/10 border-danger/30 text-danger dark:bg-danger/20',
-        warning:
-            'bg-warning/10 border-warning/30 text-warning dark:bg-warning/20',
-        info: 'bg-primary/10 border-primary/30 text-primary dark:bg-primary/20',
+        success: 'bg-success-soft border-success/30 text-success',
+        error: 'bg-danger-soft border-danger/30 text-danger',
+        warning: 'bg-warning-soft border-warning/30 text-warning',
+        info: 'bg-info-soft border-info/30 text-info',
     };
     return variants[variant] || variants.info;
 };
