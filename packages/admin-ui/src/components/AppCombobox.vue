@@ -411,12 +411,12 @@ defineExpose({
             >
                 <span
                     :key="getKey(item)"
-                    class="gap-1 px-2.5 py-1 text-sm font-medium flex items-center rounded-full bg-primary-600/10 text-primary-700 dark:bg-primary-400/10 dark:text-primary-400"
+                    class="gap-1 px-2.5 py-1 text-sm font-medium flex items-center rounded-full bg-primary-faint text-on-primary-soft"
                 >
                     {{ getLabel(item) }}
                     <button
                         type="button"
-                        class="flex items-center text-primary-700 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-200"
+                        class="flex items-center text-on-primary-soft hover:text-on-primary-soft-strong"
                         aria-label="Remove"
                         @click="removeItem(item)"
                     >

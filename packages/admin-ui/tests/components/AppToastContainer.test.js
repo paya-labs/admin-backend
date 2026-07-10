@@ -103,7 +103,7 @@ describe('AppToastContainer', () => {
         await wrapper.vm.$nextTick();
 
         const toast = wrapper.find('[role="alert"]');
-        expect(toast.classes().join(' ')).toContain('bg-primary');
+        expect(toast.classes().join(' ')).toContain('bg-info');
     });
 
     it('limits visible toasts to max prop', async () => {

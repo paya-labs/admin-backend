@@ -245,7 +245,7 @@ const handleLogout = (): void => {
                                             'text-sm rounded-md',
                                             'transition-colors duration-150',
                                             isActive(getItemPath(child))
-                                                ? 'bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300'
+                                                ? 'bg-primary-subtle text-on-primary-soft'
                                                 : 'text-text-secondary hover:bg-surface-hover hover:text-text',
                                         ]"
                                         @click="emit('close')"
@@ -274,7 +274,7 @@ const handleLogout = (): void => {
                                 'transition-colors duration-150',
                                 isCollapsed && 'px-0 justify-center',
                                 isActive(getItemPath(item))
-                                    ? 'bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300'
+                                    ? 'bg-primary-subtle text-on-primary-soft'
                                     : 'text-text-secondary hover:bg-surface-hover hover:text-text',
                             ]"
                             :title="isCollapsed ? item.label : undefined"
@@ -303,7 +303,7 @@ const handleLogout = (): void => {
                                         'text-black bg-warning',
                                     (!item.badgeVariant ||
                                         item.badgeVariant === 'primary') &&
-                                        'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300',
+                                        'bg-primary-soft text-on-primary-soft',
                                 ]"
                             >
                                 {{ item.badge }}
@@ -334,7 +334,7 @@ const handleLogout = (): void => {
                 @click="toggleUserMenu"
             >
                 <div
-                    class="h-9 w-9 text-sm font-medium flex flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300"
+                    class="h-9 w-9 text-sm font-medium flex flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-soft text-on-primary-soft"
                 >
                     <img
                         v-if="user.avatar"

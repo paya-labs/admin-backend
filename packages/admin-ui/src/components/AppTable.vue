@@ -92,7 +92,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                                 class="px-4 py-4"
                             >
                                 <div
-                                    class="h-4 animate-pulse rounded bg-gray-200 dark:bg-gray-700"
+                                    class="h-4 animate-pulse rounded bg-skeleton"
                                     :style="{
                                         width: `${60 + Math.random() * 40}%`,
                                     }"
@@ -100,7 +100,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                             </td>
                             <td v-if="hasActions" class="px-4 py-4">
                                 <div
-                                    class="h-8 w-20 animate-pulse rounded ml-auto bg-gray-200 dark:bg-gray-700"
+                                    class="h-8 w-20 animate-pulse rounded ml-auto bg-skeleton"
                                 />
                             </td>
                         </tr>
@@ -208,10 +208,10 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                         class="mb-3 last:mb-0"
                     >
                         <div
-                            class="mb-1 h-3 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-700"
+                            class="mb-1 h-3 w-16 animate-pulse rounded bg-skeleton"
                         />
                         <div
-                            class="h-4 animate-pulse rounded bg-gray-200 dark:bg-gray-700"
+                            class="h-4 animate-pulse rounded bg-skeleton"
                             :style="{ width: `${60 + Math.random() * 40}%` }"
                         />
                     </div>

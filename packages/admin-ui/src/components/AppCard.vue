@@ -27,13 +27,9 @@ withDefaults(defineProps<Props>(), {
         <!-- Loading skeleton -->
         <template v-if="loading">
             <div class="animate-pulse">
-                <div
-                    class="mb-2 h-4 w-24 rounded bg-gray-200 dark:bg-gray-700"
-                />
-                <div
-                    class="mb-2 h-8 w-32 rounded bg-gray-200 dark:bg-gray-700"
-                />
-                <div class="h-4 w-20 rounded bg-gray-200 dark:bg-gray-700" />
+                <div class="mb-2 h-4 w-24 rounded bg-skeleton" />
+                <div class="mb-2 h-8 w-32 rounded bg-skeleton" />
+                <div class="h-4 w-20 rounded bg-skeleton" />
             </div>
         </template>
 
@@ -81,7 +77,7 @@ withDefaults(defineProps<Props>(), {
                 <!-- Icon -->
                 <div
                     v-if="icon || $slots.icon"
-                    class="h-12 w-12 flex flex-shrink-0 items-center justify-center rounded-lg bg-primary-100 text-primary-600 dark:bg-primary-900 dark:text-primary-400"
+                    class="h-12 w-12 flex flex-shrink-0 items-center justify-center rounded-lg bg-primary-soft text-on-primary-soft"
                 >
                     <slot name="icon">
                         <span
