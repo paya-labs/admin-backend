@@ -59,12 +59,12 @@
         "registry": "https://npm.pkg.github.com"
     },
     "dependencies": {
-        "@fullcalendar/core": "^6.1.20",
+        "@fullcalendar/core": "^7.0.1",
         "@fullcalendar/daygrid": "^6.1.20",
         "@fullcalendar/interaction": "^6.1.20",
         "@fullcalendar/list": "^6.1.20",
         "@fullcalendar/timegrid": "^6.1.20",
-        "@fullcalendar/vue3": "^6.1.20",
+        "@fullcalendar/vue3": "^7.0.1",
         "@tiptap/markdown": "^3.26.0",
         "@tiptap/pm": "^3.24.0",
         "@tiptap/starter-kit": "^3.26.0",
