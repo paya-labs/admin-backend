@@ -112,10 +112,7 @@ export type { IconDefinition } from './icons';
 
 // Re-export component types
 export type { ViewOption } from './components/AppCalendarViewTabs.vue';
-export type {
-    AppComboboxProps,
-    ComboboxSize,
-} from './components/AppCombobox.types';
+export type { AppComboboxProps } from './components/AppCombobox.types';
 
 // Re-export components
 export {

@@ -2,7 +2,8 @@
 import { computed, nextTick, useTemplateRef, watch } from 'vue';
 import { useAsyncSearch } from '../composables/useAsyncSearch';
 import { vClickOutside } from '../directives/clickOutside';
-import type { AppComboboxProps, ComboboxSize } from './AppCombobox.types';
+import type { ControlSize } from '../types';
+import type { AppComboboxProps } from './AppCombobox.types';
 import AppIcon from './AppIcon.vue';
 
 const props = withDefaults(defineProps<AppComboboxProps<T>>(), {
@@ -33,7 +34,7 @@ const props = withDefaults(defineProps<AppComboboxProps<T>>(), {
 
 const sizeClasses = computed(() => {
     const map: Record<
-        ComboboxSize,
+        ControlSize,
         { input: string; icon: 'sm' | 'md'; trailingPad: string }
     > = {
         sm: {
@@ -56,7 +57,7 @@ const sizeClasses = computed(() => {
 });
 
 const leadingIconLeftClass = computed(() => {
-    const map: Record<ComboboxSize, string> = {
+    const map: Record<ControlSize, string> = {
         sm: 'left-2.5',
         md: 'left-3',
         lg: 'left-3',

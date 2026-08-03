@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { ButtonSize, ButtonVariant } from '../types';
+import type { ButtonVariant, ControlSize } from '../types';
 
 type ButtonType = 'button' | 'submit' | 'reset';
 
 interface Props {
     variant?: ButtonVariant;
-    size?: ButtonSize;
+    size?: ControlSize;
     disabled?: boolean;
     loading?: boolean;
     iconOnly?: boolean;
