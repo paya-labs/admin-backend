@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue';
+import type { ControlSize } from '../types';
 
 type ResizeOption = 'none' | 'vertical' | 'horizontal' | 'both';
 
@@ -14,6 +15,7 @@ interface Props {
     rows?: number;
     maxlength?: number;
     resize?: ResizeOption;
+    size?: ControlSize;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
     rows: 3,
     maxlength: undefined,
     resize: 'vertical',
+    size: 'md',
 });
 
 const emit = defineEmits<{
@@ -77,7 +80,12 @@ const resizeClass = computed(() => {
             :rows="rows"
             :maxlength="maxlength"
             :class="[
-                'px-3 py-2.5 w-full',
+                'w-full',
+                {
+                    sm: 'px-3 py-1.5 text-sm',
+                    md: 'px-3 py-2.5',
+                    lg: 'px-3 py-3',
+                }[size],
                 'bg-input-bg text-text',
                 'rounded-md border',
                 'placeholder:text-muted',

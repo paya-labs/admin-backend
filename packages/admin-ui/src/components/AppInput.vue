@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, useAttrs, useId } from 'vue';
+import type { ControlSize } from '../types';
 
 defineOptions({ inheritAttrs: false });
 
@@ -7,6 +8,7 @@ interface Props {
     modelValue?: string | number;
     label?: string;
     type?: string;
+    size?: ControlSize;
     placeholder?: string;
     error?: string;
     hint?: string;
@@ -19,6 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
     modelValue: '',
     label: '',
     type: 'text',
+    size: 'md',
     placeholder: '',
     error: '',
     hint: '',
@@ -85,7 +88,12 @@ const inputAttrs = computed(() => {
                 :required="required"
                 :autocomplete="autocomplete"
                 :class="[
-                    'py-2.5 min-h-[44px] w-full',
+                    'w-full',
+                    {
+                        sm: 'py-1.5 text-sm min-h-[36px]',
+                        md: 'py-2.5 min-h-[44px]',
+                        lg: 'py-3 min-h-[52px]',
+                    }[size],
                     'bg-input-bg text-text',
                     'rounded-md border',
                     'placeholder:text-muted',

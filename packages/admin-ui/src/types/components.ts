@@ -4,7 +4,7 @@ export type ButtonVariant =
     | 'danger'
     | 'ghost'
     | 'outline';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ControlSize = 'sm' | 'md' | 'lg';
 
 export type BadgeVariant =
     | 'primary'

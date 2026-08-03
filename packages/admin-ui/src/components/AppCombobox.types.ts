@@ -1,4 +1,4 @@
-export type ComboboxSize = 'sm' | 'md' | 'lg';
+import type { ControlSize } from '../types';
 
 export interface AppComboboxProps<T> {
     modelValue?: T | T[] | null;
@@ -14,5 +14,5 @@ export interface AppComboboxProps<T> {
     error?: string;
     disabled?: boolean;
     minLengthHint?: string;
-    size?: ComboboxSize;
+    size?: ControlSize;
 }

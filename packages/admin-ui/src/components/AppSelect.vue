@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue';
-import type { SelectOption } from '../types';
+import type { ControlSize, SelectOption } from '../types';
 
 interface Props {
     modelValue?: string | number;
     options: SelectOption[];
     label?: string;
     placeholder?: string;
+    size?: ControlSize;
     error?: string;
     hint?: string;
     required?: boolean;
@@ -17,6 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
     modelValue: '',
     label: '',
     placeholder: 'Select an option',
+    size: 'md',
     error: '',
     hint: '',
     required: false,
@@ -264,7 +266,11 @@ onBeforeUnmount(() => {
             :aria-describedby="error || hint ? `${selectId}-helper` : undefined"
             :class="[
                 'flex w-full items-center justify-between',
-                'px-3 py-2.5 min-h-[44px]',
+                {
+                    sm: 'px-3 py-1.5 text-sm min-h-[36px]',
+                    md: 'px-3 py-2.5 min-h-[44px]',
+                    lg: 'px-3 py-3 min-h-[52px]',
+                }[size],
                 'bg-input-bg text-left',
                 'rounded-md border',
                 'transition-colors duration-[var(--transition-fast)]',

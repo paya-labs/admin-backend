@@ -1,4 +1,6 @@
 <script lang="ts">
+import type { ControlSize } from '../types';
+
 export const DEFAULT_PALETTE = [
     '#d50000',
     '#f4511e',
@@ -20,6 +22,7 @@ export interface ColorInputProps {
     disabled?: boolean;
     palette?: string[] | false;
     showHex?: boolean;
+    size?: ControlSize;
 }
 </script>
 
@@ -36,6 +39,7 @@ const props = withDefaults(defineProps<ColorInputProps>(), {
     disabled: false,
     palette: () => DEFAULT_PALETTE,
     showHex: true,
+    size: 'md',
 });
 
 const emit = defineEmits<{
@@ -279,7 +283,11 @@ function commitHex() {
             :disabled="disabled"
             :class="[
                 'gap-3 inline-flex items-center',
-                'px-3 py-2 min-h-[44px]',
+                {
+                    sm: 'px-2 py-1 min-h-[36px]',
+                    md: 'px-3 py-2 min-h-[44px]',
+                    lg: 'px-3 py-2.5 min-h-[52px]',
+                }[size],
                 'rounded-md border bg-input-bg text-text',
                 'transition-colors duration-[var(--transition-fast)]',
                 'focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none',
