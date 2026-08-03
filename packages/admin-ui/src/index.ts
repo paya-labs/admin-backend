@@ -22,6 +22,7 @@ import AppIcon from './components/AppIcon.vue';
 import AppInput from './components/AppInput.vue';
 import AppModal from './components/AppModal.vue';
 import AppPagination from './components/AppPagination.vue';
+import AppRadio from './components/AppRadio.vue';
 import AppSelect from './components/AppSelect.vue';
 import AppSidebar from './components/AppSidebar.vue';
 import AppTable from './components/AppTable.vue';
@@ -139,6 +140,7 @@ export {
     AppInput,
     AppModal,
     AppPagination,
+    AppRadio,
     AppSelect,
     AppSidebar,
     AppTable,
@@ -208,6 +210,7 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}Badge`, AppBadge);
         app.component(`${prefix}Card`, AppCard);
         app.component(`${prefix}Checkbox`, AppCheckbox);
+        app.component(`${prefix}Radio`, AppRadio);
         app.component(`${prefix}Table`, AppTable);
         app.component(`${prefix}Header`, AppHeader);
         app.component(`${prefix}Sidebar`, AppSidebar);

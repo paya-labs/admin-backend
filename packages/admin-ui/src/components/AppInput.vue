@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue';
+import { computed, useAttrs, useId } from 'vue';
+
+defineOptions({ inheritAttrs: false });
 
 interface Props {
     modelValue?: string | number;
@@ -37,10 +39,22 @@ const inputValue = computed({
 });
 
 const hasError = computed(() => Boolean(props.error));
+
+// class/style stay on the wrapper; everything else (min, max, step,
+// aria-*, ...) belongs on the native input
+const attrs = useAttrs();
+const rootAttrs = computed(() => ({
+    class: attrs.class,
+    style: attrs.style,
+}));
+const inputAttrs = computed(() => {
+    const { class: _class, style: _style, ...rest } = attrs;
+    return rest;
+});
 </script>
 
 <template>
-    <div class="w-full">
+    <div class="w-full" v-bind="rootAttrs">
         <!-- Label -->
         <label
             v-if="label"
@@ -64,6 +78,7 @@ const hasError = computed(() => Boolean(props.error));
             <input
                 :id="inputId"
                 v-model="inputValue"
+                v-bind="inputAttrs"
                 :type="type"
                 :placeholder="placeholder"
                 :disabled="disabled"
