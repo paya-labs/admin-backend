@@ -59,7 +59,7 @@ interface Props {
     slotMinTime?: string;
     slotMaxTime?: string;
     slotDuration?: string;
-    slotHeight?: string; // CSS height for time slots (e.g., '3rem', '48px')
+    slotHeight?: string; // Minimum CSS height for time slots (e.g., '3rem', '48px'); rows grow with slotDuration
     // Day configuration
     firstDay?: number;
     hiddenDays?: number[];
@@ -173,6 +173,17 @@ const slots: ReturnType<typeof useSlots> = useSlots();
 
 // Check if mobile toolbar slot is provided
 const hasMobileToolbar = computed(() => !!slots['mobile-toolbar']);
+
+// Slot rows scale with slotDuration so the 1.625rem (26px) min-height on
+// .app-calendar-event-timed stays proportional for events >= 10 minutes;
+// slotHeight acts as the floor for short slot durations.
+const slotHeightStyle = computed(() => {
+    const [hours = 0, minutes = 0] = props.slotDuration.split(':').map(Number);
+    const proportionalPx = (hours * 60 + minutes) * 2.6; // 26px / 10min
+    return {
+        '--app-calendar-slot-height': `max(${props.slotHeight ?? '2rem'}, ${proportionalPx}px)`,
+    };
+});
 
 // Use composables
 const {
@@ -830,11 +841,7 @@ defineExpose({
             >
                 <div
                     class="app-calendar-wrapper"
-                    :style="
-                        props.slotHeight
-                            ? { '--app-calendar-slot-height': props.slotHeight }
-                            : {}
-                    "
+                    :style="slotHeightStyle"
                     @touchstart.passive="handleTouchStart"
                     @touchend.passive="handleTouchEnd"
                 >

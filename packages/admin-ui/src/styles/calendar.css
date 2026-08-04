@@ -711,6 +711,12 @@
     border-color: var(--color-gray-100);
 }
 
+/* Clip event cards to their time-proportional bounds; the card's min-height
+   can exceed them by FullCalendar's 2px internal margin/padding chrome. */
+.app-calendar-wrapper .fc .fc-timegrid-event {
+    overflow: hidden;
+}
+
 .app-calendar-wrapper .fc .fc-timegrid-slot-label {
     font-size: 0.6875rem;
     font-weight: 500;
