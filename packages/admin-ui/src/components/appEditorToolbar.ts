@@ -10,9 +10,16 @@ export const EDITOR_TOOLBAR_ITEMS = [
     'orderedList',
     'blockquote',
     'markdown',
+    'attach',
 ] as const;
 
 export type EditorToolbarItem = (typeof EDITOR_TOOLBAR_ITEMS)[number];
+
+export interface EditorAttachment {
+    id: string;
+    name: string;
+    size?: number;
+}
 
 export const EDITOR_TOOLBAR_COMPACT: readonly EditorToolbarItem[] = [
     'bold',

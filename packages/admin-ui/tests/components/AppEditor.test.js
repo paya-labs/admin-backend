@@ -322,4 +322,121 @@ describe('AppEditor', () => {
         expect(labels).toEqual(['B', 'I']);
         expect(wrapper.findAll('[role="separator"]').length).toBe(0);
     });
+
+    // Attachment tests
+    it('does not render attach button with default toolbar', async () => {
+        const wrapper = mount(AppEditor);
+        await waitForEditor();
+
+        expect(wrapper.find('[aria-label="Attach file"]').exists()).toBe(false);
+        expect(wrapper.find('input[type="file"]').exists()).toBe(false);
+    });
+
+    it('renders attach button when attach is in the toolbar', async () => {
+        const wrapper = mount(AppEditor, {
+            props: { toolbar: [...EDITOR_TOOLBAR_COMPACT, 'attach'] },
+        });
+        await waitForEditor();
+
+        const attachButton = wrapper.find('[aria-label="Attach file"]');
+        expect(attachButton.exists()).toBe(true);
+        expect(attachButton.find('svg').exists()).toBe(true);
+        expect(wrapper.find('input[type="file"]').exists()).toBe(true);
+    });
+
+    it('passes accept prop to the hidden file input', async () => {
+        const wrapper = mount(AppEditor, {
+            props: { toolbar: ['attach'], accept: 'image/*' },
+        });
+        await waitForEditor();
+
+        expect(wrapper.find('input[type="file"]').attributes('accept')).toBe(
+            'image/*',
+        );
+    });
+
+    it('emits attach with selected files and resets the input', async () => {
+        const wrapper = mount(AppEditor, {
+            props: { toolbar: ['attach'] },
+        });
+        await waitForEditor();
+
+        const input = wrapper.find('input[type="file"]');
+        const file = new File(['hello'], 'hello.txt', { type: 'text/plain' });
+        Object.defineProperty(input.element, 'files', {
+            value: [file],
+            configurable: true,
+        });
+        await input.trigger('change');
+
+        expect(wrapper.emitted('attach')).toHaveLength(1);
+        expect(wrapper.emitted('attach')[0][0]).toEqual([file]);
+        expect(input.element.value).toBe('');
+    });
+
+    it('disables attach button when disabled', async () => {
+        const wrapper = mount(AppEditor, {
+            props: { toolbar: ['attach'], disabled: true },
+        });
+        await waitForEditor();
+
+        expect(
+            wrapper.find('[aria-label="Attach file"]').element.disabled,
+        ).toBe(true);
+    });
+
+    it('renders attachment pills with names and formatted sizes', async () => {
+        const wrapper = mount(AppEditor, {
+            props: {
+                attachments: [
+                    { id: '1', name: 'report.pdf', size: 655360 },
+                    { id: '2', name: 'photo.jpg', size: 1258291 },
+                    { id: '3', name: 'notes.txt' },
+                ],
+            },
+        });
+        await waitForEditor();
+
+        const pills = wrapper.find('.app-editor-attachments');
+        expect(pills.exists()).toBe(true);
+        expect(pills.text()).toContain('report.pdf');
+        expect(pills.text()).toContain('640 KB');
+        expect(pills.text()).toContain('photo.jpg');
+        expect(pills.text()).toContain('1.2 MB');
+        expect(pills.text()).toContain('notes.txt');
+    });
+
+    it('does not render pill row without attachments', async () => {
+        const wrapper = mount(AppEditor);
+        await waitForEditor();
+
+        expect(wrapper.find('.app-editor-attachments').exists()).toBe(false);
+    });
+
+    it('emits remove-attachment with the id', async () => {
+        const wrapper = mount(AppEditor, {
+            props: {
+                attachments: [{ id: 'abc', name: 'report.pdf', size: 100 }],
+            },
+        });
+        await waitForEditor();
+
+        await wrapper.find('[aria-label="Remove report.pdf"]').trigger('click');
+
+        expect(wrapper.emitted('remove-attachment')).toEqual([['abc']]);
+    });
+
+    it('disables attachment remove buttons when disabled', async () => {
+        const wrapper = mount(AppEditor, {
+            props: {
+                disabled: true,
+                attachments: [{ id: 'abc', name: 'report.pdf' }],
+            },
+        });
+        await waitForEditor();
+
+        expect(
+            wrapper.find('[aria-label="Remove report.pdf"]').element.disabled,
+        ).toBe(true);
+    });
 });
