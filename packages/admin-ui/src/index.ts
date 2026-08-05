@@ -113,6 +113,13 @@ export type { IconDefinition } from './icons';
 // Re-export component types
 export type { ViewOption } from './components/AppCalendarViewTabs.vue';
 export type { AppComboboxProps } from './components/AppCombobox.types';
+export type { EditorToolbarItem } from './components/appEditorToolbar';
+
+// Editor toolbar configuration
+export {
+    EDITOR_TOOLBAR_COMPACT,
+    EDITOR_TOOLBAR_ITEMS,
+} from './components/appEditorToolbar';
 
 // Re-export components
 export {
