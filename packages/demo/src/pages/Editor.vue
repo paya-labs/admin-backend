@@ -14,6 +14,34 @@ const disabledContent = ref(
 const liveContent = ref('');
 const markdownContent = ref('');
 const compactContent = ref('');
+
+const attachmentContent = ref('');
+const attachments = ref([
+    { id: 'demo-1', name: 'quarterly-report.pdf', size: 655360 },
+]);
+const uploadingNames = ref([]);
+
+// In a real app: POST each file to your upload endpoint, then push a pill
+// with the id/name/size returned by the server. Simulated here with a delay.
+async function onAttach(files) {
+    for (const file of files) {
+        uploadingNames.value.push(file.name);
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        uploadingNames.value = uploadingNames.value.filter(
+            (n) => n !== file.name,
+        );
+        attachments.value.push({
+            id: crypto.randomUUID(),
+            name: file.name,
+            size: file.size,
+        });
+    }
+}
+
+// In a real app: DELETE the attachment server-side first, then drop the pill.
+function onRemoveAttachment(id) {
+    attachments.value = attachments.value.filter((a) => a.id !== id);
+}
 </script>
 
 <template>
@@ -116,6 +144,43 @@ const compactContent = ref('');
                         placeholder="Only basic formatting available..."
                         :toolbar="EDITOR_TOOLBAR_COMPACT"
                     />
+                </div>
+            </div>
+        </section>
+
+        <!-- Attachments -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Attachments</h2>
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <div class="max-w-2xl space-y-4">
+                    <p class="text-muted text-sm">
+                        Add <code>'attach'</code> to the toolbar to show the
+                        paperclip button (it is opt-in and never part of the
+                        default toolbar). The editor never uploads anything: it
+                        emits <code>@attach</code> with the selected
+                        <code>File[]</code>, the app uploads them and controls
+                        the pills via the <code>attachments</code> prop
+                        (<code>EditorAttachment[]</code>). Use
+                        <code>accept</code> to restrict selectable file types.
+                        This demo simulates an upload with a short delay.
+                    </p>
+                    <AppEditor
+                        v-model="attachmentContent"
+                        label="Message"
+                        placeholder="Write a message and attach files..."
+                        accept=".pdf,image/*,video/mp4"
+                        :toolbar="[...EDITOR_TOOLBAR_COMPACT, 'attach']"
+                        :attachments="attachments"
+                        @attach="onAttach"
+                        @remove-attachment="onRemoveAttachment"
+                    />
+                    <p
+                        v-if="uploadingNames.length"
+                        class="text-muted text-sm"
+                        role="status"
+                    >
+                        Uploading {{ uploadingNames.join(', ') }}…
+                    </p>
                 </div>
             </div>
         </section>

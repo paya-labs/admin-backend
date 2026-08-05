@@ -5,6 +5,7 @@ import { EditorContent, useEditor } from '@tiptap/vue-3';
 import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
 import {
     EDITOR_TOOLBAR_ITEMS,
+    type EditorAttachment,
     type EditorToolbarItem,
 } from './appEditorToolbar';
 
@@ -17,6 +18,8 @@ interface Props {
     required?: boolean;
     disabled?: boolean;
     toolbar?: readonly EditorToolbarItem[];
+    accept?: string;
+    attachments?: readonly EditorAttachment[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,10 +31,14 @@ const props = withDefaults(defineProps<Props>(), {
     required: false,
     disabled: false,
     toolbar: undefined,
+    accept: '',
+    attachments: () => [],
 });
 
 const emit = defineEmits<{
     'update:modelValue': [value: string];
+    attach: [files: File[]];
+    'remove-attachment': [id: string];
 }>();
 
 const editorId = useId();
@@ -132,12 +139,33 @@ type ToolbarAction = {
 type ToolbarGroup = ToolbarAction[];
 
 const enabledItems = computed<readonly EditorToolbarItem[]>(
-    () => props.toolbar ?? EDITOR_TOOLBAR_ITEMS,
+    // Attach is opt-in: a consumer must handle the event, so it is never on by default.
+    () => props.toolbar ?? EDITOR_TOOLBAR_ITEMS.filter((i) => i !== 'attach'),
 );
 
 const showMarkdownToggle = computed(() =>
     enabledItems.value.includes('markdown'),
 );
+
+const showAttach = computed(() => enabledItems.value.includes('attach'));
+
+const fileInput = ref<HTMLInputElement | null>(null);
+
+function onFilesSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+    if (files.length > 0) {
+        emit('attach', files);
+    }
+    input.value = '';
+}
+
+function formatFileSize(bytes: number): string {
+    const round = (n: number) => Math.round(n * 10) / 10;
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${round(bytes / 1024)} KB`;
+    return `${round(bytes / (1024 * 1024))} MB`;
+}
 
 const toolbarGroups = computed<ToolbarGroup[]>(() => {
     const ed = editor.value;
@@ -313,6 +341,52 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                     </button>
                 </template>
 
+                <!-- Attach -->
+                <template v-if="showAttach">
+                    <div
+                        v-if="toolbarGroups.length > 0"
+                        class="mx-0.5 h-5 w-px bg-border-strong"
+                        role="separator"
+                    />
+                    <button
+                        type="button"
+                        aria-label="Attach file"
+                        :disabled="disabled || isMarkdownMode"
+                        :class="[
+                            'inline-flex items-center justify-center',
+                            'h-7 px-1.5 min-w-[28px]',
+                            'rounded text-xs font-semibold',
+                            'transition-colors duration-[var(--transition-fast)]',
+                            'disabled:cursor-not-allowed disabled:opacity-50',
+                            'text-text-secondary hover:bg-surface hover:text-text',
+                        ]"
+                        @click="fileInput?.click()"
+                    >
+                        <svg
+                            class="h-4 w-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"
+                            />
+                        </svg>
+                    </button>
+                    <input
+                        ref="fileInput"
+                        type="file"
+                        multiple
+                        class="hidden"
+                        :accept="accept || undefined"
+                        @change="onFilesSelected"
+                    />
+                </template>
+
                 <!-- Spacer + MD toggle -->
                 <template v-if="showMarkdownToggle">
                     <div class="flex-grow" />
@@ -351,6 +425,35 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                 class="app-editor-markdown"
                 @input="onMarkdownInput"
             />
+
+            <!-- Attachments -->
+            <div
+                v-if="attachments.length > 0"
+                class="app-editor-attachments gap-1.5 px-3 py-2 flex flex-wrap border-t border-input-border"
+            >
+                <span
+                    v-for="attachment in attachments"
+                    :key="attachment.id"
+                    class="gap-1.5 px-2.5 py-0.5 text-xs inline-flex items-center rounded-full border border-input-border text-text-secondary"
+                >
+                    <span>{{ attachment.name }}</span>
+                    <span
+                        v-if="attachment.size !== undefined"
+                        class="text-muted"
+                    >
+                        {{ formatFileSize(attachment.size) }}
+                    </span>
+                    <button
+                        type="button"
+                        :aria-label="`Remove ${attachment.name}`"
+                        :disabled="disabled"
+                        class="inline-flex items-center justify-center rounded-full text-muted transition-colors duration-[var(--transition-fast)] hover:text-text disabled:cursor-not-allowed disabled:opacity-50"
+                        @click="emit('remove-attachment', attachment.id)"
+                    >
+                        &times;
+                    </button>
+                </span>
+            </div>
         </div>
 
         <!-- Footer: error / hint -->
