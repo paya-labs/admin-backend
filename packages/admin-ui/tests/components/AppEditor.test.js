@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import AppEditor from '../../src/components/AppEditor.vue';
+import { EDITOR_TOOLBAR_COMPACT } from '../../src/components/appEditorToolbar';
 
 // TipTap needs a small delay to initialize the editor
 const waitForEditor = () => new Promise((resolve) => setTimeout(resolve, 100));
@@ -268,5 +269,57 @@ describe('AppEditor', () => {
         formattingButtons.forEach((btn) => {
             expect(btn.element.disabled).toBe(true);
         });
+    });
+
+    // Toolbar prop tests
+    it('renders the full toolbar by default', async () => {
+        const wrapper = mount(AppEditor);
+        await waitForEditor();
+
+        const buttons = wrapper.findAll('[role="toolbar"] button');
+        const labels = buttons.map((b) => b.text());
+        expect(labels).toEqual([
+            'H1',
+            'H2',
+            'H3',
+            'B',
+            'I',
+            'U',
+            'S',
+            'UL',
+            'OL',
+            'Quote',
+            'MD',
+        ]);
+    });
+
+    it('renders only compact toolbar buttons with EDITOR_TOOLBAR_COMPACT', async () => {
+        const wrapper = mount(AppEditor, {
+            props: { toolbar: EDITOR_TOOLBAR_COMPACT },
+        });
+        await waitForEditor();
+
+        const buttons = wrapper.findAll('[role="toolbar"] button');
+        const labels = buttons.map((b) => b.text());
+        expect(labels).toEqual(['B', 'I', 'U', 'UL', 'OL']);
+        expect(
+            wrapper.find('[aria-label="Toggle markdown mode"]').exists(),
+        ).toBe(false);
+
+        const separators = wrapper.findAll('[role="separator"]');
+        // 2 groups (text decoration, lists) = 1 separator, no MD separator
+        expect(separators.length).toBe(1);
+    });
+
+    it('renders a custom toolbar subset without separators', async () => {
+        const wrapper = mount(AppEditor, {
+            props: { toolbar: ['bold', 'italic'] },
+        });
+        await waitForEditor();
+
+        const buttons = wrapper.findAll('[role="toolbar"] button');
+        const labels = buttons.map((b) => b.text());
+        expect(labels).toEqual(['B', 'I']);
+        expect(wrapper.findAll('[role="separator"]').length).toBe(0);
     });
 });

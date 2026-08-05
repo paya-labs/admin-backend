@@ -1,5 +1,5 @@
 <script setup>
-import { AppEditor } from '@paya-labs/admin-ui';
+import { AppEditor, EDITOR_TOOLBAR_COMPACT } from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 const basicContent = ref('');
@@ -13,6 +13,7 @@ const disabledContent = ref(
 );
 const liveContent = ref('');
 const markdownContent = ref('');
+const compactContent = ref('');
 </script>
 
 <template>
@@ -94,6 +95,26 @@ const markdownContent = ref('');
                         v-model="markdownContent"
                         label="Markdown Editor"
                         placeholder="Try toggling the MD button in the toolbar..."
+                    />
+                </div>
+            </div>
+        </section>
+
+        <!-- Compact Toolbar -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Compact Toolbar</h2>
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <div class="max-w-2xl space-y-4">
+                    <p class="text-muted text-sm">
+                        Pass <code>:toolbar="EDITOR_TOOLBAR_COMPACT"</code> for
+                        the compact preset, or any custom array like
+                        <code>:toolbar="['bold', 'italic']"</code>.
+                    </p>
+                    <AppEditor
+                        v-model="compactContent"
+                        label="Short Note"
+                        placeholder="Only basic formatting available..."
+                        :toolbar="EDITOR_TOOLBAR_COMPACT"
                     />
                 </div>
             </div>

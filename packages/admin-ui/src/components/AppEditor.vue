@@ -3,6 +3,10 @@ import { Markdown } from '@tiptap/markdown';
 import StarterKit from '@tiptap/starter-kit';
 import { EditorContent, useEditor } from '@tiptap/vue-3';
 import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
+import {
+    EDITOR_TOOLBAR_ITEMS,
+    type EditorToolbarItem,
+} from './appEditorToolbar';
 
 interface Props {
     modelValue?: string;
@@ -12,6 +16,7 @@ interface Props {
     hint?: string;
     required?: boolean;
     disabled?: boolean;
+    toolbar?: readonly EditorToolbarItem[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
     hint: '',
     required: false,
     disabled: false,
+    toolbar: undefined,
 });
 
 const emit = defineEmits<{
@@ -115,7 +121,7 @@ function onMarkdownInput(event: Event) {
 }
 
 type ToolbarAction = {
-    key: string;
+    key: EditorToolbarItem;
     label: string;
     ariaLabel: string;
     icon: string;
@@ -125,11 +131,19 @@ type ToolbarAction = {
 
 type ToolbarGroup = ToolbarAction[];
 
+const enabledItems = computed<readonly EditorToolbarItem[]>(
+    () => props.toolbar ?? EDITOR_TOOLBAR_ITEMS,
+);
+
+const showMarkdownToggle = computed(() =>
+    enabledItems.value.includes('markdown'),
+);
+
 const toolbarGroups = computed<ToolbarGroup[]>(() => {
     const ed = editor.value;
     if (!ed) return [];
 
-    return [
+    const groups: ToolbarGroup[] = [
         // Headings
         [
             {
@@ -226,6 +240,12 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
             },
         ],
     ];
+
+    return groups
+        .map((group) =>
+            group.filter((btn) => enabledItems.value.includes(btn.key)),
+        )
+        .filter((group) => group.length > 0);
 });
 </script>
 
@@ -294,30 +314,32 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                 </template>
 
                 <!-- Spacer + MD toggle -->
-                <div class="flex-grow" />
-                <div
-                    class="mx-0.5 h-5 w-px bg-border-strong"
-                    role="separator"
-                />
-                <button
-                    type="button"
-                    aria-label="Toggle markdown mode"
-                    :aria-pressed="isMarkdownMode"
-                    :disabled="disabled"
-                    :class="[
-                        'inline-flex items-center justify-center',
-                        'h-7 px-1.5 min-w-[28px]',
-                        'rounded text-xs font-semibold',
-                        'transition-colors duration-[var(--transition-fast)]',
-                        'disabled:cursor-not-allowed disabled:opacity-50',
-                        isMarkdownMode
-                            ? 'bg-primary-500 text-inverse'
-                            : 'text-text-secondary hover:bg-surface hover:text-text',
-                    ]"
-                    @click="toggleMarkdownMode"
-                >
-                    MD
-                </button>
+                <template v-if="showMarkdownToggle">
+                    <div class="flex-grow" />
+                    <div
+                        class="mx-0.5 h-5 w-px bg-border-strong"
+                        role="separator"
+                    />
+                    <button
+                        type="button"
+                        aria-label="Toggle markdown mode"
+                        :aria-pressed="isMarkdownMode"
+                        :disabled="disabled"
+                        :class="[
+                            'inline-flex items-center justify-center',
+                            'h-7 px-1.5 min-w-[28px]',
+                            'rounded text-xs font-semibold',
+                            'transition-colors duration-[var(--transition-fast)]',
+                            'disabled:cursor-not-allowed disabled:opacity-50',
+                            isMarkdownMode
+                                ? 'bg-primary-500 text-inverse'
+                                : 'text-text-secondary hover:bg-surface hover:text-text',
+                        ]"
+                        @click="toggleMarkdownMode"
+                    >
+                        MD
+                    </button>
+                </template>
             </div>
 
             <!-- Editor content -->
