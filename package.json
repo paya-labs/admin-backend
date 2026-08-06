@@ -19,27 +19,27 @@
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
-        "@typescript-eslint/eslint-plugin": "^8.60.1",
+        "@typescript-eslint/eslint-plugin": "^8.65.0",
         "@typescript-eslint/parser": "^8.53.1",
-        "@vitejs/plugin-vue": "^6.0.7",
-        "eslint": "^10.4.1",
-        "eslint-plugin-vue": "^10.9.2",
-        "globals": "^17.6.0",
-        "prettier": "^3.8.3",
+        "@vitejs/plugin-vue": "^6.0.8",
+        "eslint": "^10.8.0",
+        "eslint-plugin-vue": "^10.10.0",
+        "globals": "^17.9.0",
+        "prettier": "^3.9.6",
         "prettier-plugin-organize-imports": "^4.3.0",
-        "prettier-plugin-tailwindcss": "^0.8.0",
-        "typescript": "^6.0.3",
+        "prettier-plugin-tailwindcss": "^0.8.1",
+        "typescript": "^7.0.2",
         "vite": "npm:rolldown-vite@7.2.5",
-        "vite-plugin-dts": "^5.0.2",
-        "vite-plugin-vue-devtools": "^8.1.2",
-        "vue": "^3.5.35"
+        "vite-plugin-dts": "^5.0.3",
+        "vite-plugin-vue-devtools": "^8.2.1",
+        "vue": "^3.5.40"
     },
     "overrides": {
         "vite": "npm:rolldown-vite@7.2.5",
-        "minimatch": "^10.2.4",
+        "minimatch": "^10.2.6",
         "eslint-scope": "^9.1.2"
     },
     "dependencies": {
-        "vue-tsc": "^3.3.4"
+        "vue-tsc": "^3.3.9"
     }
 }
