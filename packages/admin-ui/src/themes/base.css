@@ -225,10 +225,13 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Focus visible for accessibility */
-*:focus-visible {
-    outline: 2px solid var(--color-focus-ring);
-    outline-offset: 2px;
+/* Focus visible for accessibility. Lives in the base layer so a component's
+   focus:outline-none utility can cancel it where a focus ring is drawn instead. */
+@layer base {
+    *:focus-visible {
+        outline: 2px solid var(--color-focus-ring);
+        outline-offset: 2px;
+    }
 }
 
 /* Touch target minimum size helper */
