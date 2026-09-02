@@ -15,4 +15,5 @@ export interface AppComboboxProps<T> {
     disabled?: boolean;
     minLengthHint?: string;
     size?: ControlSize;
+    autocomplete?: string;
 }

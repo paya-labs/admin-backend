@@ -30,6 +30,7 @@ const props = withDefaults(defineProps<AppComboboxProps<T>>(), {
     disabled: false,
     minLengthHint: '',
     size: 'md',
+    autocomplete: 'off',
 });
 
 const sizeClasses = computed(() => {
@@ -263,6 +264,7 @@ defineExpose({
                 type="search"
                 :placeholder="placeholder"
                 :disabled="disabled"
+                :autocomplete="autocomplete"
                 :class="[
                     'w-full',
                     'rounded-md border bg-input-bg text-text',
