@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useAttrs, useId } from 'vue';
+import { computed, useAttrs, useId, useTemplateRef } from 'vue';
 import type { ControlSize } from '../types';
 
 defineOptions({ inheritAttrs: false });
@@ -43,6 +43,13 @@ const inputValue = computed({
 
 const hasError = computed(() => Boolean(props.error));
 
+const inputRef = useTemplateRef<HTMLInputElement>('inputEl');
+defineExpose({
+    focus: () => inputRef.value?.focus(),
+    blur: () => inputRef.value?.blur(),
+    select: () => inputRef.value?.select(),
+});
+
 // class/style stay on the wrapper; everything else (min, max, step,
 // aria-*, ...) belongs on the native input
 const attrs = useAttrs();
@@ -80,6 +87,7 @@ const inputAttrs = computed(() => {
 
             <input
                 :id="inputId"
+                ref="inputEl"
                 v-model="inputValue"
                 v-bind="inputAttrs"
                 :type="type"

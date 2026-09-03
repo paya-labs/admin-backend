@@ -263,6 +263,7 @@ defineExpose({
                 type="search"
                 :placeholder="placeholder"
                 :disabled="disabled"
+                autocomplete="off"
                 :class="[
                     'w-full',
                     'rounded-md border bg-input-bg text-text',
