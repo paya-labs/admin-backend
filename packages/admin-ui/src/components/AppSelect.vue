@@ -40,9 +40,15 @@ const dropdownPos = ref<Record<string, string>>({});
 const updateDropdownPosition = (): void => {
     if (!triggerRef.value) return;
     const rect = triggerRef.value.getBoundingClientRect();
+    // Opens upward when the list (max-h-60) would run off the bottom of the
+    // viewport and there is more room above.
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const flip = spaceBelow < 240 && rect.top > spaceBelow;
     dropdownPos.value = {
         position: 'fixed',
-        top: `${rect.bottom + 4}px`,
+        ...(flip
+            ? { bottom: `${window.innerHeight - rect.top + 4}px` }
+            : { top: `${rect.bottom + 4}px` }),
         left: `${rect.left}px`,
         width: `${rect.width}px`,
     };
