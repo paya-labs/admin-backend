@@ -1,5 +1,10 @@
 <script setup>
-import { AppCheckbox, AppDatePanel, AppDatePicker } from '@paya-labs/admin-ui';
+import {
+    AppCheckbox,
+    AppDatePanel,
+    AppDatePicker,
+    toIsoDate,
+} from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 const basic = ref('');
@@ -18,12 +23,17 @@ const toMinutes = (hhmm) => {
     return h * 60 + m;
 };
 const toHHMM = (mins) =>
-    `${String(Math.floor(mins / 60) % 24).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+    `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
 const onStartChange = (start) => {
-    const duration =
-        toMinutes(appointment.value.end) - toMinutes(appointment.value.start);
+    const duration = Math.max(
+        0,
+        toMinutes(appointment.value.end) - toMinutes(appointment.value.start),
+    );
     appointment.value.start = start;
-    appointment.value.end = toHHMM(toMinutes(start) + duration);
+    // End stays on the same day: the end list stops at 23:45
+    appointment.value.end = toHHMM(
+        Math.min(toMinutes(start) + duration, 24 * 60 - 15),
+    );
 };
 
 const invoiceFrom = ref('2026-09-01');
@@ -33,7 +43,7 @@ const reminder = ref('');
 
 const panelValue = ref('2026-09-23');
 
-const today = new Date().toISOString().slice(0, 10);
+const today = toIsoDate(new Date());
 </script>
 
 <template>

@@ -180,4 +180,42 @@ describe('AppDatePicker', () => {
 
         expect(wrapper.emitted('update:modelValue')[0]).toEqual(['12:00']);
     });
+
+    it('closes when focus leaves the popover', async () => {
+        const wrapper = mountPicker({ modelValue: '2026-09-15' });
+        const outside = document.createElement('button');
+        document.body.appendChild(outside);
+
+        await open(wrapper);
+        findDialog().dispatchEvent(
+            new FocusEvent('focusout', {
+                relatedTarget: outside,
+                bubbles: true,
+            }),
+        );
+        await nextTick();
+
+        expect(wrapper.find('button').attributes('aria-expanded')).toBe(
+            'false',
+        );
+    });
+
+    it('clamps the popover to the viewport when it fits neither below nor above', async () => {
+        const wrapper = mountPicker({ modelValue: '2026-09-15' });
+        window.innerHeight = 500;
+        wrapper.find('button').element.getBoundingClientRect = () => ({
+            top: 200,
+            bottom: 240,
+            left: 20,
+            right: 120,
+            width: 100,
+            height: 40,
+        });
+
+        await open(wrapper);
+
+        // jsdom reports no size, so the composable falls back to 360px height
+        expect(findDialog().style.top).toBe('132px');
+        expect(findDialog().style.left).toBe('20px');
+    });
 });

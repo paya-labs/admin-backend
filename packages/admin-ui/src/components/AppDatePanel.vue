@@ -42,6 +42,8 @@ const focused = ref(toIsoDate(anchor));
 const gridRef = ref<HTMLDivElement | null>(null);
 
 const todayIso = toIsoDate(new Date());
+const isDisabled = (iso: string): boolean =>
+    (!!props.min && iso < props.min) || (!!props.max && iso > props.max);
 const selected = computed(() => parseIsoDate(props.modelValue));
 
 const cells = computed(() => {
@@ -62,9 +64,7 @@ const cells = computed(() => {
             out: d.getMonth() !== month.value,
             today: iso === todayIso,
             selected: iso === props.modelValue,
-            disabled:
-                (!!props.min && iso < props.min) ||
-                (!!props.max && iso > props.max),
+            disabled: isDisabled(iso),
             inRange,
             first: inRange && iso === props.rangeStart,
             last: inRange && toIsoDate(addDays(d, 1)) === props.rangeEnd,
@@ -122,6 +122,7 @@ const focusDay = (iso: string): void => {
 
 const moveFocus = (delta: number): void => {
     const d = addDays(parseIsoDate(tabIso.value) ?? new Date(), delta);
+    if (isDisabled(toIsoDate(d))) return;
     setPage(d.getFullYear(), d.getMonth());
     focusDay(toIsoDate(d));
 };
@@ -344,7 +345,8 @@ const chevron = {
         >
             <button
                 type="button"
-                class="px-1.5 py-1 cursor-pointer rounded-md text-on-primary-soft hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
+                class="px-1.5 py-1 cursor-pointer rounded-md text-on-primary-soft hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                :disabled="isDisabled(todayIso)"
                 @click="pick(todayIso)"
             >
                 Today

@@ -2,8 +2,9 @@ import { nextTick, onBeforeUnmount, ref, watch, type Ref } from 'vue';
 
 /**
  * Fixed-position popover anchored below a trigger (flips upward when it
- * would run off the viewport, clamps to the viewport horizontally). Closes on
- * outside click, ancestor scroll and resize. Same approach as AppSelect.
+ * would run off the viewport, clamps to the viewport otherwise). Closes on
+ * outside click, focus leaving, ancestor scroll and resize. Same approach as
+ * AppSelect.
  */
 export function usePopover(
     trigger: Ref<HTMLElement | null>,
@@ -19,11 +20,11 @@ export function usePopover(
         const height = popover.value?.offsetHeight || 360;
         const spaceBelow = window.innerHeight - rect.bottom;
         const flip = spaceBelow < height && rect.top > spaceBelow;
+        const top = flip ? rect.top - height - 4 : rect.bottom + 4;
         style.value = {
             position: 'fixed',
-            ...(flip
-                ? { bottom: `${window.innerHeight - rect.top + 4}px` }
-                : { top: `${rect.bottom + 4}px` }),
+            // Clamp to the viewport when the popover fits neither below nor above
+            top: `${Math.max(8, Math.min(top, window.innerHeight - height - 8))}px`,
             left: `${Math.max(8, Math.min(rect.left, window.innerWidth - width - 8))}px`,
         };
     };
@@ -63,6 +64,18 @@ export function usePopover(
         }
     };
 
+    // Non-modal dialog: close when Tab moves focus out of trigger + popover
+    const onFocusOut = (event: FocusEvent): void => {
+        const next = event.relatedTarget;
+        if (
+            next instanceof Node &&
+            !trigger.value?.contains(next) &&
+            !popover.value?.contains(next)
+        ) {
+            close();
+        }
+    };
+
     const unbind = (): void => {
         window.removeEventListener('scroll', onScroll, true);
         window.removeEventListener('resize', onResize);
@@ -81,5 +94,5 @@ export function usePopover(
 
     onBeforeUnmount(unbind);
 
-    return { isOpen, style, open, close, toggle };
+    return { isOpen, style, open, close, toggle, onFocusOut };
 }

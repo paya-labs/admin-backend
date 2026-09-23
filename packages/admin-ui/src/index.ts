@@ -73,6 +73,7 @@ import {
     isValidDate,
     localDateTimeToUTC,
 } from './utils/dateFormat';
+import { formatIsoDate, parseIsoDate, toIsoDate } from './utils/isoDate';
 
 // Directives
 import { vClickOutside } from './directives/clickOutside';
@@ -193,9 +194,12 @@ export {
     formatDateShort,
     formatDateTime,
     formatDateTimeLocal,
+    formatIsoDate,
     formatTime,
     isValidDate,
     localDateTimeToUTC,
+    parseIsoDate,
+    toIsoDate,
 };
 
 // Re-export directives

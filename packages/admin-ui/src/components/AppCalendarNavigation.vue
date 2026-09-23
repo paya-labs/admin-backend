@@ -30,7 +30,10 @@ const emit = defineEmits<{
 const triggerRef = ref<HTMLButtonElement | null>(null);
 const popoverRef = ref<HTMLDivElement | null>(null);
 const panelRef = ref<InstanceType<typeof AppDatePanel> | null>(null);
-const { isOpen, style, close, toggle } = usePopover(triggerRef, popoverRef);
+const { isOpen, style, close, toggle, onFocusOut } = usePopover(
+    triggerRef,
+    popoverRef,
+);
 
 const openToggle = (): void => {
     toggle();
@@ -87,6 +90,7 @@ const onGoto = (date: string): void => {
                 ]"
                 @click="openToggle"
                 @keydown.escape.prevent="close(true)"
+                @focusout="onFocusOut"
             >
                 <span class="truncate">{{ title }}</span>
                 <svg
@@ -154,6 +158,7 @@ const onGoto = (date: string): void => {
                     role="dialog"
                     aria-label="Go to date"
                     :style="style"
+                    @focusout="onFocusOut"
                     class="z-[var(--z-dropdown,9999)] w-max"
                 >
                     <AppDatePanel

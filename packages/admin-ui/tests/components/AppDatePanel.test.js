@@ -172,4 +172,32 @@ describe('AppDatePanel', () => {
         await wrapper.trigger('keydown', { key: 'Escape' });
         expect(wrapper.emitted('close').length).toBe(2);
     });
+
+    it('disables the Today link when today is outside min/max', () => {
+        const wrapper = mount(AppDatePanel, {
+            props: { modelValue: '2026-09-05', max: '2026-09-10' },
+        });
+
+        const today = wrapper
+            .findAll('button')
+            .find((b) => b.text() === 'Today');
+        expect(today.element.disabled).toBe(true);
+    });
+
+    it('keeps the roving focus off disabled days', async () => {
+        const wrapper = mount(AppDatePanel, {
+            props: { modelValue: '2026-09-01', min: '2026-09-01' },
+            attachTo: document.body,
+        });
+
+        await dayButton(wrapper, '2026-09-01').trigger('keydown', {
+            key: 'ArrowLeft',
+        });
+        await nextTick();
+
+        expect(heading(wrapper).text()).toBe('September 2026');
+        expect(dayButton(wrapper, '2026-09-01').attributes('tabindex')).toBe(
+            '0',
+        );
+    });
 });

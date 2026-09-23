@@ -52,7 +52,10 @@ const popoverRef = ref<HTMLDivElement | null>(null);
 const panelRef = ref<InstanceType<typeof AppDatePanel> | null>(null);
 const timeInputRef = ref<HTMLInputElement | null>(null);
 const listRef = ref<HTMLUListElement | null>(null);
-const { isOpen, style, close, toggle } = usePopover(triggerRef, popoverRef);
+const { isOpen, style, close, toggle, onFocusOut } = usePopover(
+    triggerRef,
+    popoverRef,
+);
 
 const isTime = computed(() => props.mode === 'time');
 const hasError = computed(() => Boolean(props.error));
@@ -212,6 +215,7 @@ const scrollToCurrent = (): void => {
                 ]"
                 @click="openToggle"
                 @keydown.escape.prevent="close(true)"
+                @focusout="onFocusOut"
             >
                 <AppIcon
                     :name="isTime ? 'clock' : 'calendar'"
@@ -256,6 +260,7 @@ const scrollToCurrent = (): void => {
                     role="dialog"
                     :aria-label="isTime ? 'Pick a time' : 'Pick a date'"
                     :style="style"
+                    @focusout="onFocusOut"
                     class="z-[var(--z-dropdown,9999)] w-max"
                     @keydown.escape.prevent="close(true)"
                 >
