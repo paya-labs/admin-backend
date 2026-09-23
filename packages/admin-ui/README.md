@@ -37,6 +37,8 @@ import '@paya-labs/admin-ui/styles';
 | `AppInput`          | Text input with label and validation   |
 | `AppTextarea`       | Multi-line text input                  |
 | `AppSelect`         | Select dropdown                        |
+| `AppDatePicker`     | Date or time field with popover picker |
+| `AppDatePanel`      | Month grid with month/year drill-up    |
 | `AppBadge`          | Status badge with variants             |
 | `AppCard`           | Stats/info card with trend indicators  |
 | `AppTable`          | Data table with sorting and pagination |
