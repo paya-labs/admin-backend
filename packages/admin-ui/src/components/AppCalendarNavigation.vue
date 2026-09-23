@@ -154,7 +154,7 @@ const onGoto = (date: string): void => {
                     role="dialog"
                     aria-label="Go to date"
                     :style="style"
-                    class="z-[var(--z-dropdown,9999)]"
+                    class="z-[var(--z-dropdown,9999)] w-max"
                 >
                     <AppDatePanel
                         ref="panelRef"

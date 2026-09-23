@@ -256,7 +256,7 @@ const scrollToCurrent = (): void => {
                     role="dialog"
                     :aria-label="isTime ? 'Pick a time' : 'Pick a date'"
                     :style="style"
-                    class="z-[var(--z-dropdown,9999)]"
+                    class="z-[var(--z-dropdown,9999)] w-max"
                     @keydown.escape.prevent="close(true)"
                 >
                     <AppDatePanel
