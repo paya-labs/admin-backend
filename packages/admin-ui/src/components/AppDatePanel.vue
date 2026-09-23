@@ -40,6 +40,7 @@ const month = ref(anchor.getMonth());
 const yearBase = ref(year.value - (year.value % 12));
 const focused = ref(toIsoDate(anchor));
 const gridRef = ref<HTMLDivElement | null>(null);
+const rootRef = ref<HTMLDivElement | null>(null);
 
 const todayIso = toIsoDate(new Date());
 const isDisabled = (iso: string): boolean =>
@@ -101,14 +102,33 @@ watch(
 
 const pick = (iso: string): void => emit('update:modelValue', iso);
 
+// View changes remove the activated button, so move focus explicitly
+const focusIn = (selector: string): void => {
+    nextTick(() => {
+        rootRef.value?.querySelector<HTMLElement>(selector)?.focus();
+    });
+};
+
+const showMonths = (): void => {
+    view.value = 'months';
+    focusIn('[aria-label="Choose year"]');
+};
+
+const showYears = (): void => {
+    yearBase.value = year.value - (year.value % 12);
+    view.value = 'years';
+    focusIn('[aria-label="Previous years"]');
+};
+
 const pickMonth = (m: number): void => {
     month.value = m;
     view.value = 'days';
+    focusDay(tabIso.value);
 };
 
 const pickYear = (y: number): void => {
     year.value = y;
-    view.value = 'months';
+    showMonths();
 };
 
 const focusDay = (iso: string): void => {
@@ -149,6 +169,7 @@ const chevron = {
 
 <template>
     <div
+        ref="rootRef"
         class="p-3 text-sm w-[300px] rounded-xl border border-border-strong bg-surface text-text shadow-lg"
         @keydown.escape.prevent="emit('close')"
     >
@@ -193,7 +214,7 @@ const chevron = {
                 type="button"
                 class="h-9 font-semibold flex-1 rounded-md hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
                 aria-label="Choose month"
-                @click="view = 'months'"
+                @click="showMonths"
             >
                 {{ MONTH_NAMES[month] }} {{ year }}
             </button>
@@ -202,10 +223,7 @@ const chevron = {
                 type="button"
                 class="h-9 font-semibold flex-1 rounded-md hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
                 aria-label="Choose year"
-                @click="
-                    yearBase = year - (year % 12);
-                    view = 'years';
-                "
+                @click="showYears"
             >
                 {{ year }}
             </button>

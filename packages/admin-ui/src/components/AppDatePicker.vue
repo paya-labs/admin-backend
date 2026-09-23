@@ -52,7 +52,7 @@ const popoverRef = ref<HTMLDivElement | null>(null);
 const panelRef = ref<InstanceType<typeof AppDatePanel> | null>(null);
 const timeInputRef = ref<HTMLInputElement | null>(null);
 const listRef = ref<HTMLUListElement | null>(null);
-const { isOpen, style, close, toggle, onFocusOut } = usePopover(
+const { isOpen, style, close, toggle, onFocusOut, onKeydown } = usePopover(
     triggerRef,
     popoverRef,
 );
@@ -262,7 +262,7 @@ const scrollToCurrent = (): void => {
                     :style="style"
                     @focusout="onFocusOut"
                     class="z-[var(--z-dropdown,9999)] w-max"
-                    @keydown.escape.prevent="close(true)"
+                    @keydown="onKeydown"
                 >
                     <AppDatePanel
                         v-if="!isTime"

@@ -200,4 +200,31 @@ describe('AppDatePanel', () => {
             '0',
         );
     });
+
+    it('moves focus to the new heading control on every view change', async () => {
+        const wrapper = mount(AppDatePanel, {
+            props: { modelValue: '2026-09-23' },
+            attachTo: document.body,
+        });
+        const active = () => document.activeElement;
+
+        await heading(wrapper).trigger('click');
+        await nextTick();
+        expect(active().getAttribute('aria-label')).toBe('Choose year');
+
+        await heading(wrapper).trigger('click');
+        await nextTick();
+        expect(active().getAttribute('aria-label')).toBe('Previous years');
+
+        await wrapper
+            .findAll('button')
+            .find((b) => b.text() === '2027')
+            .trigger('click');
+        await nextTick();
+        expect(active().getAttribute('aria-label')).toBe('Choose year');
+
+        await wrapper.find('button[aria-label="March"]').trigger('click');
+        await nextTick();
+        expect(active().dataset.iso).toBe('2027-03-01');
+    });
 });

@@ -30,7 +30,7 @@ const emit = defineEmits<{
 const triggerRef = ref<HTMLButtonElement | null>(null);
 const popoverRef = ref<HTMLDivElement | null>(null);
 const panelRef = ref<InstanceType<typeof AppDatePanel> | null>(null);
-const { isOpen, style, close, toggle, onFocusOut } = usePopover(
+const { isOpen, style, close, toggle, onFocusOut, onKeydown } = usePopover(
     triggerRef,
     popoverRef,
 );
@@ -159,6 +159,7 @@ const onGoto = (date: string): void => {
                     aria-label="Go to date"
                     :style="style"
                     @focusout="onFocusOut"
+                    @keydown="onKeydown"
                     class="z-[var(--z-dropdown,9999)] w-max"
                 >
                     <AppDatePanel

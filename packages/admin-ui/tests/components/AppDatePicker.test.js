@@ -218,4 +218,51 @@ describe('AppDatePicker', () => {
         expect(findDialog().style.top).toBe('132px');
         expect(findDialog().style.left).toBe('20px');
     });
+
+    it('keeps the popover open when a drill-up click detaches its own button', async () => {
+        const wrapper = mountPicker({ modelValue: '2026-09-15' });
+        await open(wrapper);
+
+        // Real clicks re-render between the button handler and the document
+        // listener; emulate that by detaching the target in the capture phase.
+        document.addEventListener(
+            'click',
+            (e) => {
+                const { target } = e;
+                const parent = target.parentNode;
+                const next = target.nextSibling;
+                target.remove();
+                // put it back before Vue's flush so the patch still works
+                queueMicrotask(() => parent.insertBefore(target, next));
+            },
+            { capture: true, once: true },
+        );
+        findDialog().querySelector('button[aria-label="Choose month"]').click();
+        await nextTick();
+
+        expect(wrapper.find('button').attributes('aria-expanded')).toBe('true');
+        expect(findDialog()).not.toBeNull();
+    });
+
+    it('closes and returns focus to the trigger when tabbing past the last control', async () => {
+        const wrapper = mountPicker({ modelValue: '2026-09-15' });
+        await open(wrapper);
+
+        const buttons = [...findDialog().querySelectorAll('button')];
+        const closeButton = buttons.find(
+            (b) => b.textContent.trim() === 'Close',
+        );
+        closeButton.focus();
+        // Vue skips listeners attached "after" an event; move the frozen clock
+        vi.advanceTimersByTime(1);
+        closeButton.dispatchEvent(
+            new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }),
+        );
+        await nextTick();
+
+        expect(wrapper.find('button').attributes('aria-expanded')).toBe(
+            'false',
+        );
+        expect(document.activeElement).toBe(wrapper.find('button').element);
+    });
 });

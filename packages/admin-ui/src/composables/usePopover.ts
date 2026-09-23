@@ -55,16 +55,18 @@ export function usePopover(
     const onResize = (): void => close();
 
     const onClick = (event: MouseEvent): void => {
-        const target = event.target as Node;
+        // Dispatch-time path: a button that removes itself in its own handler
+        // (panel drill-up) is already detached when this bubbles to document.
+        const path = event.composedPath();
         if (
-            !trigger.value?.contains(target) &&
-            !popover.value?.contains(target)
+            !(trigger.value && path.includes(trigger.value)) &&
+            !(popover.value && path.includes(popover.value))
         ) {
             close();
         }
     };
 
-    // Non-modal dialog: close when Tab moves focus out of trigger + popover
+    // Non-modal dialog: close when focus moves out of trigger + popover
     const onFocusOut = (event: FocusEvent): void => {
         const next = event.relatedTarget;
         if (
@@ -74,6 +76,24 @@ export function usePopover(
         ) {
             close();
         }
+    };
+
+    // Escape closes. Tab past either end of the popover closes it and hands
+    // focus back to the trigger, so the default Tab continues from there.
+    const onKeydown = (event: KeyboardEvent): void => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            close(true);
+            return;
+        }
+        if (event.key !== 'Tab' || !popover.value) return;
+        const focusable = popover.value.querySelectorAll<HTMLElement>(
+            'button:not([disabled]):not([tabindex="-1"]), input:not([disabled])',
+        );
+        const edge = event.shiftKey
+            ? focusable[0]
+            : focusable[focusable.length - 1];
+        if (edge && event.target === edge) close(true);
     };
 
     const unbind = (): void => {
@@ -94,5 +114,5 @@ export function usePopover(
 
     onBeforeUnmount(unbind);
 
-    return { isOpen, style, open, close, toggle, onFocusOut };
+    return { isOpen, style, open, close, toggle, onFocusOut, onKeydown };
 }
