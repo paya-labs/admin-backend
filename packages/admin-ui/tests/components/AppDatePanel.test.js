@@ -309,4 +309,23 @@ describe('AppDatePanel', () => {
             expect(document.activeElement.dataset.iso).toBe('2026-09-25');
         });
     });
+
+    it('fluid drops the fixed width and chrome', () => {
+        const fixed = mount(AppDatePanel, {
+            props: { modelValue: '2026-09-23' },
+        });
+        const fluid = mount(AppDatePanel, {
+            props: { modelValue: '2026-09-23', fluid: true },
+        });
+
+        expect(fixed.classes()).toContain('w-[300px]');
+        expect(fluid.classes()).not.toContain('w-[300px]');
+        expect(fluid.classes()).not.toContain('shadow-lg');
+        expect(fluid.find('button[data-iso="2026-09-23"]').classes()).toContain(
+            'h-11',
+        );
+        expect(fluid.findAll('button').some((b) => b.text() === 'Close')).toBe(
+            false,
+        );
+    });
 });

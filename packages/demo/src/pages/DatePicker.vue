@@ -54,6 +54,10 @@ const today = toIsoDate(new Date());
                 Themed replacement for native date and time inputs. Values are
                 plain <code>YYYY-MM-DD</code> and <code>HH:mm</code> strings.
             </p>
+            <p class="text-muted mt-1 text-sm">
+                On phones (below 768px) every field opens a bottom sheet instead
+                of the popover. Resize the window to try it.
+            </p>
         </div>
 
         <!-- Date fields -->

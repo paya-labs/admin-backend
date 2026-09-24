@@ -65,4 +65,31 @@ describe('AppCalendarNavigation', () => {
         expect(heading.attributes('aria-expanded')).toBe('false');
         expect(findDialog()).toBeNull();
     });
+
+    it('opens a bottom sheet instead of the popover on phones', async () => {
+        const desktopWidth = window.innerWidth;
+        window.innerWidth = 500;
+        mountNav({ title: 'Sep 21 – 27, 2026', date: '2026-09-23' });
+
+        const heading = wrapper.find('[aria-haspopup="dialog"]');
+        await heading.trigger('click');
+        await nextTick();
+
+        const dialog = findDialog();
+        expect(heading.attributes('aria-expanded')).toBe('true');
+        expect(dialog.getAttribute('aria-modal')).toBe('true');
+        expect(dialog.style.position).toBe('');
+        expect(
+            [...dialog.querySelectorAll('button')].some(
+                (b) => b.textContent.trim() === 'Done',
+            ),
+        ).toBe(true);
+
+        dialog.querySelector('[data-iso="2026-10-02"]').click();
+        await nextTick();
+        expect(wrapper.emitted('goto')[0]).toEqual(['2026-10-02']);
+        expect(findDialog()).toBeNull();
+        expect(document.activeElement).toBe(heading.element);
+        window.innerWidth = desktopWidth;
+    });
 });
