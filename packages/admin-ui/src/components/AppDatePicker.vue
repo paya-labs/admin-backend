@@ -19,9 +19,13 @@ interface Props {
     required?: boolean;
     disabled?: boolean;
     clearable?: boolean;
+    /** ISO date, date mode only */
     min?: string;
+    /** ISO date, date mode only */
     max?: string;
+    /** time mode: list interval in minutes */
     step?: number;
+    /** time mode: HH:mm, list starts one step after it and shows durations */
     from?: string;
 }
 
