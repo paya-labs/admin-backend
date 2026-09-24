@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, useAttrs, useId } from 'vue';
+import { computed, ref, useAttrs, useId } from 'vue';
 import { usePopover } from '../composables/usePopover';
 import type { ControlSize, DatePickerMode } from '../types';
 import { formatIsoDate } from '../utils/isoDate';
@@ -82,9 +82,7 @@ const pick = (value: string): void => {
 
 const openToggle = (): void => {
     if (props.disabled) return;
-    toggle();
-    if (!isOpen.value) return;
-    nextTick(() => {
+    toggle(() => {
         if (isTime.value) {
             timeInputRef.value?.focus();
             scrollToCurrent();

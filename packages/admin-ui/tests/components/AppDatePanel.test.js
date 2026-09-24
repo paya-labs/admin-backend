@@ -227,4 +227,86 @@ describe('AppDatePanel', () => {
         await nextTick();
         expect(active().dataset.iso).toBe('2027-03-01');
     });
+
+    describe('roving tab stop never lands on a disabled day', () => {
+        const tabStop = (wrapper) => {
+            const stops = wrapper.findAll('button[data-iso][tabindex="0"]');
+            expect(stops.length).toBeLessThanOrEqual(1);
+            return stops[0];
+        };
+
+        it('min: previous month page starts at the first enabled day', async () => {
+            const wrapper = mount(AppDatePanel, {
+                props: { modelValue: '2026-09-15', min: '2026-08-20' },
+            });
+            await wrapper
+                .find('button[aria-label="Previous month"]')
+                .trigger('click');
+
+            expect(tabStop(wrapper).attributes('data-iso')).toBe('2026-08-20');
+        });
+
+        it('max: next month page starts at the first enabled day (out-of-month lead-in)', async () => {
+            const wrapper = mount(AppDatePanel, {
+                props: { modelValue: '2026-09-15', max: '2026-09-29' },
+            });
+            await wrapper
+                .find('button[aria-label="Next month"]')
+                .trigger('click');
+
+            // October 2026 has no enabled in-month day; the lead-in 28 Sep is enabled
+            expect(tabStop(wrapper).attributes('data-iso')).toBe('2026-09-28');
+        });
+
+        it('pickMonth: focuses the first enabled day of the picked month', async () => {
+            const wrapper = mount(AppDatePanel, {
+                props: { modelValue: '2026-09-15', min: '2026-11-10' },
+                attachTo: document.body,
+            });
+            await heading(wrapper).trigger('click');
+            await wrapper
+                .find('button[aria-label="November"]')
+                .trigger('click');
+            await nextTick();
+
+            expect(tabStop(wrapper).attributes('data-iso')).toBe('2026-11-10');
+            expect(document.activeElement.dataset.iso).toBe('2026-11-10');
+        });
+
+        it('pickYear then pickMonth: a fully disabled page has no tab stop and focuses the heading', async () => {
+            const wrapper = mount(AppDatePanel, {
+                props: { modelValue: '2026-09-15', max: '2026-09-20' },
+                attachTo: document.body,
+            });
+            await heading(wrapper).trigger('click');
+            await heading(wrapper).trigger('click');
+            await wrapper
+                .findAll('button')
+                .find((b) => b.text() === '2027')
+                .trigger('click');
+            await wrapper.find('button[aria-label="March"]').trigger('click');
+            await nextTick();
+
+            expect(tabStop(wrapper)).toBeUndefined();
+            expect(document.activeElement.getAttribute('aria-label')).toBe(
+                'Choose month',
+            );
+            expect(
+                wrapper.find('button[data-iso="2027-03-01"]').element.disabled,
+            ).toBe(true);
+        });
+
+        it('exposed focus(): no value and min after the 1st lands on the first enabled day', async () => {
+            vi.setSystemTime(new Date(2026, 8, 23, 12));
+            const wrapper = mount(AppDatePanel, {
+                props: { min: '2026-09-25' },
+                attachTo: document.body,
+            });
+            wrapper.vm.focus();
+            await nextTick();
+
+            expect(tabStop(wrapper).attributes('data-iso')).toBe('2026-09-25');
+            expect(document.activeElement.dataset.iso).toBe('2026-09-25');
+        });
+    });
 });

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, ref } from 'vue';
+import { ref } from 'vue';
 import { usePopover } from '../composables/usePopover';
 import AppButton from './AppButton.vue';
 import AppDatePanel from './AppDatePanel.vue';
@@ -35,10 +35,7 @@ const { isOpen, style, close, toggle, onFocusOut, onKeydown } = usePopover(
     popoverRef,
 );
 
-const openToggle = (): void => {
-    toggle();
-    if (isOpen.value) nextTick(() => panelRef.value?.focus());
-};
+const openToggle = (): void => toggle(() => panelRef.value?.focus());
 
 const onGoto = (date: string): void => {
     emit('goto', date);

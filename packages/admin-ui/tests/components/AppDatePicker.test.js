@@ -265,4 +265,27 @@ describe('AppDatePicker', () => {
         );
         expect(document.activeElement).toBe(wrapper.find('button').element);
     });
+
+    it.each(['date', 'time'])(
+        'positions the %s popover before focus moves into it',
+        async (mode) => {
+            const wrapper = mountPicker({ mode });
+            const positionWhenFocused = [];
+            const spy = vi
+                .spyOn(HTMLElement.prototype, 'focus')
+                .mockImplementation(function () {
+                    const dialog = findDialog();
+                    if (dialog?.contains(this)) {
+                        positionWhenFocused.push(dialog.style.position);
+                    }
+                });
+
+            await open(wrapper);
+            await nextTick();
+            spy.mockRestore();
+
+            // focus() on an unpositioned popover scrolls the page to it
+            expect(positionWhenFocused).toEqual(['fixed']);
+        },
+    );
 });

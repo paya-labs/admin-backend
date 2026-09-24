@@ -29,9 +29,16 @@ export function usePopover(
         };
     };
 
-    const open = (): void => {
+    // Position from the trigger rect before the popover mounts (fallback
+    // sizes), so it never renders in flow; re-measure once mounted and only
+    // then hand focus over, otherwise focus() scrolls the page to the popover.
+    const open = (afterOpen?: () => void): void => {
+        position();
         isOpen.value = true;
-        nextTick(position);
+        nextTick(() => {
+            position();
+            afterOpen?.();
+        });
     };
 
     const close = (restoreFocus = false): void => {
@@ -40,7 +47,8 @@ export function usePopover(
         if (restoreFocus) trigger.value?.focus();
     };
 
-    const toggle = (): void => (isOpen.value ? close(true) : open());
+    const toggle = (afterOpen?: () => void): void =>
+        isOpen.value ? close(true) : open(afterOpen);
 
     const onScroll = (event: Event): void => {
         if (

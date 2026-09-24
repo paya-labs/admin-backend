@@ -74,11 +74,17 @@ const cells = computed(() => {
 });
 
 // Roving tabindex: one focusable day per grid
-const tabIso = computed(() =>
-    cells.value.some((c) => c.iso === focused.value)
-        ? focused.value
-        : toIsoDate(new Date(year.value, month.value, 1)),
-);
+// Roving tabindex target: the focused day if it is on this page and enabled,
+// else the first enabled day of the month, else any enabled cell. Empty when
+// min/max disable the whole page, in which case the heading takes focus.
+const tabIso = computed(() => {
+    const enabled = cells.value.filter((c) => !c.disabled);
+    const cell =
+        enabled.find((c) => c.iso === focused.value) ??
+        enabled.find((c) => !c.out) ??
+        enabled[0];
+    return cell?.iso ?? '';
+});
 
 const years = computed(() =>
     Array.from({ length: 12 }, (_, i) => yearBase.value + i),
@@ -120,10 +126,15 @@ const showYears = (): void => {
     focusIn('[aria-label="Previous years"]');
 };
 
+const focusGrid = (): void => {
+    if (tabIso.value) focusDay(tabIso.value);
+    else focusIn('[aria-label="Choose month"]');
+};
+
 const pickMonth = (m: number): void => {
     month.value = m;
     view.value = 'days';
-    focusDay(tabIso.value);
+    focusGrid();
 };
 
 const pickYear = (y: number): void => {
@@ -141,7 +152,9 @@ const focusDay = (iso: string): void => {
 };
 
 const moveFocus = (delta: number): void => {
-    const d = addDays(parseIsoDate(tabIso.value) ?? new Date(), delta);
+    const from = parseIsoDate(tabIso.value);
+    if (!from) return;
+    const d = addDays(from, delta);
     if (isDisabled(toIsoDate(d))) return;
     setPage(d.getFullYear(), d.getMonth());
     focusDay(toIsoDate(d));
@@ -159,7 +172,7 @@ const onGridKeydown = (event: KeyboardEvent): void => {
     moveFocus(delta);
 };
 
-defineExpose({ focus: () => focusDay(tabIso.value) });
+defineExpose({ focus: focusGrid });
 
 const chevron = {
     left: 'M15 19l-7-7 7-7',
