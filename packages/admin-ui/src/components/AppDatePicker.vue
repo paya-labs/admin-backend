@@ -109,12 +109,9 @@ const openSheet = (): void => {
             panelRef.value?.focus();
             return;
         }
-        scrollToCurrent();
-        const list = listRef.value;
-        (
-            list?.querySelector<HTMLElement>('[aria-pressed="true"]') ??
-            list?.querySelector<HTMLElement>('button')
-        )?.focus({ preventScroll: true });
+        scrollToCurrent()
+            ?.querySelector('button')
+            ?.focus({ preventScroll: true });
     });
 };
 
@@ -207,7 +204,8 @@ const pickNow = (): void => {
     pick(toHHMM(Math.min(snapped, 1440 - props.step)));
 };
 
-const scrollToCurrent = (): void => {
+// Centres the selected row, or the first row at/after now, and returns it
+const scrollToCurrent = (): HTMLElement | undefined => {
     const list = listRef.value;
     if (!list) return;
     const now = new Date();
@@ -216,10 +214,11 @@ const scrollToCurrent = (): void => {
         : now.getHours() * 60 + now.getMinutes();
     const index = times.value.findIndex((t) => toMinutes(t.value) >= target);
     const item = list.children[index === -1 ? times.value.length - 1 : index];
-    if (item instanceof HTMLElement) {
-        list.scrollTop =
-            item.offsetTop - list.clientHeight / 2 + item.offsetHeight / 2;
-    }
+    if (!(item instanceof HTMLElement)) return;
+    // offsetTop is list-relative because the list is positioned
+    list.scrollTop =
+        item.offsetTop - list.clientHeight / 2 + item.offsetHeight / 2;
+    return item;
 };
 </script>
 
@@ -346,7 +345,7 @@ const scrollToCurrent = (): void => {
                         />
                         <ul
                             ref="listRef"
-                            class="mt-2 max-h-[268px] overflow-y-auto"
+                            class="mt-2 relative max-h-[268px] overflow-y-auto"
                         >
                             <li
                                 v-for="t in times"
@@ -421,7 +420,11 @@ const scrollToCurrent = (): void => {
                 @update:model-value="pick"
                 @close="closeSheet"
             />
-            <ul v-else ref="listRef" class="px-2 max-h-[60vh] overflow-y-auto">
+            <ul
+                v-else
+                ref="listRef"
+                class="px-2 relative max-h-[60vh] overflow-y-auto"
+            >
                 <li
                     v-for="t in times"
                     :key="t.value"

@@ -1,8 +1,33 @@
 <script setup lang="ts">
-import { onBeforeUnmount, watch } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 
 const props = defineProps<{ open: boolean; title: string }>();
 const emit = defineEmits<{ close: [] }>();
+
+const sheetRef = ref<HTMLDivElement | null>(null);
+
+// aria-modal: Tab wraps inside the sheet instead of reaching the page behind
+const onKeydown = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        emit('close');
+        return;
+    }
+    if (event.key !== 'Tab' || !sheetRef.value) return;
+    const focusable = sheetRef.value.querySelectorAll<HTMLElement>(
+        'button:not([disabled]):not([tabindex="-1"]), input:not([disabled])',
+    );
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && event.target === first) {
+        event.preventDefault();
+        last.focus();
+    } else if (!event.shiftKey && event.target === last) {
+        event.preventDefault();
+        first.focus();
+    }
+};
 
 // Same body scroll lock as AppModal
 watch(
@@ -29,7 +54,7 @@ onBeforeUnmount(() => {
             <div
                 v-if="open"
                 class="inset-0 fixed z-[var(--z-modal)]"
-                @keydown.escape.prevent="emit('close')"
+                @keydown="onKeydown"
             >
                 <div
                     class="inset-0 bg-black/50 absolute"
@@ -42,6 +67,7 @@ onBeforeUnmount(() => {
                     enter-to-class="translate-y-0"
                 >
                     <div
+                        ref="sheetRef"
                         role="dialog"
                         aria-modal="true"
                         :aria-label="title"

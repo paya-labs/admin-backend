@@ -314,6 +314,43 @@ describe('AppDatePicker', () => {
             );
         });
 
+        it('focuses the row the list is centred on when there is no value', async () => {
+            // fake clock is 12:00, so the first row at/after now is 12:00
+            const wrapper = mountPicker({ mode: 'time' });
+            await open(wrapper);
+            await nextTick();
+
+            expect(document.activeElement.textContent.trim()).toBe('12:00');
+        });
+
+        it('wraps Tab inside the sheet', async () => {
+            const wrapper = mountPicker({ mode: 'time', modelValue: '09:30' });
+            await open(wrapper);
+            vi.advanceTimersByTime(1);
+
+            const dialog = findDialog();
+            const buttons = [...dialog.querySelectorAll('button')];
+            const first = buttons[0];
+            const last = buttons[buttons.length - 1];
+            expect(first.textContent.trim()).toBe('Now');
+            expect(last.textContent.trim()).toBe('23:45');
+
+            last.focus();
+            last.dispatchEvent(
+                new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }),
+            );
+            expect(document.activeElement).toBe(first);
+
+            first.dispatchEvent(
+                new KeyboardEvent('keydown', {
+                    key: 'Tab',
+                    shiftKey: true,
+                    bubbles: true,
+                }),
+            );
+            expect(document.activeElement).toBe(last);
+        });
+
         it('titles the sheet from the trigger aria-label and renders the panel fluid', async () => {
             const wrapper = mountPicker({
                 modelValue: '2026-09-15',
