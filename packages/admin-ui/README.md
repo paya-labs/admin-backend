@@ -54,6 +54,8 @@ import '@paya-labs/admin-ui/styles';
 ### Component notes
 
 - `AppCalendarNavigation` renders `title` itself: as a jump-to-date button when `date` (ISO anchor of the visible range) is passed, otherwise as a plain `<h1>`. Earlier versions never rendered `title`; drop any heading you rendered next to it.
+- Below 768px (`useBreakpoint().isMobile`) `AppDatePicker` and `AppCalendarNavigation` open their content in a bottom sheet instead of the anchored popover; the time list has no typed input there.
+- `AppDatePanel` `fluid` (default `false`) drops the fixed width, chrome and footer so the grid fills its container, as the bottom sheet does.
 - `AppDatePicker` emits `YYYY-MM-DD` in date mode and `HH:mm` in time mode, empty string when cleared. `min` / `max` (ISO dates) apply to date mode only. In time mode `step` is the list interval in minutes (default 15) and `from` (`HH:mm`) starts the list one step after that time and labels each entry with its duration, e.g. for an end-time field.
 
 ## Composables

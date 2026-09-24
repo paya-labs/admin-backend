@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs, useId } from 'vue';
+import { computed, nextTick, ref, useAttrs, useId } from 'vue';
+import { useBreakpoint } from '../composables/useBreakpoint';
 import { usePopover } from '../composables/usePopover';
 import type { ControlSize, DatePickerMode } from '../types';
-import { formatIsoDate } from '../utils/isoDate';
+import { formatIsoDate, toIsoDate } from '../utils/isoDate';
+import AppBottomSheet from './AppBottomSheet.vue';
 import AppDatePanel from './AppDatePanel.vue';
 import AppIcon from './AppIcon.vue';
 
@@ -60,6 +62,9 @@ const { isOpen, style, close, toggle, onFocusOut, onKeydown } = usePopover(
     triggerRef,
     popoverRef,
 );
+const { isMobile } = useBreakpoint();
+const sheetOpen = ref(false);
+const expanded = computed(() => isOpen.value || sheetOpen.value);
 
 const isTime = computed(() => props.mode === 'time');
 const hasError = computed(() => Boolean(props.error));
@@ -79,13 +84,54 @@ const triggerAttrs = computed(() => {
     return rest;
 });
 
+const sheetTitle = computed(
+    () =>
+        (attrs['aria-label'] as string) ||
+        props.label ||
+        (isTime.value ? 'Time' : 'Date'),
+);
+const todayIso = toIsoDate(new Date());
+const todayDisabled = computed(
+    () =>
+        (!!props.min && todayIso < props.min) ||
+        (!!props.max && todayIso > props.max),
+);
+
+const closeSheet = (): void => {
+    sheetOpen.value = false;
+    triggerRef.value?.focus({ preventScroll: true });
+};
+
+const openSheet = (): void => {
+    sheetOpen.value = true;
+    nextTick(() => {
+        if (!isTime.value) {
+            panelRef.value?.focus();
+            return;
+        }
+        scrollToCurrent();
+        const list = listRef.value;
+        (
+            list?.querySelector<HTMLElement>('[aria-pressed="true"]') ??
+            list?.querySelector<HTMLElement>('button')
+        )?.focus({ preventScroll: true });
+    });
+};
+
+const dismiss = (): void => (sheetOpen.value ? closeSheet() : close(true));
+
 const pick = (value: string): void => {
     emit('update:modelValue', value);
-    close(true);
+    dismiss();
 };
 
 const openToggle = (): void => {
     if (props.disabled) return;
+    if (isMobile.value) {
+        if (sheetOpen.value) closeSheet();
+        else openSheet();
+        return;
+    }
     toggle(() => {
         if (isTime.value) {
             timeInputRef.value?.focus();
@@ -109,10 +155,15 @@ const toHHMM = (mins: number): string =>
 const formatDuration = (mins: number): string => {
     const h = Math.floor(mins / 60);
     const m = mins % 60;
-    return [h && `${h} ${h === 1 ? 'hr' : 'hrs'}`, m && `${m} mins`]
-        .filter(Boolean)
-        .join(' ');
+    return [h && `${h}h`, m && `${m}m`].filter(Boolean).join(' ');
 };
+
+const rowClass =
+    'flex w-full cursor-pointer items-center rounded-md text-left tabular-nums focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none';
+const rowState = (value: string): string =>
+    value === props.modelValue
+        ? 'font-semibold bg-primary-soft text-on-primary-soft'
+        : 'hover:bg-surface-hover';
 
 const times = computed(() => {
     const start = props.from ? toMinutes(props.from) : 0;
@@ -193,7 +244,7 @@ const scrollToCurrent = (): void => {
                 v-bind="triggerAttrs"
                 :disabled="disabled"
                 aria-haspopup="dialog"
-                :aria-expanded="isOpen"
+                :aria-expanded="expanded"
                 :aria-describedby="error || hint ? `${id}-helper` : undefined"
                 :class="[
                     'gap-2 flex w-full items-center text-left',
@@ -211,7 +262,7 @@ const scrollToCurrent = (): void => {
                     'cursor-pointer',
                     hasError
                         ? 'border-danger focus:ring-danger'
-                        : isOpen
+                        : expanded
                           ? 'border-transparent ring-2 ring-focus-ring'
                           : 'border-input-border',
                 ]"
@@ -306,17 +357,16 @@ const scrollToCurrent = (): void => {
                                     type="button"
                                     :aria-pressed="t.value === modelValue"
                                     :class="[
-                                        'px-2.5 flex h-[30px] w-full cursor-pointer items-center rounded-md text-left tabular-nums focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none',
-                                        t.value === modelValue
-                                            ? 'font-semibold bg-primary-soft text-on-primary-soft'
-                                            : 'hover:bg-surface-hover',
+                                        rowClass,
+                                        'px-2.5 h-[30px]',
+                                        rowState(t.value),
                                     ]"
                                     @click="pick(t.value)"
                                 >
                                     {{ t.value }}
                                     <span
                                         v-if="t.duration"
-                                        class="ml-1.5 font-normal text-muted"
+                                        class="pl-2 font-normal ml-auto text-muted"
                                         >{{ t.duration }}</span
                                     >
                                 </button>
@@ -344,6 +394,59 @@ const scrollToCurrent = (): void => {
                 </div>
             </Transition>
         </Teleport>
+
+        <!-- Bottom sheet (phones) -->
+        <AppBottomSheet
+            :open="sheetOpen"
+            :title="sheetTitle"
+            @close="closeSheet"
+        >
+            <template #secondary>
+                <button
+                    type="button"
+                    class="cursor-pointer text-text-secondary disabled:cursor-not-allowed disabled:opacity-50"
+                    :disabled="!isTime && todayDisabled"
+                    @click="isTime ? pickNow() : pick(todayIso)"
+                >
+                    {{ isTime ? 'Now' : 'Today' }}
+                </button>
+            </template>
+            <AppDatePanel
+                v-if="!isTime"
+                ref="panelRef"
+                fluid
+                :model-value="modelValue"
+                :min="min"
+                :max="max"
+                @update:model-value="pick"
+                @close="closeSheet"
+            />
+            <ul v-else ref="listRef" class="px-2 max-h-[60vh] overflow-y-auto">
+                <li
+                    v-for="t in times"
+                    :key="t.value"
+                    :class="t.hourStart && 'border-t border-border'"
+                >
+                    <button
+                        type="button"
+                        :aria-pressed="t.value === modelValue"
+                        :class="[
+                            rowClass,
+                            'h-12 px-3 text-base',
+                            rowState(t.value),
+                        ]"
+                        @click="pick(t.value)"
+                    >
+                        {{ t.value }}
+                        <span
+                            v-if="t.duration"
+                            class="pl-2 font-normal ml-auto text-muted"
+                            >{{ t.duration }}</span
+                        >
+                    </button>
+                </li>
+            </ul>
+        </AppBottomSheet>
 
         <!-- Helper text -->
         <p

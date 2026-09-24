@@ -123,11 +123,11 @@ describe('AppDatePicker', () => {
             b.textContent.replace(/\s+/g, ' ').trim(),
         );
 
-        expect(labels[0]).toBe('09:45 15 mins');
-        expect(labels[1]).toBe('10:00 30 mins');
-        expect(labels[3]).toBe('10:30 1 hr');
-        expect(labels[6]).toBe('11:15 1 hr 45 mins');
-        expect(labels[labels.length - 1]).toBe('23:45 14 hrs 15 mins');
+        expect(labels[0]).toBe('09:45 15m');
+        expect(labels[1]).toBe('10:00 30m');
+        expect(labels[3]).toBe('10:30 1h');
+        expect(labels[6]).toBe('11:15 1h 45m');
+        expect(labels[labels.length - 1]).toBe('23:45 14h 15m');
     });
 
     it('applies typed times on Enter', async () => {
@@ -288,4 +288,84 @@ describe('AppDatePicker', () => {
             expect(positionWhenFocused).toEqual(['fixed']);
         },
     );
+
+    describe('bottom sheet below the md breakpoint', () => {
+        const desktopWidth = window.innerWidth;
+        beforeEach(() => {
+            window.innerWidth = 500;
+        });
+        afterEach(() => {
+            window.innerWidth = desktopWidth;
+        });
+
+        it('opens the time list in a sheet without the typed input', async () => {
+            const wrapper = mountPicker({ mode: 'time', modelValue: '09:30' });
+            await open(wrapper);
+
+            const dialog = findDialog();
+            expect(dialog.getAttribute('aria-label')).toBe('Time');
+            expect(dialog.getAttribute('aria-modal')).toBe('true');
+            expect(dialog.querySelector('input')).toBeNull();
+            expect(dialog.style.position).toBe('');
+            expect(timeButtons().length).toBe(96);
+            expect(document.body.style.overflow).toBe('hidden');
+            expect(wrapper.find('button').attributes('aria-expanded')).toBe(
+                'true',
+            );
+        });
+
+        it('titles the sheet from the trigger aria-label and renders the panel fluid', async () => {
+            const wrapper = mountPicker({
+                modelValue: '2026-09-15',
+                'aria-label': 'Start date',
+            });
+            await open(wrapper);
+
+            const dialog = findDialog();
+            expect(dialog.getAttribute('aria-label')).toBe('Start date');
+            expect(
+                dialog.querySelector('[data-iso]').closest('.w-\\[300px\\]'),
+            ).toBeNull();
+            expect(
+                dialog.querySelector('[data-iso="2026-09-15"]').className,
+            ).not.toContain('h-[34px]');
+        });
+
+        it('picks, closes on Done and Escape, and returns focus to the trigger', async () => {
+            const wrapper = mountPicker({ modelValue: '2026-09-15' });
+            await open(wrapper);
+            findDialog().querySelector('[data-iso="2026-09-20"]').click();
+            await nextTick();
+
+            expect(wrapper.emitted('update:modelValue')[0]).toEqual([
+                '2026-09-20',
+            ]);
+            expect(findDialog()).toBeNull();
+            expect(document.activeElement).toBe(wrapper.find('button').element);
+            expect(document.body.style.overflow).toBe('');
+
+            await open(wrapper);
+            [...findDialog().querySelectorAll('button')]
+                .find((b) => b.textContent.trim() === 'Done')
+                .click();
+            await nextTick();
+            expect(findDialog()).toBeNull();
+
+            await open(wrapper);
+            findDialog().dispatchEvent(
+                new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+            );
+            await nextTick();
+            expect(findDialog()).toBeNull();
+        });
+
+        it('keeps the popover with the typed input at desktop widths', async () => {
+            window.innerWidth = 1024;
+            const wrapper = mountPicker({ mode: 'time' });
+            await open(wrapper);
+
+            expect(findDialog().querySelector('input')).not.toBeNull();
+            expect(findDialog().style.position).toBe('fixed');
+        });
+    });
 });

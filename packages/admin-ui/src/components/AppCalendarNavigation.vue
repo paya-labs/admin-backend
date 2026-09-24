@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
+import { useBreakpoint } from '../composables/useBreakpoint';
 import { usePopover } from '../composables/usePopover';
+import { toIsoDate } from '../utils/isoDate';
+import AppBottomSheet from './AppBottomSheet.vue';
 import AppButton from './AppButton.vue';
 import AppDatePanel from './AppDatePanel.vue';
 
@@ -35,12 +38,35 @@ const { isOpen, style, close, toggle, onFocusOut, onKeydown } = usePopover(
     popoverRef,
 );
 
-const openToggle = (): void => toggle(() => panelRef.value?.focus());
+const { isMobile } = useBreakpoint();
+const sheetOpen = ref(false);
+const expanded = computed(() => isOpen.value || sheetOpen.value);
+
+const closeSheet = (): void => {
+    sheetOpen.value = false;
+    triggerRef.value?.focus({ preventScroll: true });
+};
+
+const openToggle = (): void => {
+    if (!isMobile.value) {
+        toggle(() => panelRef.value?.focus());
+        return;
+    }
+    if (sheetOpen.value) {
+        closeSheet();
+        return;
+    }
+    sheetOpen.value = true;
+    nextTick(() => panelRef.value?.focus());
+};
 
 const onGoto = (date: string): void => {
     emit('goto', date);
-    close(true);
+    if (sheetOpen.value) closeSheet();
+    else close(true);
 };
+
+const goToday = (): void => onGoto(toIsoDate(new Date()));
 </script>
 
 <template>
@@ -79,11 +105,11 @@ const onGoto = (date: string): void => {
                 ref="triggerRef"
                 type="button"
                 aria-haspopup="dialog"
-                :aria-expanded="isOpen"
+                :aria-expanded="expanded"
                 :class="[
                     'min-w-0 gap-1 px-2 text-lg font-semibold flex min-h-[36px] cursor-pointer items-center rounded-md text-text',
                     'hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none',
-                    isOpen && 'bg-surface-hover',
+                    expanded && 'bg-surface-hover',
                 ]"
                 @click="openToggle"
                 @keydown.escape.prevent="close(true)"
@@ -93,7 +119,7 @@ const onGoto = (date: string): void => {
                 <svg
                     :class="[
                         'h-4 w-4 shrink-0 text-muted transition-transform duration-200',
-                        isOpen && 'rotate-180',
+                        expanded && 'rotate-180',
                     ]"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -170,5 +196,31 @@ const onGoto = (date: string): void => {
                 </div>
             </Transition>
         </Teleport>
+
+        <!-- Bottom sheet (phones) -->
+        <AppBottomSheet
+            :open="sheetOpen"
+            title="Go to date"
+            @close="closeSheet"
+        >
+            <template #secondary>
+                <button
+                    type="button"
+                    class="cursor-pointer text-text-secondary"
+                    @click="goToday"
+                >
+                    Today
+                </button>
+            </template>
+            <AppDatePanel
+                ref="panelRef"
+                fluid
+                :model-value="date"
+                :range-start="rangeStart"
+                :range-end="rangeEnd"
+                @update:model-value="onGoto"
+                @close="closeSheet"
+            />
+        </AppBottomSheet>
     </div>
 </template>

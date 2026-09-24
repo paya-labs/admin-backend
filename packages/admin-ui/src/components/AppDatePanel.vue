@@ -16,6 +16,8 @@ interface Props {
     max?: string;
     rangeStart?: string;
     rangeEnd?: string;
+    /** fill the container (bottom sheet): no fixed width or chrome, larger cells */
+    fluid?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
     max: '',
     rangeStart: '',
     rangeEnd: '',
+    fluid: false,
 });
 
 const emit = defineEmits<{
@@ -183,7 +186,12 @@ const chevron = {
 <template>
     <div
         ref="rootRef"
-        class="p-3 text-sm w-[300px] rounded-xl border border-border-strong bg-surface text-text shadow-lg"
+        :class="[
+            'p-3 bg-surface text-text',
+            fluid
+                ? 'text-base'
+                : 'text-sm w-[300px] rounded-xl border border-border-strong shadow-lg',
+        ]"
         @keydown.escape.prevent="emit('close')"
     >
         <!-- Header -->
@@ -303,7 +311,8 @@ const chevron = {
                     :aria-pressed="c.selected"
                     :aria-current="c.today ? 'date' : undefined"
                     :class="[
-                        'relative h-[34px] rounded-lg focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none',
+                        'relative rounded-lg focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none',
+                        fluid ? 'h-11' : 'h-[34px]',
                         c.disabled
                             ? 'cursor-not-allowed text-muted line-through opacity-35'
                             : 'cursor-pointer hover:bg-surface-hover',
@@ -370,8 +379,9 @@ const chevron = {
             </button>
         </div>
 
-        <!-- Footer -->
+        <!-- Footer (the bottom sheet header carries Today / Done instead) -->
         <div
+            v-if="!fluid"
             class="mt-2.5 pt-2.5 flex items-center justify-between border-t border-border"
         >
             <button
