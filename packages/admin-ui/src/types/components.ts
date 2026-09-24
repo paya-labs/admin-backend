@@ -6,6 +6,8 @@ export type ButtonVariant =
     | 'outline';
 export type ControlSize = 'sm' | 'md' | 'lg';
 
+export type DatePickerMode = 'date' | 'time';
+
 export type BadgeVariant =
     | 'primary'
     | 'secondary'

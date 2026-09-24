@@ -8,6 +8,7 @@ import Cards from '../pages/Cards.vue';
 import Components from '../pages/Components.vue';
 import Crud from '../pages/Crud.vue';
 import Dashboard from '../pages/Dashboard.vue';
+import DatePicker from '../pages/DatePicker.vue';
 import Forms from '../pages/Forms.vue';
 import Icons from '../pages/Icons.vue';
 import Modals from '../pages/Modals.vue';
@@ -31,6 +32,11 @@ const routes = [
         path: '/forms',
         name: 'Forms',
         component: Forms,
+    },
+    {
+        path: '/date-picker',
+        name: 'DatePicker',
+        component: DatePicker,
     },
     {
         path: '/tables',

@@ -788,6 +788,9 @@ defineExpose({
     today: () => {
         calendarRef.value?.getApi()?.today();
     },
+    gotoDate: (date: Date | string) => {
+        calendarRef.value?.getApi()?.gotoDate(date);
+    },
     changeView: (view: string) => {
         const api = calendarRef.value?.getApi();
         if (!api) return;

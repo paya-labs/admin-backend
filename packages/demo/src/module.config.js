@@ -32,6 +32,11 @@ export const moduleConfig = {
             route: '/forms',
         },
         {
+            label: 'Date Picker',
+            icon: 'calendar',
+            route: '/date-picker',
+        },
+        {
             label: 'Tables',
             icon: 'table',
             route: '/tables',

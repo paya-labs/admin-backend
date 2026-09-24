@@ -14,6 +14,8 @@ import AppCard from './components/AppCard.vue';
 import AppCheckbox from './components/AppCheckbox.vue';
 import AppColorInput from './components/AppColorInput.vue';
 import AppCombobox from './components/AppCombobox.vue';
+import AppDatePanel from './components/AppDatePanel.vue';
+import AppDatePicker from './components/AppDatePicker.vue';
 import AppDrawer from './components/AppDrawer.vue';
 import AppEditor from './components/AppEditor.vue';
 import AppForm from './components/AppForm.vue';
@@ -71,6 +73,7 @@ import {
     isValidDate,
     localDateTimeToUTC,
 } from './utils/dateFormat';
+import { formatIsoDate, parseIsoDate, toIsoDate } from './utils/isoDate';
 
 // Directives
 import { vClickOutside } from './directives/clickOutside';
@@ -140,6 +143,8 @@ export {
     AppCheckbox,
     AppColorInput,
     AppCombobox,
+    AppDatePanel,
+    AppDatePicker,
     AppDrawer,
     AppEditor,
     AppForm,
@@ -189,9 +194,12 @@ export {
     formatDateShort,
     formatDateTime,
     formatDateTimeLocal,
+    formatIsoDate,
     formatTime,
     isValidDate,
     localDateTimeToUTC,
+    parseIsoDate,
+    toIsoDate,
 };
 
 // Re-export directives
@@ -231,6 +239,8 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}ToastContainer`, AppToastContainer);
         app.component(`${prefix}Calendar`, AppCalendar);
         app.component(`${prefix}ColorInput`, AppColorInput);
+        app.component(`${prefix}DatePanel`, AppDatePanel);
+        app.component(`${prefix}DatePicker`, AppDatePicker);
         app.component(`${prefix}Drawer`, AppDrawer);
         app.component(`${prefix}Editor`, AppEditor);
         app.component('AdminLayout', AdminLayout);

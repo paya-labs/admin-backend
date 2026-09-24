@@ -28,6 +28,17 @@ const categoryOptions = [
 // Computed properties that read from the calendar ref
 const currentTitle = computed(() => calendarRef.value?.currentTitle ?? '');
 
+// Visible range for the heading jump popover, as ISO dates in the calendar's
+// own timezone (formatIso avoids the local/UTC drift of Date getters).
+const visible = ref({ date: '', rangeStart: '', rangeEnd: '' });
+const onDatesSet = (info) => {
+    visible.value = {
+        date: info.view.calendar.formatIso(info.view.currentStart, true),
+        rangeStart: info.startStr.slice(0, 10),
+        rangeEnd: info.endStr.slice(0, 10),
+    };
+};
+
 // Map internal view to display view (3-day maps to week for UI display)
 const currentView = computed(() => {
     const view = calendarRef.value?.currentView ?? 'timeGridWeek';
@@ -42,6 +53,7 @@ const currentView = computed(() => {
 const handlePrev = () => calendarRef.value?.prev();
 const handleNext = () => calendarRef.value?.next();
 const handleToday = () => calendarRef.value?.today();
+const handleGoto = (date) => calendarRef.value?.gotoDate(date);
 const handleViewChange = (view) => calendarRef.value?.changeView(view);
 
 // Event handlers
@@ -59,13 +71,15 @@ function onDateClick(info) {
     <Teleport to="#header-left">
         <div class="hidden items-center gap-2 md:flex">
             <AppCalendarNavigation
+                :title="currentTitle"
+                :date="visible.date"
+                :range-start="visible.rangeStart"
+                :range-end="visible.rangeEnd"
                 @prev="handlePrev"
                 @next="handleNext"
                 @today="handleToday"
+                @goto="handleGoto"
             />
-            <h1 class="text-text text-lg font-semibold">
-                {{ currentTitle }}
-            </h1>
         </div>
     </Teleport>
 
@@ -91,6 +105,7 @@ function onDateClick(info) {
         header-offset="64px"
         hide-builtin-panel-header
         @update:panel-open="panelOpen = $event"
+        @dates-set="onDatesSet"
         @event-click="onEventClick"
         @date-click="onDateClick"
     >
@@ -98,9 +113,13 @@ function onDateClick(info) {
         <template #mobile-toolbar>
             <AppCalendarNavigation
                 :title="currentTitle"
+                :date="visible.date"
+                :range-start="visible.rangeStart"
+                :range-end="visible.rangeEnd"
                 @prev="handlePrev"
                 @next="handleNext"
                 @today="handleToday"
+                @goto="handleGoto"
             />
             <AppCalendarViewTabs
                 :current-view="currentView"
