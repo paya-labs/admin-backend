@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useTheme } from '../composables/useTheme';
 import AppButton from './AppButton.vue';
 import AppIcon from './AppIcon.vue';
 
@@ -15,13 +14,14 @@ const emit = defineEmits<{
     toggleSidebar: [];
 }>();
 
-const { mode, toggleTheme } = useTheme();
-
-const getThemeLabel = (): string => {
-    if (mode.value === 'dark') return 'Dark';
-    if (mode.value === 'light') return 'Light';
-    return 'System';
-};
+// The header owns nothing but the hamburger. Each region is a named slot and
+// also a teleport target with the same id, so pages can fill it either way.
+defineSlots<{
+    'header-left'(): unknown;
+    'header-center'(): unknown;
+    'header-right'(): unknown;
+    'header-end'(): unknown;
+}>();
 </script>
 
 <template>
@@ -52,39 +52,29 @@ const getThemeLabel = (): string => {
                 </AppButton>
 
                 <!-- Teleport target: page-level header content (left) -->
-                <div id="header-left" class="flex items-center" />
+                <div id="header-left" class="flex items-center">
+                    <slot name="header-left" />
+                </div>
             </div>
 
             <!-- Center section -->
             <div class="lg:flex hidden flex-1 justify-center">
                 <!-- Teleport target: page-level header content (center) -->
-                <div id="header-center" class="flex items-center" />
+                <div id="header-center" class="flex items-center">
+                    <slot name="header-center" />
+                </div>
             </div>
 
             <!-- Right section -->
             <div class="gap-2 lg:gap-3 flex items-center">
                 <!-- Teleport target: page-level header content (right) -->
-                <div id="header-right" class="flex items-center" />
+                <div id="header-right" class="flex items-center">
+                    <slot name="header-right" />
+                </div>
                 <!-- Teleport target: app-level trailing content (search, etc.) -->
-                <div id="header-end" class="flex items-center" />
-
-                <!-- Theme toggle -->
-                <AppButton
-                    variant="ghost"
-                    icon-only
-                    size="md"
-                    :title="`Theme: ${getThemeLabel()}`"
-                    aria-label="Toggle theme"
-                    @click="toggleTheme"
-                >
-                    <AppIcon v-if="mode === 'light'" name="sun" size="md" />
-                    <AppIcon
-                        v-else-if="mode === 'dark'"
-                        name="moon"
-                        size="md"
-                    />
-                    <AppIcon v-else name="desktop-computer" size="md" />
-                </AppButton>
+                <div id="header-end" class="flex items-center">
+                    <slot name="header-end" />
+                </div>
             </div>
         </div>
     </header>
