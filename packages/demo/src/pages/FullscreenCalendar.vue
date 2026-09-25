@@ -77,18 +77,20 @@ function onDateClick(info) {
                 :range-end="visible.rangeEnd"
                 @prev="handlePrev"
                 @next="handleNext"
-                @today="handleToday"
                 @goto="handleGoto"
             />
         </div>
     </Teleport>
 
     <Teleport to="#header-right">
-        <div class="hidden md:block">
+        <div class="hidden items-center gap-3 md:flex">
             <AppCalendarViewTabs
                 :current-view="currentView"
                 @change="handleViewChange"
             />
+            <AppButton variant="secondary" size="sm" @click="handleToday">
+                Today
+            </AppButton>
         </div>
     </Teleport>
 
@@ -118,13 +120,15 @@ function onDateClick(info) {
                 :range-end="visible.rangeEnd"
                 @prev="handlePrev"
                 @next="handleNext"
-                @today="handleToday"
                 @goto="handleGoto"
             />
             <AppCalendarViewTabs
                 :current-view="currentView"
                 @change="handleViewChange"
             />
+            <AppButton variant="secondary" size="sm" @click="handleToday">
+                Today
+            </AppButton>
         </template>
 
         <!-- Custom panel content -->

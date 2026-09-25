@@ -26,7 +26,6 @@ withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
     prev: [];
     next: [];
-    today: [];
     goto: [date: string];
 }>();
 
@@ -36,6 +35,7 @@ const panelRef = ref<InstanceType<typeof AppDatePanel> | null>(null);
 const { isOpen, style, close, toggle, onFocusOut, onKeydown } = usePopover(
     triggerRef,
     popoverRef,
+    { align: 'center' },
 );
 
 const { isMobile } = useBreakpoint();
@@ -71,11 +71,6 @@ const goToday = (): void => onGoto(toIsoDate(new Date()));
 
 <template>
     <div class="min-w-0 gap-1 md:gap-3 flex items-center">
-        <!-- Today button -->
-        <AppButton variant="secondary" size="sm" @click="$emit('today')">
-            Today
-        </AppButton>
-
         <div class="min-w-0 flex items-center">
             <AppButton
                 variant="ghost"
@@ -116,23 +111,6 @@ const goToday = (): void => onGoto(toIsoDate(new Date()));
                 @focusout="onFocusOut"
             >
                 <span class="truncate">{{ title }}</span>
-                <svg
-                    :class="[
-                        'h-4 w-4 shrink-0 text-muted transition-transform duration-200',
-                        expanded && 'rotate-180',
-                    ]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    aria-hidden="true"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M6 9l6 6 6-6"
-                    />
-                </svg>
             </button>
             <h1 v-else class="px-2 text-lg font-semibold truncate text-text">
                 {{ title }}
