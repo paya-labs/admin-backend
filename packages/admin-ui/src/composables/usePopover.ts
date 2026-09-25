@@ -9,6 +9,7 @@ import { nextTick, onBeforeUnmount, ref, watch, type Ref } from 'vue';
 export function usePopover(
     trigger: Ref<HTMLElement | null>,
     popover: Ref<HTMLElement | null>,
+    { align = 'start' }: { align?: 'start' | 'center' } = {},
 ) {
     const isOpen = ref(false);
     const style = ref<Record<string, string>>({});
@@ -21,11 +22,15 @@ export function usePopover(
         const spaceBelow = window.innerHeight - rect.bottom;
         const flip = spaceBelow < height && rect.top > spaceBelow;
         const top = flip ? rect.top - height - 4 : rect.bottom + 4;
+        const left =
+            align === 'center'
+                ? rect.left + rect.width / 2 - width / 2
+                : rect.left;
         style.value = {
             position: 'fixed',
             // Clamp to the viewport when the popover fits neither below nor above
             top: `${Math.max(8, Math.min(top, window.innerHeight - height - 8))}px`,
-            left: `${Math.max(8, Math.min(rect.left, window.innerWidth - width - 8))}px`,
+            left: `${Math.max(8, Math.min(left, window.innerWidth - width - 8))}px`,
         };
     };
 

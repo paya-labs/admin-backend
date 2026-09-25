@@ -31,31 +31,31 @@ import '@paya-labs/admin-ui/styles';
 
 ## Components
 
-| Component               | Description                                                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------ |
-| `AppButton`             | Button with variants and loading state                                                     |
-| `AppInput`              | Text input with label and validation                                                       |
-| `AppTextarea`           | Multi-line text input                                                                      |
-| `AppSelect`             | Select dropdown                                                                            |
-| `AppDatePicker`         | Date or time field with popover picker                                                     |
-| `AppDatePanel`          | Month grid with month/year drill-up                                                        |
-| `AppCalendarNavigation` | Today / prev / heading / next toolbar; the heading opens `AppDatePanel` when `date` is set |
-| `AppBadge`              | Status badge with variants                                                                 |
-| `AppCard`               | Stats/info card with trend indicators                                                      |
-| `AppTable`              | Data table with sorting and pagination                                                     |
-| `AppHeader`             | Top bar: hamburger plus `header-left/center/right/end` slots (also teleport targets)       |
-| `AppSidebar`            | Navigation sidebar with collapse and a user menu (theme switch, sign out)                  |
-| `AppModal`              | Modal dialog                                                                               |
-| `AppForm`               | Dynamic form generator                                                                     |
-| `AppIcon`               | Icon component with built-in icons                                                         |
-| `AppToastContainer`     | Toast notifications container                                                              |
-| `AdminLayout`           | Main layout with sidebar and header                                                        |
+| Component               | Description                                                                          |
+| ----------------------- | ------------------------------------------------------------------------------------ |
+| `AppButton`             | Button with variants and loading state                                               |
+| `AppInput`              | Text input with label and validation                                                 |
+| `AppTextarea`           | Multi-line text input                                                                |
+| `AppSelect`             | Select dropdown                                                                      |
+| `AppDatePicker`         | Date or time field with popover picker                                               |
+| `AppDatePanel`          | Month grid with month/year drill-up                                                  |
+| `AppCalendarNavigation` | Prev / heading / next toolbar; the heading opens `AppDatePanel` when `date` is set   |
+| `AppBadge`              | Status badge with variants                                                           |
+| `AppCard`               | Stats/info card with trend indicators                                                |
+| `AppTable`              | Data table with sorting and pagination                                               |
+| `AppHeader`             | Top bar: hamburger plus `header-left/center/right/end` slots (also teleport targets) |
+| `AppSidebar`            | Navigation sidebar with collapse and a user menu (theme switch, sign out)            |
+| `AppModal`              | Modal dialog                                                                         |
+| `AppForm`               | Dynamic form generator                                                               |
+| `AppIcon`               | Icon component with built-in icons                                                   |
+| `AppToastContainer`     | Toast notifications container                                                        |
+| `AdminLayout`           | Main layout with sidebar and header                                                  |
 
 ### Component notes
 
 - `AppHeader` renders nothing of its own besides the sidebar hamburger. Its four regions are named slots on `AppHeader` and `AdminLayout` (`header-left`, `header-center`, `header-right`, `header-end`) and stay reachable as teleport targets with the same ids. The theme toggle that used to sit at the far right is gone; `AppSidebar` offers it in the user menu instead.
 - `AppSidebar` user menu carries the theme switch (`Theme: Light / Dark / System`, cycling on click) above Sign out. It uses the shared `useTheme` state, so nothing needs wiring from the consumer.
-- `AppCalendarNavigation` renders `title` itself: as a jump-to-date button when `date` (ISO anchor of the visible range) is passed, otherwise as a plain `<h1>`. Earlier versions never rendered `title`; drop any heading you rendered next to it.
+- `AppCalendarNavigation` renders `title` itself: as a jump-to-date button when `date` (ISO anchor of the visible range) is passed, otherwise as a plain `<h1>`. Earlier versions never rendered `title`; drop any heading you rendered next to it. It no longer renders a Today button (nor emits `today`): place your own where it suits the page, e.g. after the view tabs, and call the calendar's `today()`. The date popover opens centered under the heading.
 - Below 768px (`useBreakpoint().isMobile`) `AppDatePicker` and `AppCalendarNavigation` open their content in a bottom sheet instead of the anchored popover; the time list has no typed input there.
 - `AppDatePanel` `fluid` (default `false`) drops the fixed width, chrome and footer so the grid fills its container, as the bottom sheet does.
 - `AppDatePicker` emits `YYYY-MM-DD` in date mode and `HH:mm` in time mode, empty string when cleared. `min` / `max` (ISO dates) apply to date mode only. In time mode `step` is the list interval in minutes (default 15) and `from` (`HH:mm`) starts the list one step after that time and labels each entry with its duration, e.g. for an end-time field.
