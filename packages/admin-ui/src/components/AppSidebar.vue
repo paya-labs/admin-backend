@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
+import { useTheme } from '../composables/useTheme';
 import { vClickOutside } from '../directives/clickOutside';
 import type { NavigationItem, User } from '../types';
 import AppIcon from './AppIcon.vue';
@@ -73,6 +74,24 @@ const handleLogout = (): void => {
     closeUserMenu();
     emit('logout');
 };
+
+// Theme lives in the user menu: cycling it keeps the menu open so the
+// user can see each mode land.
+const { mode, toggleTheme } = useTheme();
+const themeLabel = computed(() =>
+    mode.value === 'dark'
+        ? 'Dark'
+        : mode.value === 'light'
+          ? 'Light'
+          : 'System',
+);
+const themeIcon = computed(() =>
+    mode.value === 'dark'
+        ? 'moon'
+        : mode.value === 'light'
+          ? 'sun'
+          : 'desktop-computer',
+);
 </script>
 
 <template>
@@ -390,6 +409,16 @@ const handleLogout = (): void => {
                             {{ user.email }}
                         </p>
                     </div>
+                    <button
+                        type="button"
+                        class="min-h-10 gap-3 px-3 py-2 text-sm flex w-full items-center text-text hover:bg-surface-hover"
+                        role="menuitem"
+                        aria-label="Toggle theme"
+                        @click="toggleTheme"
+                    >
+                        <AppIcon :name="themeIcon" size="sm" />
+                        Theme: {{ themeLabel }}
+                    </button>
                     <button
                         type="button"
                         class="min-h-10 gap-3 px-3 py-2 text-sm flex w-full items-center text-danger hover:bg-surface-hover"
