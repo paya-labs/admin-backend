@@ -60,7 +60,12 @@ const handleLogout = (): void => {
         />
 
         <!-- Header -->
-        <AppHeader :is-collapsed="isCollapsed" @toggle-sidebar="toggle" />
+        <AppHeader :is-collapsed="isCollapsed" @toggle-sidebar="toggle">
+            <template #header-left><slot name="header-left" /></template>
+            <template #header-center><slot name="header-center" /></template>
+            <template #header-right><slot name="header-right" /></template>
+            <template #header-end><slot name="header-end" /></template>
+        </AppHeader>
 
         <!-- Main content -->
         <main

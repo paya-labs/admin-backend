@@ -16,14 +16,6 @@ const isFullscreen = computed(() => route.path === '/fullscreen-calendar');
         :navigation="moduleConfig.navigation"
         :fullscreen="isFullscreen"
     >
-        <!-- Header slots with teleport targets -->
-        <template #header-left>
-            <div id="header-left"></div>
-        </template>
-        <template #header-right>
-            <div id="header-right"></div>
-        </template>
-
         <router-view />
     </AdminLayout>
 </template>
