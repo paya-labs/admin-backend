@@ -6,7 +6,7 @@ const props = defineProps<{ modelValue: string }>();
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
 
 const ROW = 40;
-const VISIBLE = 5;
+const VISIBLE = 7;
 const hours = Array.from({ length: 24 }, (_, i) => i);
 const minutes = Array.from({ length: 60 }, (_, i) => i);
 const pad = (n: number): string => String(n).padStart(2, '0');
@@ -83,7 +83,7 @@ const rowClass =
             ref="hourRef"
             aria-label="Hour"
             :class="columnClass"
-            :style="{ paddingBlock: `${ROW * 2}px` }"
+            :style="{ paddingBlock: `${ROW * 3}px` }"
             @scroll.passive="onScroll(0, $event)"
         >
             <li v-for="h in hours" :key="h">
@@ -106,7 +106,7 @@ const rowClass =
             ref="minuteRef"
             aria-label="Minute"
             :class="columnClass"
-            :style="{ paddingBlock: `${ROW * 2}px` }"
+            :style="{ paddingBlock: `${ROW * 3}px` }"
             @scroll.passive="onScroll(1, $event)"
         >
             <li v-for="m in minutes" :key="m">
