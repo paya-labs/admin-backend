@@ -7,6 +7,7 @@ import { formatIsoDate, toIsoDate } from '../utils/isoDate';
 import AppBottomSheet from './AppBottomSheet.vue';
 import AppDatePanel from './AppDatePanel.vue';
 import AppIcon from './AppIcon.vue';
+import AppTimeWheel from './AppTimeWheel.vue';
 
 defineOptions({ inheritAttrs: false });
 
@@ -104,15 +105,7 @@ const closeSheet = (): void => {
 
 const openSheet = (): void => {
     sheetOpen.value = true;
-    nextTick(() => {
-        if (!isTime.value) {
-            panelRef.value?.focus();
-            return;
-        }
-        scrollToCurrent()
-            ?.querySelector('button')
-            ?.focus({ preventScroll: true });
-    });
+    nextTick(() => panelRef.value?.focus());
 };
 
 const dismiss = (): void => (sheetOpen.value ? closeSheet() : close(true));
@@ -196,6 +189,11 @@ const applyTyped = (): void => {
     if (value) pick(value);
 };
 
+const setNow = (): void => {
+    const now = new Date();
+    emit('update:modelValue', toHHMM(now.getHours() * 60 + now.getMinutes()));
+};
+
 const pickNow = (): void => {
     const now = new Date();
     const snapped =
@@ -204,8 +202,8 @@ const pickNow = (): void => {
     pick(toHHMM(Math.min(snapped, 1440 - props.step)));
 };
 
-// Centres the selected row, or the first row at/after now, and returns it
-const scrollToCurrent = (): HTMLElement | undefined => {
+// Centres the selected row, or the first row at/after now
+const scrollToCurrent = (): void => {
     const list = listRef.value;
     if (!list) return;
     const now = new Date();
@@ -218,7 +216,6 @@ const scrollToCurrent = (): HTMLElement | undefined => {
     // offsetTop is list-relative because the list is positioned
     list.scrollTop =
         item.offsetTop - list.clientHeight / 2 + item.offsetHeight / 2;
-    return item;
 };
 </script>
 
@@ -405,7 +402,7 @@ const scrollToCurrent = (): HTMLElement | undefined => {
                     type="button"
                     class="cursor-pointer text-text-secondary disabled:cursor-not-allowed disabled:opacity-50"
                     :disabled="!isTime && todayDisabled"
-                    @click="isTime ? pickNow() : pick(todayIso)"
+                    @click="isTime ? setNow() : pick(todayIso)"
                 >
                     {{ isTime ? 'Now' : 'Today' }}
                 </button>
@@ -420,35 +417,11 @@ const scrollToCurrent = (): HTMLElement | undefined => {
                 @update:model-value="pick"
                 @close="closeSheet"
             />
-            <ul
+            <AppTimeWheel
                 v-else
-                ref="listRef"
-                class="px-2 relative max-h-[60vh] overflow-y-auto"
-            >
-                <li
-                    v-for="t in times"
-                    :key="t.value"
-                    :class="t.hourStart && 'border-t border-border'"
-                >
-                    <button
-                        type="button"
-                        :aria-pressed="t.value === modelValue"
-                        :class="[
-                            rowClass,
-                            'h-12 px-3 text-base',
-                            rowState(t.value),
-                        ]"
-                        @click="pick(t.value)"
-                    >
-                        {{ t.value }}
-                        <span
-                            v-if="t.duration"
-                            class="pl-2 font-normal ml-auto text-muted"
-                            >{{ t.duration }}</span
-                        >
-                    </button>
-                </li>
-            </ul>
+                :model-value="modelValue"
+                @update:model-value="emit('update:modelValue', $event)"
+            />
         </AppBottomSheet>
 
         <!-- Helper text -->

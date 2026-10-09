@@ -298,7 +298,14 @@ describe('AppDatePicker', () => {
             window.innerWidth = desktopWidth;
         });
 
-        it('opens the time list in a sheet without the typed input', async () => {
+        const column = (label) =>
+            findDialog().querySelector(`ul[aria-label="${label}"]`);
+        const pressed = (label) =>
+            column(label)
+                .querySelector('[aria-pressed="true"]')
+                .textContent.trim();
+
+        it('opens an hour and minute wheel in a sheet', async () => {
             const wrapper = mountPicker({ mode: 'time', modelValue: '09:30' });
             await open(wrapper);
 
@@ -306,21 +313,48 @@ describe('AppDatePicker', () => {
             expect(dialog.getAttribute('aria-label')).toBe('Time');
             expect(dialog.getAttribute('aria-modal')).toBe('true');
             expect(dialog.querySelector('input')).toBeNull();
-            expect(dialog.style.position).toBe('');
-            expect(timeButtons().length).toBe(96);
+            expect(column('Hour').querySelectorAll('button').length).toBe(24);
+            expect(column('Minute').querySelectorAll('button').length).toBe(60);
+            expect(pressed('Hour')).toBe('09');
+            expect(pressed('Minute')).toBe('30');
+            expect(column('Hour').scrollTop).toBe(9 * 40);
+            expect(column('Minute').scrollTop).toBe(30 * 40);
             expect(document.body.style.overflow).toBe('hidden');
-            expect(wrapper.find('button').attributes('aria-expanded')).toBe(
-                'true',
-            );
         });
 
-        it('focuses the row the list is centred on when there is no value', async () => {
-            // fake clock is 12:00, so the first row at/after now is 12:00
+        it('emits the row a column settles on and the row that is tapped', async () => {
+            const wrapper = mountPicker({ mode: 'time', modelValue: '09:15' });
+            await open(wrapper);
+
+            const minute = column('Minute');
+            minute.scrollTop = 20 * 40;
+            minute.dispatchEvent(new Event('scroll'));
+            vi.advanceTimersByTime(120);
+            expect(wrapper.emitted('update:modelValue').at(-1)).toEqual([
+                '09:20',
+            ]);
+
+            column('Hour').querySelectorAll('button')[14].click();
+            await nextTick();
+            expect(wrapper.emitted('update:modelValue').at(-1)).toEqual([
+                '14:20',
+            ]);
+            expect(findDialog()).not.toBeNull();
+        });
+
+        it('centres the wheel on now when there is no value and Now sets the exact minute', async () => {
+            vi.setSystemTime(new Date(2026, 8, 23, 12, 7));
             const wrapper = mountPicker({ mode: 'time' });
             await open(wrapper);
-            await nextTick();
 
-            expect(document.activeElement.textContent.trim()).toBe('12:00');
+            expect(pressed('Hour')).toBe('12');
+            expect(pressed('Minute')).toBe('07');
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+
+            findDialog().querySelector('button').click();
+            await nextTick();
+            expect(wrapper.emitted('update:modelValue')).toEqual([['12:07']]);
+            expect(findDialog()).not.toBeNull();
         });
 
         it('wraps Tab inside the sheet', async () => {
@@ -333,7 +367,7 @@ describe('AppDatePicker', () => {
             const first = buttons[0];
             const last = buttons[buttons.length - 1];
             expect(first.textContent.trim()).toBe('Now');
-            expect(last.textContent.trim()).toBe('23:45');
+            expect(last.textContent.trim()).toBe('59');
 
             last.focus();
             last.dispatchEvent(
