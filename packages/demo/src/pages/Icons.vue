@@ -23,7 +23,15 @@ const iconGroups = {
         'arrow-down',
     ],
     Users: ['user', 'users', 'user-circle'],
-    Actions: ['cog', 'search', 'bell', 'logout', 'refresh'],
+    Actions: [
+        'cog',
+        'search',
+        'bell',
+        'logout',
+        'refresh',
+        'ellipsis-horizontal',
+        'ellipsis-vertical',
+    ],
     Content: ['document', 'folder', 'table', 'grid', 'list', 'layers'],
     'Edit & Modify': [
         'edit',
