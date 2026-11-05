@@ -36,7 +36,8 @@
     },
     "overrides": {
         "vite": "npm:rolldown-vite@7.2.5",
-        "minimatch": "^10.2.4",
+        "minimatch": "^11.0.1",
+        "glob": "^14.0.2",
         "eslint-scope": "^9.1.2"
     },
     "dependencies": {
