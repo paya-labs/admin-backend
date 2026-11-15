@@ -42,6 +42,7 @@ import '@paya-labs/admin-ui/styles';
 | `AppCalendarNavigation` | Prev / heading / next toolbar; the heading opens `AppDatePanel` when `date` is set   |
 | `AppBadge`              | Status badge with variants                                                           |
 | `AppCard`               | Stats/info card with trend indicators                                                |
+| `AppPageHeader`         | Page title with optional description, breadcrumb and right-hand actions slot         |
 | `AppTable`              | Data table with sorting and pagination                                               |
 | `AppRowActionMenu`      | Shared ⋯ menu for table rows, anchored to the trigger; bottom sheet on phones        |
 | `AppRowActionMenuItem`  | Entry in `AppRowActionMenu`: button, RouterLink (`to`) or link (`href`)              |
@@ -87,6 +88,7 @@ import '@paya-labs/admin-ui/styles';
     In a `#mobile-row` slot use `@click.stop` on the trigger so the row's own click does not fire.
 
 - `AppInput` `revealable` (default `false`) adds a show/hide eye button to a `type="password"` field; it toggles the input between `password` and `text`. The button takes the suffix position, so any `#suffix` slot content is not rendered on a revealable password field. Other types ignore the prop.
+- `AppPageHeader` takes `title`, optional `description` and optional `breadcrumbs: { label, to? }[]`. Crumbs with `to` render as `RouterLink`s, except the last one, which is plain text with `aria-current="page"`. The default slot holds the page actions; it sits to the right of the title and wraps below it under 768px. The title is an `<h1>`.
 
 ## Composables
 
