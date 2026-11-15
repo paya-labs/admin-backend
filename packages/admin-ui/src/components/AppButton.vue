@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { RouterLink, type RouteLocationRaw } from 'vue-router';
 import type { ButtonVariant, ControlSize } from '../types';
 
 type ButtonType = 'button' | 'submit' | 'reset';
@@ -10,6 +12,7 @@ interface Props {
     loading?: boolean;
     iconOnly?: boolean;
     type?: ButtonType;
+    to?: RouteLocationRaw;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -25,6 +28,10 @@ const emit = defineEmits<{
     click: [event: MouseEvent];
 }>();
 
+// A link cannot be disabled, so a disabled or loading button with `to`
+// falls back to a disabled <button>
+const asLink = computed(() => !!props.to && !props.disabled && !props.loading);
+
 const handleClick = (event: MouseEvent): void => {
     if (!props.disabled && !props.loading) {
         emit('click', event);
@@ -33,9 +40,11 @@ const handleClick = (event: MouseEvent): void => {
 </script>
 
 <template>
-    <button
-        :type="type"
-        :disabled="disabled || loading"
+    <component
+        :is="asLink ? RouterLink : 'button'"
+        :to="asLink ? to : undefined"
+        :type="asLink ? undefined : type"
+        :disabled="asLink ? undefined : disabled || loading"
         :class="[
             // Base styles
             'gap-2 font-medium inline-flex cursor-pointer items-center justify-center',
@@ -99,5 +108,5 @@ const handleClick = (event: MouseEvent): void => {
         </svg>
 
         <slot v-if="!loading || !iconOnly" />
-    </button>
+    </component>
 </template>

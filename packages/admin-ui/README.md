@@ -33,7 +33,7 @@ import '@paya-labs/admin-ui/styles';
 
 | Component               | Description                                                                          |
 | ----------------------- | ------------------------------------------------------------------------------------ |
-| `AppButton`             | Button with variants and loading state                                               |
+| `AppButton`             | Button with variants and loading state; `to` makes it a `RouterLink`                 |
 | `AppInput`              | Text input with label and validation                                                 |
 | `AppTextarea`           | Multi-line text input                                                                |
 | `AppSelect`             | Select dropdown                                                                      |
@@ -88,6 +88,7 @@ import '@paya-labs/admin-ui/styles';
     In a `#mobile-row` slot use `@click.stop` on the trigger so the row's own click does not fire.
 
 - `AppInput` `revealable` (default `false`) adds a show/hide eye button to a `type="password"` field; it toggles the input between `password` and `text`. The button takes the suffix position, so any `#suffix` slot content is not rendered on a revealable password field. Other types ignore the prop.
+- `AppButton` `to` (any `RouterLink` `to` value) renders the button as a `RouterLink` with the same variant and size styles, so it navigates without a click handler. A link cannot be disabled, so with `disabled` or `loading` it renders as a disabled `<button>` instead.
 - `AppPageHeader` takes `title`, optional `description` and optional `breadcrumbs: { label, to? }[]`. Crumbs with `to` render as `RouterLink`s, except the last one, which is plain text with `aria-current="page"`. The default slot holds the page actions; it sits to the right of the title and wraps below it under 768px. The title is an `<h1>`.
 
 ## Composables

@@ -49,7 +49,9 @@ const tableData = [
                     title="Team"
                     description="Who can sign in, and what they can change."
                 >
-                    <AppButton variant="primary">Add member</AppButton>
+                    <AppButton variant="primary" to="/forms">
+                        Add member
+                    </AppButton>
                 </AppPageHeader>
                 <AppPageHeader
                     title="Jane Smith"
@@ -74,6 +76,9 @@ const tableData = [
                     <AppButton variant="danger"> Danger </AppButton>
                     <AppButton variant="primary" disabled> Disabled </AppButton>
                     <AppButton variant="primary" loading> Loading </AppButton>
+                    <AppButton variant="outline" to="/tables">
+                        Link to Tables
+                    </AppButton>
                 </div>
             </div>
         </section>
