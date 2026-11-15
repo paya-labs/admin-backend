@@ -14,6 +14,7 @@ import AppCard from './components/AppCard.vue';
 import AppCheckbox from './components/AppCheckbox.vue';
 import AppColorInput from './components/AppColorInput.vue';
 import AppCombobox from './components/AppCombobox.vue';
+import AppConfirmModal from './components/AppConfirmModal.vue';
 import AppDatePanel from './components/AppDatePanel.vue';
 import AppDatePicker from './components/AppDatePicker.vue';
 import AppDrawer from './components/AppDrawer.vue';
@@ -143,6 +144,7 @@ export {
     AppCheckbox,
     AppColorInput,
     AppCombobox,
+    AppConfirmModal,
     AppDatePanel,
     AppDatePicker,
     AppDrawer,
@@ -233,6 +235,7 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}Header`, AppHeader);
         app.component(`${prefix}Sidebar`, AppSidebar);
         app.component(`${prefix}Modal`, AppModal);
+        app.component(`${prefix}ConfirmModal`, AppConfirmModal);
         app.component(`${prefix}Pagination`, AppPagination);
         app.component(`${prefix}Form`, AppForm);
         app.component(`${prefix}Icon`, AppIcon);

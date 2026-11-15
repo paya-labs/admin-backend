@@ -1,6 +1,7 @@
 <script setup>
 import {
     AppButton,
+    AppConfirmModal,
     AppForm,
     AppInput,
     AppModal,
@@ -92,31 +93,20 @@ const phoneForm = ref({ name: '', email: '' });
                     Delete Item
                 </AppButton>
 
-                <AppModal
+                <AppConfirmModal
                     v-model="showConfirmModal"
-                    title="Confirm Delete"
-                    size="sm"
+                    title="Delete item?"
+                    confirm-label="Delete"
+                    danger
+                    :loading="confirmLoading"
+                    @confirm="handleConfirmDelete"
                 >
-                    <p class="text-muted">
+                    <p>
                         Are you sure you want to delete this item? This action
-                        cannot be undone.
+                        cannot be undone. While deleting, the backdrop and
+                        Escape do not close the dialog.
                     </p>
-                    <template #footer>
-                        <AppButton
-                            variant="outline"
-                            @click="showConfirmModal = false"
-                        >
-                            Cancel
-                        </AppButton>
-                        <AppButton
-                            variant="danger"
-                            :loading="confirmLoading"
-                            @click="handleConfirmDelete"
-                        >
-                            Delete
-                        </AppButton>
-                    </template>
-                </AppModal>
+                </AppConfirmModal>
             </div>
         </section>
 
