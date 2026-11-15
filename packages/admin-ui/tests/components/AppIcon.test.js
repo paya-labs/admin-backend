@@ -4,6 +4,16 @@ import AppIcon from '../../src/components/AppIcon.vue';
 import { icons } from '../../src/icons';
 
 describe('AppIcon', () => {
+    it('puts a class from the caller on the svg', () => {
+        const svg = mount(AppIcon, {
+            props: { name: 'plus' },
+            attrs: { class: 'mr-1' },
+        }).find('svg');
+
+        expect(svg.classes()).toContain('mr-1');
+        expect(svg.classes()).toContain('h-5');
+    });
+
     it('renders an outline icon as a stroked path on a 24px grid', () => {
         const svg = mount(AppIcon, { props: { name: 'repeat' } }).find('svg');
 
