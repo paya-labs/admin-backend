@@ -28,49 +28,55 @@ const sizeClasses = computed(() => {
 </script>
 
 <template>
-    <svg
-        v-if="icon?.layers"
-        :class="sizeClasses"
-        :viewBox="icon.viewBox ?? '0 0 24 24'"
-        aria-hidden="true"
-    >
-        <path
-            v-for="layer in icon.layers"
-            :key="layer.d"
-            :fill="layer.fill"
-            :d="layer.d"
-        />
-    </svg>
-    <svg
-        v-else-if="icon?.solid"
-        :class="sizeClasses"
-        fill="currentColor"
-        :viewBox="icon.viewBox ?? '0 0 24 24'"
-        aria-hidden="true"
-    >
-        <path fill-rule="evenodd" clip-rule="evenodd" :d="icon.path" />
-    </svg>
-    <svg
-        v-else-if="icon"
-        :class="sizeClasses"
-        fill="none"
-        :viewBox="icon.viewBox ?? '0 0 24 24'"
-        stroke="currentColor"
-        stroke-width="1.5"
-        aria-hidden="true"
-    >
-        <path stroke-linecap="round" stroke-linejoin="round" :d="icon.path" />
-        <path
-            v-if="icon.path2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            :d="icon.path2"
-            :transform="icon.path2Transform"
-            :vector-effect="
-                icon.path2Transform ? 'non-scaling-stroke' : undefined
-            "
-        />
-    </svg>
+    <template v-if="icon">
+        <svg
+            v-if="icon.layers"
+            :class="sizeClasses"
+            :viewBox="icon.viewBox ?? '0 0 24 24'"
+            aria-hidden="true"
+        >
+            <path
+                v-for="layer in icon.layers"
+                :key="layer.d"
+                :fill="layer.fill"
+                :d="layer.d"
+            />
+        </svg>
+        <svg
+            v-else-if="icon.solid"
+            :class="sizeClasses"
+            fill="currentColor"
+            :viewBox="icon.viewBox ?? '0 0 24 24'"
+            aria-hidden="true"
+        >
+            <path fill-rule="evenodd" clip-rule="evenodd" :d="icon.path" />
+        </svg>
+        <svg
+            v-else
+            :class="sizeClasses"
+            fill="none"
+            :viewBox="icon.viewBox ?? '0 0 24 24'"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                :d="icon.path"
+            />
+            <path
+                v-if="icon.path2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                :d="icon.path2"
+                :transform="icon.path2Transform"
+                :vector-effect="
+                    icon.path2Transform ? 'non-scaling-stroke' : undefined
+                "
+            />
+        </svg>
+    </template>
     <span
         v-else
         :class="[sizeClasses, 'rounded inline-block bg-current opacity-20']"
