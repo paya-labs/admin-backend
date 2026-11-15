@@ -27,6 +27,8 @@ import AppModal from './components/AppModal.vue';
 import AppMultiSelect from './components/AppMultiSelect.vue';
 import AppPagination from './components/AppPagination.vue';
 import AppRadio from './components/AppRadio.vue';
+import AppRowActionMenu from './components/AppRowActionMenu.vue';
+import AppRowActionMenuItem from './components/AppRowActionMenuItem.vue';
 import AppSelect from './components/AppSelect.vue';
 import AppSidebar from './components/AppSidebar.vue';
 import AppTable from './components/AppTable.vue';
@@ -60,6 +62,7 @@ import {
     useModuleConfig,
 } from './composables/useModuleConfig';
 import { usePagination } from './composables/usePagination';
+import { useRowMenu } from './composables/useRowMenu';
 import { useSidebar } from './composables/useSidebar';
 import { useTheme } from './composables/useTheme';
 import { useToast } from './composables/useToast';
@@ -108,6 +111,7 @@ export type {
     UsePaginationOptions,
     UsePaginationReturn,
 } from './composables/usePagination';
+export type { UseRowMenuReturn } from './composables/useRowMenu';
 export type { UseSidebarReturn } from './composables/useSidebar';
 export type { UseThemeReturn } from './composables/useTheme';
 export type { ShowToastOptions, UseToastReturn } from './composables/useToast';
@@ -157,6 +161,8 @@ export {
     AppMultiSelect,
     AppPagination,
     AppRadio,
+    AppRowActionMenu,
+    AppRowActionMenuItem,
     AppSelect,
     AppSidebar,
     AppTable,
@@ -183,6 +189,7 @@ export {
     useCrud,
     useModuleConfig,
     usePagination,
+    useRowMenu,
     useSidebar,
     useTheme,
     useToast,
@@ -246,6 +253,8 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}DatePicker`, AppDatePicker);
         app.component(`${prefix}Drawer`, AppDrawer);
         app.component(`${prefix}Editor`, AppEditor);
+        app.component(`${prefix}RowActionMenu`, AppRowActionMenu);
+        app.component(`${prefix}RowActionMenuItem`, AppRowActionMenuItem);
         app.component('AdminLayout', AdminLayout);
 
         // Register directives
