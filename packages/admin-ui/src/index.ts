@@ -3,6 +3,7 @@ import './style.css';
 
 // Components
 import AppBadge from './components/AppBadge.vue';
+import AppBottomSheet from './components/AppBottomSheet.vue';
 import AppButton from './components/AppButton.vue';
 import AppCalendar from './components/AppCalendar.vue';
 import AppCalendarAddEventModal from './components/AppCalendarAddEventModal.vue';
@@ -139,6 +140,7 @@ export {
 export {
     AdminLayout,
     AppBadge,
+    AppBottomSheet,
     AppButton,
     AppCalendar,
     AppCalendarAddEventModal,
@@ -246,6 +248,7 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}Sidebar`, AppSidebar);
         app.component(`${prefix}Modal`, AppModal);
         app.component(`${prefix}ConfirmModal`, AppConfirmModal);
+        app.component(`${prefix}BottomSheet`, AppBottomSheet);
         app.component(`${prefix}Pagination`, AppPagination);
         app.component(`${prefix}PageHeader`, AppPageHeader);
         app.component(`${prefix}Form`, AppForm);

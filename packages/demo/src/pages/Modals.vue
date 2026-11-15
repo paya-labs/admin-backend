@@ -1,5 +1,6 @@
 <script setup>
 import {
+    AppBottomSheet,
     AppButton,
     AppConfirmModal,
     AppForm,
@@ -8,6 +9,14 @@ import {
     AppSelect,
 } from '@paya-labs/admin-ui';
 import { ref } from 'vue';
+
+// Bottom sheet
+const showSheet = ref(false);
+const sheetChoice = ref('');
+const pickSheet = (choice) => {
+    sheetChoice.value = choice;
+    showSheet.value = false;
+};
 
 // Basic modal
 const showBasicModal = ref(false);
@@ -442,6 +451,47 @@ const phoneForm = ref({ name: '', email: '' });
                         </AppButton>
                     </template>
                 </AppModal>
+            </div>
+        </section>
+
+        <!-- Bottom Sheet -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Bottom Sheet</h2>
+            <div
+                class="border-border bg-surface space-y-3 rounded-lg border p-6"
+            >
+                <AppButton variant="outline" @click="showSheet = true">
+                    Open bottom sheet
+                </AppButton>
+                <p v-if="sheetChoice" class="text-muted text-sm">
+                    Picked: {{ sheetChoice }}
+                </p>
+                <AppBottomSheet
+                    :open="showSheet"
+                    title="Sort by"
+                    @close="showSheet = false"
+                >
+                    <template #secondary>
+                        <button
+                            type="button"
+                            class="text-muted cursor-pointer"
+                            @click="pickSheet('')"
+                        >
+                            Clear
+                        </button>
+                    </template>
+                    <div class="flex flex-col px-2 pt-2">
+                        <button
+                            v-for="choice in ['Name', 'Date added', 'Status']"
+                            :key="choice"
+                            type="button"
+                            class="hover:bg-surface-hover cursor-pointer rounded-md px-3 py-3 text-left"
+                            @click="pickSheet(choice)"
+                        >
+                            {{ choice }}
+                        </button>
+                    </div>
+                </AppBottomSheet>
             </div>
         </section>
     </div>
