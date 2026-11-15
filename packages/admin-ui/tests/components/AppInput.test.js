@@ -137,4 +137,77 @@ describe('AppInput', () => {
         expect(wrapper.find('.suffix-icon').exists()).toBe(true);
         expect(wrapper.find('.suffix-icon').text()).toBe('!');
     });
+
+    describe('revealable', () => {
+        const toggle = (wrapper) =>
+            wrapper.find('button[aria-label$="password"]');
+
+        it('renders no toggle without revealable', () => {
+            const wrapper = mount(AppInput, { props: { type: 'password' } });
+
+            expect(wrapper.find('button').exists()).toBe(false);
+        });
+
+        it('renders no toggle for non-password types', () => {
+            const wrapper = mount(AppInput, {
+                props: { type: 'email', revealable: true },
+            });
+
+            expect(wrapper.find('button').exists()).toBe(false);
+        });
+
+        it('toggles the input type and the button state', async () => {
+            const wrapper = mount(AppInput, {
+                props: { type: 'password', revealable: true },
+            });
+            const input = wrapper.find('input');
+
+            expect(input.attributes('type')).toBe('password');
+            expect(toggle(wrapper).attributes('aria-label')).toBe(
+                'Show password',
+            );
+            expect(toggle(wrapper).attributes('aria-pressed')).toBe('false');
+
+            await toggle(wrapper).trigger('click');
+
+            expect(input.attributes('type')).toBe('text');
+            expect(toggle(wrapper).attributes('aria-label')).toBe(
+                'Hide password',
+            );
+            expect(toggle(wrapper).attributes('aria-pressed')).toBe('true');
+
+            await toggle(wrapper).trigger('click');
+
+            expect(input.attributes('type')).toBe('password');
+        });
+
+        it('never submits a wrapping form', async () => {
+            let submits = 0;
+            const wrapper = mount(
+                {
+                    components: { AppInput },
+                    template:
+                        '<form @submit.prevent="onSubmit"><AppInput type="password" revealable /></form>',
+                    methods: { onSubmit: () => submits++ },
+                },
+                { attachTo: document.body },
+            );
+
+            expect(toggle(wrapper).attributes('type')).toBe('button');
+            await toggle(wrapper).trigger('click');
+            expect(submits).toBe(0);
+
+            wrapper.unmount();
+        });
+
+        it('replaces suffix slot content', () => {
+            const wrapper = mount(AppInput, {
+                props: { type: 'password', revealable: true },
+                slots: { suffix: '<span class="suffix-icon">!</span>' },
+            });
+
+            expect(toggle(wrapper).exists()).toBe(true);
+            expect(wrapper.find('.suffix-icon').exists()).toBe(false);
+        });
+    });
 });
