@@ -46,6 +46,7 @@ import '@paya-labs/admin-ui/styles';
 | `AppHeader`             | Top bar: hamburger plus `header-left/center/right/end` slots (also teleport targets) |
 | `AppSidebar`            | Navigation sidebar with collapse and a user menu (theme switch, sign out)            |
 | `AppModal`              | Modal dialog                                                                         |
+| `AppConfirmModal`       | Confirm dialog on `AppModal`: body slot, Cancel and a primary or `danger` action     |
 | `AppForm`               | Dynamic form generator                                                               |
 | `AppIcon`               | Icon component with built-in icons                                                   |
 | `AppToastContainer`     | Toast notifications container                                                        |
@@ -60,6 +61,7 @@ import '@paya-labs/admin-ui/styles';
 - Below 768px `AppModal` at `size="full"` goes edge to edge with the footer pinned at the bottom; every other size becomes a bottom sheet (full width, aligned to the bottom, top corners rounded, padded for `env(safe-area-inset-bottom)`). To make footer buttons share the sheet's width, wrap them in a group with `max-md:w-full max-md:[&>*]:flex-1`, e.g. `<div class="flex gap-3 max-md:w-full max-md:[&>*]:flex-1">`. `AppDrawer` goes full width below 768px.
 - `AppDatePanel` `fluid` (default `false`) drops the fixed width, chrome and footer so the grid fills its container, as the bottom sheet does.
 - `AppDatePicker` emits `YYYY-MM-DD` in date mode and `HH:mm` in time mode, empty string when cleared. `min` / `max` (ISO dates) apply to date mode only. In time mode `step` is the list interval in minutes (default 15) and `from` (`HH:mm`) starts the list one step after that time and labels each entry with its duration, e.g. for an end-time field.
+- `AppConfirmModal` (`v-model`, `title`, `confirmLabel` = `Confirm`, `cancelLabel` = `Cancel`, `danger`, `loading`) emits `confirm` and leaves closing to you, so close it once the action succeeds. Cancel closes it; replace that button through the `cancel` slot. While `loading` the action shows a spinner, Cancel is disabled and the backdrop and Escape do not close it. Below 768px the actions stack full width, action first and Cancel last.
 
 ## Composables
 
