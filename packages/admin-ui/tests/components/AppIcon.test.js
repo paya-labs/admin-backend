@@ -24,6 +24,18 @@ describe('AppIcon', () => {
         expect(svg.find('path').attributes('fill-rule')).toBe('evenodd');
     });
 
+    it('renders a multi-colour logo with its fixed colours', () => {
+        const svg = mount(AppIcon, { props: { name: 'google' } }).find('svg');
+
+        expect(svg.attributes('viewBox')).toBe('0 0 48 48');
+        expect(svg.findAll('path').map((p) => p.attributes('fill'))).toEqual([
+            '#EA4335',
+            '#4285F4',
+            '#FBBC05',
+            '#34A853',
+        ]);
+    });
+
     it('renders a placeholder for an unknown name', () => {
         const wrapper = mount(AppIcon, { props: { name: 'nope' } });
 

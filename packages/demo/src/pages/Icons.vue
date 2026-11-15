@@ -104,7 +104,7 @@ const iconGroups = {
     ],
     Places: ['map-pin', 'building'],
     Misc: ['sparkles', 'star', 'heart', 'download', 'upload'],
-    Brands: ['apple', 'linkedin'],
+    Brands: ['apple', 'google', 'linkedin'],
 };
 
 const copyToClipboard = (iconName) => {

@@ -28,7 +28,20 @@ const sizeClasses = computed(() => {
 
 <template>
     <svg
-        v-if="icon?.solid"
+        v-if="icon?.layers"
+        :class="sizeClasses"
+        :viewBox="icon.viewBox ?? '0 0 24 24'"
+        aria-hidden="true"
+    >
+        <path
+            v-for="layer in icon.layers"
+            :key="layer.d"
+            :fill="layer.fill"
+            :d="layer.d"
+        />
+    </svg>
+    <svg
+        v-else-if="icon?.solid"
         :class="sizeClasses"
         fill="currentColor"
         :viewBox="icon.viewBox ?? '0 0 24 24'"
