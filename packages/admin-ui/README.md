@@ -86,6 +86,8 @@ import '@paya-labs/admin-ui/styles';
 
     In a `#mobile-row` slot use `@click.stop` on the trigger so the row's own click does not fire.
 
+- `AppInput` `revealable` (default `false`) adds a show/hide eye button to a `type="password"` field; it toggles the input between `password` and `text`. The button takes the suffix position, so any `#suffix` slot content is not rendered on a revealable password field. Other types ignore the prop.
+
 ## Composables
 
 | Composable      | Description                                                                                                                  |

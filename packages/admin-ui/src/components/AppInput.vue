@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, useAttrs, useId, useTemplateRef } from 'vue';
+import { computed, ref, useAttrs, useId, useTemplateRef } from 'vue';
 import type { ControlSize } from '../types';
+import AppIcon from './AppIcon.vue';
 
 defineOptions({ inheritAttrs: false });
 
@@ -15,6 +16,7 @@ interface Props {
     required?: boolean;
     disabled?: boolean;
     autocomplete?: string;
+    revealable?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
     required: false,
     disabled: false,
     autocomplete: 'off',
+    revealable: false,
 });
 
 const emit = defineEmits<{
@@ -42,6 +45,14 @@ const inputValue = computed({
 });
 
 const hasError = computed(() => Boolean(props.error));
+
+// A revealable password field owns the suffix: the eye button replaces any
+// #suffix slot content.
+const canReveal = computed(() => props.revealable && props.type === 'password');
+const revealed = ref(false);
+const inputType = computed(() =>
+    canReveal.value && revealed.value ? 'text' : props.type,
+);
 
 const inputRef = useTemplateRef<HTMLInputElement>('inputEl');
 defineExpose({
@@ -90,7 +101,7 @@ const inputAttrs = computed(() => {
                 ref="inputEl"
                 v-model="inputValue"
                 v-bind="inputAttrs"
-                :type="type"
+                :type="inputType"
                 :placeholder="placeholder"
                 :disabled="disabled"
                 :required="required"
@@ -112,7 +123,7 @@ const inputAttrs = computed(() => {
 
                     // Padding based on slots
                     $slots.prefix ? 'pl-10' : 'pl-3',
-                    $slots.suffix ? 'pr-10' : 'pr-3',
+                    canReveal || $slots.suffix ? 'pr-10' : 'pr-3',
 
                     // Border color based on state
                     hasError
@@ -121,9 +132,26 @@ const inputAttrs = computed(() => {
                 ]"
             />
 
+            <!-- Show/hide toggle for password fields -->
+            <div
+                v-if="canReveal"
+                class="inset-y-0 right-0 pr-3 absolute flex items-center text-muted"
+            >
+                <button
+                    type="button"
+                    class="h-7 w-7 rounded flex items-center justify-center transition-colors hover:text-text disabled:cursor-not-allowed disabled:opacity-50"
+                    :disabled="disabled"
+                    :aria-label="revealed ? 'Hide password' : 'Show password'"
+                    :aria-pressed="revealed"
+                    @click="revealed = !revealed"
+                >
+                    <AppIcon :name="revealed ? 'eye-off' : 'eye'" size="sm" />
+                </button>
+            </div>
+
             <!-- Suffix slot -->
             <div
-                v-if="$slots.suffix"
+                v-else-if="$slots.suffix"
                 class="inset-y-0 right-0 pr-3 absolute flex items-center text-muted"
             >
                 <slot name="suffix" />

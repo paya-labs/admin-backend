@@ -222,6 +222,7 @@ const handleAppFormSubmit = (data) => {
                         label="Password"
                         type="password"
                         placeholder="Enter your password"
+                        revealable
                     />
                     <div class="flex gap-3 pt-2">
                         <AppButton variant="primary"> Sign In </AppButton>
