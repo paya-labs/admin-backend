@@ -3,6 +3,7 @@ import './style.css';
 
 // Components
 import AppBadge from './components/AppBadge.vue';
+import AppBottomSheet from './components/AppBottomSheet.vue';
 import AppButton from './components/AppButton.vue';
 import AppCalendar from './components/AppCalendar.vue';
 import AppCalendarAddEventModal from './components/AppCalendarAddEventModal.vue';
@@ -25,6 +26,7 @@ import AppIcon from './components/AppIcon.vue';
 import AppInput from './components/AppInput.vue';
 import AppModal from './components/AppModal.vue';
 import AppMultiSelect from './components/AppMultiSelect.vue';
+import AppPageHeader from './components/AppPageHeader.vue';
 import AppPagination from './components/AppPagination.vue';
 import AppRadio from './components/AppRadio.vue';
 import AppRowActionMenu from './components/AppRowActionMenu.vue';
@@ -126,6 +128,7 @@ export type {
     EditorAttachment,
     EditorToolbarItem,
 } from './components/appEditorToolbar';
+export type { Breadcrumb } from './components/AppPageHeader.vue';
 
 // Editor toolbar configuration
 export {
@@ -137,6 +140,7 @@ export {
 export {
     AdminLayout,
     AppBadge,
+    AppBottomSheet,
     AppButton,
     AppCalendar,
     AppCalendarAddEventModal,
@@ -159,6 +163,7 @@ export {
     AppInput,
     AppModal,
     AppMultiSelect,
+    AppPageHeader,
     AppPagination,
     AppRadio,
     AppRowActionMenu,
@@ -243,7 +248,9 @@ export const AdminUIPlugin: Plugin<AdminUIPluginOptions[]> = {
         app.component(`${prefix}Sidebar`, AppSidebar);
         app.component(`${prefix}Modal`, AppModal);
         app.component(`${prefix}ConfirmModal`, AppConfirmModal);
+        app.component(`${prefix}BottomSheet`, AppBottomSheet);
         app.component(`${prefix}Pagination`, AppPagination);
+        app.component(`${prefix}PageHeader`, AppPageHeader);
         app.component(`${prefix}Form`, AppForm);
         app.component(`${prefix}Icon`, AppIcon);
         app.component(`${prefix}ToastContainer`, AppToastContainer);

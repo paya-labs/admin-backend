@@ -33,7 +33,7 @@ import '@paya-labs/admin-ui/styles';
 
 | Component               | Description                                                                          |
 | ----------------------- | ------------------------------------------------------------------------------------ |
-| `AppButton`             | Button with variants and loading state                                               |
+| `AppButton`             | Button with variants and loading state; `to` makes it a `RouterLink`                 |
 | `AppInput`              | Text input with label and validation                                                 |
 | `AppTextarea`           | Multi-line text input                                                                |
 | `AppSelect`             | Select dropdown                                                                      |
@@ -42,6 +42,7 @@ import '@paya-labs/admin-ui/styles';
 | `AppCalendarNavigation` | Prev / heading / next toolbar; the heading opens `AppDatePanel` when `date` is set   |
 | `AppBadge`              | Status badge with variants                                                           |
 | `AppCard`               | Stats/info card with trend indicators                                                |
+| `AppPageHeader`         | Page title with optional description, breadcrumb and right-hand actions slot         |
 | `AppTable`              | Data table with sorting and pagination                                               |
 | `AppRowActionMenu`      | Shared ⋯ menu for table rows, anchored to the trigger; bottom sheet on phones        |
 | `AppRowActionMenuItem`  | Entry in `AppRowActionMenu`: button, RouterLink (`to`) or link (`href`)              |
@@ -49,6 +50,7 @@ import '@paya-labs/admin-ui/styles';
 | `AppSidebar`            | Navigation sidebar with collapse and a user menu (theme switch, sign out)            |
 | `AppModal`              | Modal dialog                                                                         |
 | `AppConfirmModal`       | Confirm dialog on `AppModal`: body slot, Cancel and a primary or `danger` action     |
+| `AppBottomSheet`        | Phone bottom sheet: title bar with a Done button, `secondary` slot left of the title |
 | `AppForm`               | Dynamic form generator                                                               |
 | `AppIcon`               | Icon component with built-in icons                                                   |
 | `AppToastContainer`     | Toast notifications container                                                        |
@@ -61,6 +63,7 @@ import '@paya-labs/admin-ui/styles';
 - `AppCalendarNavigation` renders `title` itself: as a jump-to-date button when `date` (ISO anchor of the visible range) is passed, otherwise as a plain `<h1>`. Earlier versions never rendered `title`; drop any heading you rendered next to it. It no longer renders a Today button (nor emits `today`): place your own where it suits the page, e.g. after the view tabs, and call the calendar's `today()`. The date popover opens centered under the heading.
 - Below 768px (`useBreakpoint().isMobile`) `AppDatePicker` and `AppCalendarNavigation` open their content in a bottom sheet instead of the anchored popover; the time list has no typed input there.
 - Below 768px `AppModal` at `size="full"` goes edge to edge with the footer pinned at the bottom; every other size becomes a bottom sheet (full width, aligned to the bottom, top corners rounded, padded for `env(safe-area-inset-bottom)`). To make footer buttons share the sheet's width, wrap them in a group with `max-md:w-full max-md:[&>*]:flex-1`, e.g. `<div class="flex gap-3 max-md:w-full max-md:[&>*]:flex-1">`. `AppDrawer` goes full width below 768px.
+- `AppBottomSheet` is controlled: pass `open` and `title`, and set `open` to false on `close`, which fires on Done, a backdrop tap and Escape. The default slot is the body; the `secondary` slot sits left of the title (e.g. a Clear button). It teleports to `body`, locks body scroll while open and keeps Tab inside the sheet (buttons and inputs only). It does not move focus on open or restore it on close. `AppDatePicker` and `AppCalendarNavigation` use it below 768px.
 - `AppDatePanel` `fluid` (default `false`) drops the fixed width, chrome and footer so the grid fills its container, as the bottom sheet does.
 - `AppDatePicker` emits `YYYY-MM-DD` in date mode and `HH:mm` in time mode, empty string when cleared. `min` / `max` (ISO dates) apply to date mode only. In time mode `step` is the list interval in minutes (default 15) and `from` (`HH:mm`) starts the list one step after that time and labels each entry with its duration, e.g. for an end-time field.
 - `AppConfirmModal` (`v-model`, `title`, `confirmLabel` = `Confirm`, `cancelLabel` = `Cancel`, `danger`, `loading`) emits `confirm` and leaves closing to you, so close it once the action succeeds. Cancel closes it; replace that button through the `cancel` slot. While `loading` the action shows a spinner, Cancel is disabled and the backdrop and Escape do not close it. Below 768px the actions stack full width, action first and Cancel last.
@@ -87,6 +90,8 @@ import '@paya-labs/admin-ui/styles';
     In a `#mobile-row` slot use `@click.stop` on the trigger so the row's own click does not fire.
 
 - `AppInput` `revealable` (default `false`) adds a show/hide eye button to a `type="password"` field; it toggles the input between `password` and `text`. The button takes the suffix position, so any `#suffix` slot content is not rendered on a revealable password field. Other types ignore the prop.
+- `AppButton` `to` (any `RouterLink` `to` value) renders the button as a `RouterLink` with the same variant and size styles, so it navigates without a click handler. A link cannot be disabled, so with `disabled` or `loading` it renders as a disabled `<button>` instead.
+- `AppPageHeader` takes `title`, optional `description` and optional `breadcrumbs: { label, to? }[]`. Crumbs with `to` render as `RouterLink`s, except the last one, which is plain text with `aria-current="page"`. The default slot holds the page actions; it sits to the right of the title and wraps below it under 768px. The title is an `<h1>`.
 
 ## Composables
 

@@ -5,6 +5,7 @@ import {
     AppCard,
     AppInput,
     AppModal,
+    AppPageHeader,
     AppSelect,
     AppTable,
 } from '@paya-labs/admin-ui';
@@ -38,6 +39,31 @@ const tableData = [
     <div class="space-y-8">
         <h1 class="text-text text-2xl font-bold">Component Showcase</h1>
 
+        <!-- Page Header Section -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Page Header</h2>
+            <div
+                class="border-border bg-surface space-y-6 rounded-lg border p-6"
+            >
+                <AppPageHeader
+                    title="Team"
+                    description="Who can sign in, and what they can change."
+                >
+                    <AppButton variant="primary" to="/forms">
+                        Add member
+                    </AppButton>
+                </AppPageHeader>
+                <AppPageHeader
+                    title="Jane Smith"
+                    description="Admin · has a calendar"
+                    :breadcrumbs="[
+                        { label: 'Components', to: '/components' },
+                        { label: 'Jane Smith' },
+                    ]"
+                />
+            </div>
+        </section>
+
         <!-- Buttons Section -->
         <section class="space-y-4">
             <h2 class="text-text text-lg font-semibold">Buttons</h2>
@@ -50,6 +76,9 @@ const tableData = [
                     <AppButton variant="danger"> Danger </AppButton>
                     <AppButton variant="primary" disabled> Disabled </AppButton>
                     <AppButton variant="primary" loading> Loading </AppButton>
+                    <AppButton variant="outline" to="/tables">
+                        Link to Tables
+                    </AppButton>
                 </div>
             </div>
         </section>
