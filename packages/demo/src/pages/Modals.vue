@@ -55,6 +55,11 @@ const showScrollableModal = ref(false);
 // Non-closable modal
 const showNonClosableModal = ref(false);
 const termsAccepted = ref(false);
+
+// Phone layout
+const showSheetModal = ref(false);
+const showPhoneFormModal = ref(false);
+const phoneForm = ref({ name: '', email: '' });
 </script>
 
 <template>
@@ -302,6 +307,98 @@ const termsAccepted = ref(false);
                         >
                             I Accept
                         </AppButton>
+                    </template>
+                </AppModal>
+            </div>
+        </section>
+
+        <!-- Phone Layout -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">Phone Layout</h2>
+            <div class="border-border bg-surface rounded-lg border p-6">
+                <p class="text-muted mb-4 text-sm">
+                    Narrow the window below 768px: a regular size opens as a
+                    bottom sheet, size "full" goes edge to edge with the footer
+                    pinned at the bottom. The footer buttons sit in a group with
+                    <code>max-md:w-full max-md:[&amp;&gt;*]:flex-1</code> so
+                    they share the full width on the phone.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <AppButton variant="outline" @click="showSheetModal = true">
+                        Bottom Sheet
+                    </AppButton>
+                    <AppButton
+                        variant="outline"
+                        @click="showPhoneFormModal = true"
+                    >
+                        Full-Size Form
+                    </AppButton>
+                </div>
+
+                <AppModal
+                    v-model="showSheetModal"
+                    title="Archive project?"
+                    size="sm"
+                >
+                    <p class="text-muted">
+                        The project disappears from the list. You can restore it
+                        from the archive at any time.
+                    </p>
+                    <template #footer>
+                        <div
+                            class="flex gap-3 max-md:w-full max-md:[&>*]:flex-1"
+                        >
+                            <AppButton
+                                variant="outline"
+                                @click="showSheetModal = false"
+                            >
+                                Cancel
+                            </AppButton>
+                            <AppButton
+                                variant="primary"
+                                @click="showSheetModal = false"
+                            >
+                                Archive
+                            </AppButton>
+                        </div>
+                    </template>
+                </AppModal>
+
+                <AppModal
+                    v-model="showPhoneFormModal"
+                    title="Edit Profile"
+                    size="full"
+                >
+                    <div class="space-y-4">
+                        <AppInput
+                            v-model="phoneForm.name"
+                            label="Full Name"
+                            placeholder="John Doe"
+                        />
+                        <AppInput
+                            v-model="phoneForm.email"
+                            label="Email"
+                            type="email"
+                            placeholder="john@example.com"
+                        />
+                    </div>
+                    <template #footer>
+                        <div
+                            class="flex gap-3 max-md:w-full max-md:[&>*]:flex-1"
+                        >
+                            <AppButton
+                                variant="outline"
+                                @click="showPhoneFormModal = false"
+                            >
+                                Cancel
+                            </AppButton>
+                            <AppButton
+                                variant="primary"
+                                @click="showPhoneFormModal = false"
+                            >
+                                Save
+                            </AppButton>
+                        </div>
                     </template>
                 </AppModal>
             </div>

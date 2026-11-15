@@ -165,6 +165,8 @@ onUnmounted(() => {
                 :class="[
                     'inset-y-0 fixed z-[var(--z-modal)] flex flex-col bg-surface shadow-[var(--shadow-lg)]',
                     sizeClasses[size],
+                    // Fixed widths would overflow a phone screen.
+                    'max-md:w-full',
                     position === 'left' ? 'left-0' : 'right-0',
                 ]"
                 role="dialog"

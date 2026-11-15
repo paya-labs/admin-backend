@@ -130,7 +130,7 @@ onUnmounted(() => {
         >
             <div
                 v-if="modelValue"
-                class="inset-0 p-4 fixed z-[var(--z-modal)] flex items-center justify-center"
+                class="inset-0 p-4 max-md:items-end max-md:p-0 fixed z-[var(--z-modal)] flex items-center justify-center"
             >
                 <!-- Backdrop -->
                 <div
@@ -152,6 +152,14 @@ onUnmounted(() => {
                         ref="modalRef"
                         :class="[
                             'relative flex max-h-[90vh] flex-col rounded-xl bg-surface shadow-[var(--shadow-lg)]',
+                            // Below md the panel spans the screen width and
+                            // clears the home indicator. Size full also drops
+                            // the height cap; other sizes become a bottom
+                            // sheet with only the top corners rounded.
+                            'max-md:max-w-none max-md:pb-[env(safe-area-inset-bottom)]',
+                            size === 'full'
+                                ? 'max-md:max-h-none'
+                                : 'max-md:rounded-b-none',
 
                             // Size variants
                             size === 'sm' && 'max-w-sm w-full',
