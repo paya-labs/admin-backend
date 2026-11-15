@@ -222,4 +222,41 @@ describe('AppModal', () => {
         const dialog = wrapper.find('[role="dialog"]');
         expect(dialog.classes()).not.toContain('overflow-hidden');
     });
+
+    describe('phone layout', () => {
+        it('aligns the overlay to the bottom without padding below md', () => {
+            const wrapper = mountModal();
+            const overlay =
+                wrapper.find('[role="dialog"]').element.parentElement;
+
+            expect(overlay.classList).toContain('max-md:items-end');
+            expect(overlay.classList).toContain('max-md:p-0');
+        });
+
+        it('renders other sizes as a bottom sheet', () => {
+            const dialog = mountModal({ size: 'sm' }).find('[role="dialog"]');
+
+            expect(dialog.classes()).toEqual(
+                expect.arrayContaining([
+                    'max-md:max-w-none',
+                    'max-md:pb-[env(safe-area-inset-bottom)]',
+                    'max-md:rounded-b-none',
+                ]),
+            );
+            expect(dialog.classes()).not.toContain('max-md:max-h-none');
+        });
+
+        it('renders size full edge to edge without a height cap', () => {
+            const dialog = mountModal({ size: 'full' }).find('[role="dialog"]');
+
+            expect(dialog.classes()).toEqual(
+                expect.arrayContaining([
+                    'max-md:max-w-none',
+                    'max-md:pb-[env(safe-area-inset-bottom)]',
+                    'max-md:max-h-none',
+                ]),
+            );
+            expect(dialog.classes()).not.toContain('max-md:rounded-b-none');
+        });
+    });
 });
