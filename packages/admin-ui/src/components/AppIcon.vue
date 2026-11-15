@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { icons, type IconDefinition } from '../icons';
+import { icons, type IconDefinition, type IconName } from '../icons';
 
 type IconSize = 'sm' | 'md' | 'lg' | 'xl';
 
 interface Props {
-    name: string;
+    name: IconName;
     size?: IconSize;
 }
 
@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
     size: 'md',
 });
 
+// `name` is typed, but plain-JS callers and names cast from data can still miss.
 const icon = computed<IconDefinition | undefined>(() => icons[props.name]);
 
 const sizeClasses = computed(() => {

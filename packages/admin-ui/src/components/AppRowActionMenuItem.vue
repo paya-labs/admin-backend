@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { RouterLink, type RouteLocationRaw } from 'vue-router';
+import type { IconName } from '../icons';
 import AppIcon from './AppIcon.vue';
 
 // One entry in an AppRowActionMenu: an icon and a label. A <button> by
 // default, a RouterLink with `to`, a plain link with `href`. max-md:py-3 gives
 // every entry the 44px tap height the bottom sheet needs.
 defineProps<{
-    icon?: string;
+    icon?: IconName;
     danger?: boolean;
     to?: RouteLocationRaw;
     href?: string;

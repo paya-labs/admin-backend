@@ -1,8 +1,10 @@
+import type { IconName } from '../icons';
+
 export interface NavigationItem {
     label: string;
     to?: string;
     href?: string;
-    icon?: string;
+    icon?: IconName;
     children?: NavigationItem[];
     badge?: string | number;
 }
