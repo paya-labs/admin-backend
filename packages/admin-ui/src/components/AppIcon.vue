@@ -28,10 +28,19 @@ const sizeClasses = computed(() => {
 
 <template>
     <svg
-        v-if="icon"
+        v-if="icon?.solid"
+        :class="sizeClasses"
+        fill="currentColor"
+        :viewBox="icon.viewBox ?? '0 0 24 24'"
+        aria-hidden="true"
+    >
+        <path fill-rule="evenodd" clip-rule="evenodd" :d="icon.path" />
+    </svg>
+    <svg
+        v-else-if="icon"
         :class="sizeClasses"
         fill="none"
-        viewBox="0 0 24 24"
+        :viewBox="icon.viewBox ?? '0 0 24 24'"
         stroke="currentColor"
         stroke-width="1.5"
         aria-hidden="true"

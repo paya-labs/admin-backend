@@ -21,18 +21,36 @@ const iconGroups = {
         'arrow-right',
         'arrow-up',
         'arrow-down',
+        'arrows-move',
     ],
-    Users: ['user', 'users', 'user-circle'],
+    Users: ['user', 'users', 'user-circle', 'accessibility', 'face-smile'],
     Actions: [
         'cog',
         'search',
         'bell',
+        'bell-slash',
         'logout',
         'refresh',
+        'repeat',
+        'adjustments',
         'ellipsis-horizontal',
         'ellipsis-vertical',
     ],
-    Content: ['document', 'folder', 'table', 'grid', 'list', 'layers'],
+    Content: [
+        'document',
+        'document-text',
+        'document-check',
+        'folder',
+        'inbox',
+        'receipt',
+        'tag',
+        'pin',
+        'scissors',
+        'table',
+        'grid',
+        'list',
+        'layers',
+    ],
     'Edit & Modify': [
         'edit',
         'pencil',
@@ -46,14 +64,47 @@ const iconGroups = {
         'check-circle',
         'x-circle',
         'exclamation-circle',
+        'exclamation-triangle',
+        'exclamation-triangle-solid',
         'information-circle',
+        'pause',
         'eye',
         'eye-off',
     ],
-    Commerce: ['shopping-cart', 'credit-card', 'currency-dollar'],
-    Charts: ['chart-bar', 'chart-pie', 'trending-up', 'trending-down'],
-    Communication: ['mail', 'phone', 'globe-alt', 'link'],
-    Misc: ['calendar', 'clock', 'star', 'heart', 'download', 'upload'],
+    Commerce: [
+        'shopping-cart',
+        'credit-card',
+        'currency-dollar',
+        'percent',
+        'bank',
+    ],
+    Charts: [
+        'chart-bar',
+        'chart-pie',
+        'chart-line',
+        'activity',
+        'trending-up',
+        'trending-down',
+    ],
+    Communication: [
+        'mail',
+        'phone',
+        'chat-bubble',
+        'paper-airplane',
+        'network',
+        'globe-alt',
+        'link',
+    ],
+    'Calendar & time': [
+        'calendar',
+        'calendar-event',
+        'calendar-check',
+        'clock',
+        'history',
+    ],
+    Places: ['map-pin', 'building'],
+    Misc: ['sparkles', 'star', 'heart', 'download', 'upload'],
+    Brands: ['apple', 'linkedin'],
 };
 
 const copyToClipboard = (iconName) => {
@@ -66,7 +117,8 @@ const copyToClipboard = (iconName) => {
         <div>
             <h1 class="text-text text-2xl font-bold">Icon Library</h1>
             <p class="text-muted mt-1">
-                Heroicons outline set. Click any icon to copy its usage code.
+                Heroicons outline set plus a few solid and brand icons. Click
+                any icon to copy its usage code.
             </p>
         </div>
 
