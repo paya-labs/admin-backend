@@ -119,7 +119,7 @@ export type { UseThemeReturn } from './composables/useTheme';
 export type { ShowToastOptions, UseToastReturn } from './composables/useToast';
 
 // Re-export icon types
-export type { IconDefinition } from './icons';
+export type { IconDefinition, IconName } from './icons';
 
 // Re-export component types
 export type { ViewOption } from './components/AppCalendarViewTabs.vue';
