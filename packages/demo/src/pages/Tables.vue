@@ -1,5 +1,15 @@
 <script setup>
-import { AppBadge, AppButton, AppTable } from '@paya-labs/admin-ui';
+import {
+    AppBadge,
+    AppButton,
+    AppIcon,
+    AppRowActionMenu,
+    AppRowActionMenuItem,
+    AppTable,
+    AppToastContainer,
+    useRowMenu,
+    useToast,
+} from '@paya-labs/admin-ui';
 import { ref } from 'vue';
 
 // Basic table
@@ -43,6 +53,18 @@ const tableActions = [
     { label: 'Edit', variant: 'ghost', handler: handleEdit },
     { label: 'Delete', variant: 'danger', handler: handleDelete },
 ];
+
+// Row action menu: one shared menu that moves to the row whose trigger opened it
+const menuColumns = [
+    ...basicColumns,
+    { key: 'menu', label: '', width: '56px' },
+];
+const toast = useToast();
+const { menuRow, menuTrigger, toggleMenu, closeMenu } = useRowMenu();
+const runAction = (label) => {
+    toast.success(`${label}: ${menuRow.value.name}`);
+    closeMenu();
+};
 
 // Table with custom cells (status badges)
 const statusColumns = [
@@ -138,6 +160,87 @@ const stripedRows = [
                 :rows="actionsRows"
                 :actions="tableActions"
             />
+        </section>
+
+        <!-- Table with Row Action Menu -->
+        <section class="space-y-4">
+            <h2 class="text-text text-lg font-semibold">
+                Table with Row Action Menu
+            </h2>
+            <p class="text-muted text-sm">
+                One
+                <code class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                    >AppRowActionMenu</code
+                >
+                per page, driven by
+                <code class="bg-surface-hover rounded px-1 py-0.5 text-xs"
+                    >useRowMenu</code
+                >. Below 768px it opens as a bottom sheet with a Cancel button.
+            </p>
+            <AppTable :columns="menuColumns" :rows="basicRows">
+                <template #cell-menu="{ row }">
+                    <div class="flex justify-end">
+                        <AppButton
+                            variant="ghost"
+                            size="sm"
+                            icon-only
+                            :aria-label="`Actions for ${row.name}`"
+                            @click="toggleMenu(row, $event)"
+                        >
+                            <AppIcon name="ellipsis-horizontal" size="sm" />
+                        </AppButton>
+                    </div>
+                </template>
+                <template #mobile-row="{ row }">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <div class="text-text truncate text-sm font-medium">
+                                {{ row.name }}
+                            </div>
+                            <div class="text-muted truncate text-xs">
+                                {{ row.email }}
+                            </div>
+                        </div>
+                        <AppButton
+                            variant="ghost"
+                            size="sm"
+                            icon-only
+                            :aria-label="`Actions for ${row.name}`"
+                            @click.stop="toggleMenu(row, $event)"
+                        >
+                            <AppIcon name="ellipsis-horizontal" size="sm" />
+                        </AppButton>
+                    </div>
+                </template>
+            </AppTable>
+            <AppRowActionMenu
+                :trigger="menuTrigger"
+                sheet
+                cancel
+                @close="closeMenu"
+            >
+                <AppRowActionMenuItem icon="pencil" @click="runAction('Edit')">
+                    Edit
+                </AppRowActionMenuItem>
+                <AppRowActionMenuItem to="/forms" @click="closeMenu">
+                    Open forms page
+                </AppRowActionMenuItem>
+                <AppRowActionMenuItem
+                    href="https://example.com"
+                    target="_blank"
+                    @click="closeMenu"
+                >
+                    External link
+                </AppRowActionMenuItem>
+                <AppRowActionMenuItem
+                    icon="trash"
+                    danger
+                    @click="runAction('Delete')"
+                >
+                    Delete
+                </AppRowActionMenuItem>
+            </AppRowActionMenu>
+            <AppToastContainer />
         </section>
 
         <!-- Table with Custom Cells -->

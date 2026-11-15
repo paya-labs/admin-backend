@@ -43,6 +43,8 @@ import '@paya-labs/admin-ui/styles';
 | `AppBadge`              | Status badge with variants                                                           |
 | `AppCard`               | Stats/info card with trend indicators                                                |
 | `AppTable`              | Data table with sorting and pagination                                               |
+| `AppRowActionMenu`      | Shared ⋯ menu for table rows, anchored to the trigger; bottom sheet on phones        |
+| `AppRowActionMenuItem`  | Entry in `AppRowActionMenu`: button, RouterLink (`to`) or link (`href`)              |
 | `AppHeader`             | Top bar: hamburger plus `header-left/center/right/end` slots (also teleport targets) |
 | `AppSidebar`            | Navigation sidebar with collapse and a user menu (theme switch, sign out)            |
 | `AppModal`              | Modal dialog                                                                         |
@@ -62,18 +64,40 @@ import '@paya-labs/admin-ui/styles';
 - `AppDatePanel` `fluid` (default `false`) drops the fixed width, chrome and footer so the grid fills its container, as the bottom sheet does.
 - `AppDatePicker` emits `YYYY-MM-DD` in date mode and `HH:mm` in time mode, empty string when cleared. `min` / `max` (ISO dates) apply to date mode only. In time mode `step` is the list interval in minutes (default 15) and `from` (`HH:mm`) starts the list one step after that time and labels each entry with its duration, e.g. for an end-time field.
 - `AppConfirmModal` (`v-model`, `title`, `confirmLabel` = `Confirm`, `cancelLabel` = `Cancel`, `danger`, `loading`) emits `confirm` and leaves closing to you, so close it once the action succeeds. Cancel closes it; replace that button through the `cancel` slot. While `loading` the action shows a spinner, Cancel is disabled and the backdrop and Escape do not close it. Below 768px the actions stack full width, action first and Cancel last.
+- `AppRowActionMenu` is rendered once per page and moves to whichever row is open; pair it with `useRowMenu`. It is teleported to `body`, opens below the trigger right-aligned and flips above when there is more room there. With `sheet` it becomes a bottom sheet with a backdrop below 768px; `cancel` adds a Cancel button to that sheet. Opening focuses the first item, Escape or a click on the backdrop emits `close`, and focus returns to the trigger once `trigger` is cleared. `menu-class` replaces the default `w-48` width. `AppRowActionMenuItem` takes `icon`, `danger`, `to` and `href`, and is 44px tall on phones. The menu does not close itself when an item is clicked: call `closeMenu` in the item's handler.
+
+    ```vue
+    <script setup lang="ts">
+    const { menuRow, menuTrigger, toggleMenu, closeMenu } = useRowMenu<User>();
+    </script>
+
+    <AppTable :columns="columns" :rows="users">
+        <template #cell-menu="{ row }">
+            <AppButton variant="ghost" size="sm" icon-only aria-label="Actions" @click="toggleMenu(row, $event)">
+                <AppIcon name="ellipsis-horizontal" size="sm" />
+            </AppButton>
+        </template>
+    </AppTable>
+    <AppRowActionMenu :trigger="menuTrigger" sheet cancel @close="closeMenu">
+        <AppRowActionMenuItem icon="pencil" :to="`/users/${menuRow?.id}`" @click="closeMenu">Edit</AppRowActionMenuItem>
+        <AppRowActionMenuItem icon="trash" danger @click="remove(menuRow)">Delete</AppRowActionMenuItem>
+    </AppRowActionMenu>
+    ```
+
+    In a `#mobile-row` slot use `@click.stop` on the trigger so the row's own click does not fire.
 
 ## Composables
 
-| Composable      | Description                             |
-| --------------- | --------------------------------------- |
-| `useTheme`      | Dark/light/system theme management      |
-| `useSidebar`    | Sidebar state (open, collapsed, mobile) |
-| `useToast`      | Toast notification system               |
-| `useAuth`       | Authentication state management         |
-| `useApi`        | HTTP client with error handling         |
-| `useCrud`       | CRUD operations helper                  |
-| `usePagination` | Pagination state and controls           |
+| Composable      | Description                                                                                                                  |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `useTheme`      | Dark/light/system theme management                                                                                           |
+| `useSidebar`    | Sidebar state (open, collapsed, mobile)                                                                                      |
+| `useToast`      | Toast notification system                                                                                                    |
+| `useAuth`       | Authentication state management                                                                                              |
+| `useApi`        | HTTP client with error handling                                                                                              |
+| `useCrud`       | CRUD operations helper                                                                                                       |
+| `usePagination` | Pagination state and controls                                                                                                |
+| `useRowMenu`    | Open row and trigger for `AppRowActionMenu`; `toggleMenu(row, event)` closes it when the open row's trigger is clicked again |
 
 ## Directives
 
