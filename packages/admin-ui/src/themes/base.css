@@ -211,6 +211,8 @@
 /* ============================================
    BASE STYLES
    ============================================ */
+/* Light scheme only while the dark theme is off. A plain :root ties with .dark
+   on specificity and, coming later, would override its color-scheme: dark. */
 :root:not(.dark) {
     color-scheme: light;
 }
@@ -243,10 +245,7 @@ body {
 /* Smooth scrolling */
 html {
     scroll-behavior: smooth;
-}
-
-/* Reserve the scrollbar's width so the layout doesn't shift when a page starts to scroll */
-html {
+    /* Reserve the scrollbar's width so the layout doesn't shift when a page starts to scroll */
     scrollbar-gutter: stable;
 }
 

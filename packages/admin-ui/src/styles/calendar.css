@@ -594,8 +594,9 @@
 /*
  * The all-day/time-grid boundary would otherwise stack four lines (all-day
  * cell border, day-grid body border, divider, first slot's top border) into a
- * thick band with a step at the axis column. The divider alone draws the line;
- * !important because collapsed-border resolution ignores weaker rules.
+ * thick band with a step at the axis column. The divider alone draws the line.
+ * !important keeps these borders off in panel mode and dark mode too, whose
+ * border rules elsewhere in this file are as specific or more and some come later.
  */
 .app-calendar-wrapper .fc .fc-timegrid .fc-daygrid-day,
 .app-calendar-wrapper .fc .fc-timegrid .fc-daygrid-body,
