@@ -211,7 +211,7 @@
 /* ============================================
    BASE STYLES
    ============================================ */
-:root {
+:root:not(.dark) {
     color-scheme: light;
 }
 
@@ -243,6 +243,11 @@ body {
 /* Smooth scrolling */
 html {
     scroll-behavior: smooth;
+}
+
+/* Reserve the scrollbar's width so the layout doesn't shift when a page starts to scroll */
+html {
+    scrollbar-gutter: stable;
 }
 
 /* Scrollbar styling */

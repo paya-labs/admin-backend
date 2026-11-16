@@ -563,9 +563,48 @@
     margin: 1px 2px;
 }
 
-/* Scrollable time grid body */
+/*
+ * The time grid body never scrolls itself: FullCalendar's scroller around it
+ * does. Letting the body scroll too adds a sideways scrollbar in work-week view.
+ */
 .app-calendar-wrapper .fc .fc-timegrid-body {
-    overflow: auto;
+    overflow: hidden;
+}
+
+/*
+ * FullCalendar's divider between the all-day row and the time grid is a
+ * ~4px shaded band; slim it down to read like every other 1px grid line.
+ */
+.app-calendar-wrapper .fc .fc-timegrid-divider {
+    height: 1px;
+    padding: 0;
+    background: var(--color-border);
+}
+
+/*
+ * The day-label header row ships without a bottom border, so the weekend
+ * hatch in the all-day row starts at a hard edge weekdays don't have. A real
+ * border can't win here (the collapsed scrollgrid hides that table edge), so
+ * the line is an inset shadow instead.
+ */
+.app-calendar-wrapper .fc .fc-scrollgrid-section-header th {
+    box-shadow: inset 0 -1px 0 var(--color-border);
+}
+
+/*
+ * The all-day/time-grid boundary would otherwise stack four lines (all-day
+ * cell border, day-grid body border, divider, first slot's top border) into a
+ * thick band with a step at the axis column. The divider alone draws the line;
+ * !important because collapsed-border resolution ignores weaker rules.
+ */
+.app-calendar-wrapper .fc .fc-timegrid .fc-daygrid-day,
+.app-calendar-wrapper .fc .fc-timegrid .fc-daygrid-body,
+.app-calendar-wrapper .fc .fc-timegrid .fc-daygrid-body .fc-timegrid-axis {
+    border-bottom: 0 !important;
+}
+
+.app-calendar-wrapper .fc .fc-timegrid-slots tr:first-child .fc-timegrid-slot {
+    border-top: 0 !important;
 }
 
 /* All-day section label */
@@ -1161,6 +1200,10 @@
 
 .dark .app-calendar-wrapper .fc .fc-timegrid-divider {
     background: var(--color-border-strong);
+}
+
+.dark .app-calendar-wrapper .fc .fc-scrollgrid-section-header th {
+    box-shadow: inset 0 -1px 0 var(--color-border-strong);
 }
 
 .dark .app-calendar-wrapper .fc ::-webkit-scrollbar-thumb {
