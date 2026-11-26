@@ -55,13 +55,13 @@ describe('AppCalendar scroll time', () => {
     };
 
     it('opens one hour before now, rounded down to the hour', () => {
-        const wrapper = mountAt(new Date(2026, 10, 26, 14, 37));
+        const wrapper = mountAt(new Date('2026-11-26T14:37'));
 
         expect(calendarOptions(wrapper).scrollTime).toBe('13:00:00');
     });
 
     it('opens at midnight before 01:00', () => {
-        const wrapper = mountAt(new Date(2026, 10, 26, 0, 20));
+        const wrapper = mountAt(new Date('2026-11-26T00:20'));
 
         expect(calendarOptions(wrapper).scrollTime).toBe('00:00:00');
     });
@@ -75,7 +75,7 @@ describe('AppCalendar scroll time', () => {
     });
 
     it('passes a given scrollTime through', () => {
-        const wrapper = mountAt(new Date(2026, 10, 26, 14, 37), {
+        const wrapper = mountAt(new Date('2026-11-26T14:37'), {
             scrollTime: '09:00:00',
         });
 

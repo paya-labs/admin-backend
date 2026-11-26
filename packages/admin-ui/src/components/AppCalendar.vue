@@ -172,29 +172,29 @@ const emit = defineEmits<{
 }>();
 
 const moduleConfig = useModuleConfig();
-const calendarTimeZone = props.timeZone ?? moduleConfig?.timezone ?? 'local';
+const calendarTimeZone = computed(
+    () => props.timeZone ?? moduleConfig?.timezone ?? 'local',
+);
 
 const hourAndMinuteIn = (date: Date, timeZone: string) => {
     const parts = new Intl.DateTimeFormat('en-US', {
         timeZone: timeZone === 'local' ? undefined : timeZone,
         hour: 'numeric',
         minute: 'numeric',
-        hour12: false,
+        hourCycle: 'h23',
     }).formatToParts(date);
     const partValue = (type: string) =>
         parseInt(parts.find((p) => p.type === type)?.value ?? '0');
-    let hour = partValue('hour');
-    if (hour === 24) hour = 0;
-    return { hour, minute: partValue('minute') };
+    return { hour: partValue('hour'), minute: partValue('minute') };
 };
 
-const oneHourBeforeNow = () => {
-    const { hour } = hourAndMinuteIn(new Date(), calendarTimeZone);
+const startOfPreviousHour = () => {
+    const { hour } = hourAndMinuteIn(new Date(), calendarTimeZone.value);
     const scrollHour = Math.max(0, hour - 1);
     return `${String(scrollHour).padStart(2, '0')}:00:00`;
 };
 
-const defaultScrollTime = oneHourBeforeNow();
+const defaultScrollTime = startOfPreviousHour();
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
 const slots: ReturnType<typeof useSlots> = useSlots();
 
@@ -663,7 +663,7 @@ const mergedButtonText = computed(() => {
 
 const calendarOptions = computed<CalendarOptions>(() => ({
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
-    timeZone: props.timeZone ?? moduleConfig?.timezone ?? 'local',
+    timeZone: calendarTimeZone.value,
     scrollTime: props.scrollTime ?? defaultScrollTime,
     scrollTimeReset: props.scrollTimeReset,
     initialView: props.initialView,
@@ -780,10 +780,7 @@ defineExpose({
 
         api.gotoDate(date);
 
-        const { hour, minute } = hourAndMinuteIn(
-            date,
-            props.timeZone ?? moduleConfig?.timezone ?? 'local',
-        );
+        const { hour, minute } = hourAndMinuteIn(date, calendarTimeZone.value);
         const totalMinutes = hour * 60 + minute;
 
         const scrollMinutes = Math.max(0, totalMinutes - paddingMinutes);
