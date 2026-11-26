@@ -71,8 +71,8 @@ const goToday = (): void => onGoto(toIsoDate(new Date()));
 </script>
 
 <template>
-    <div class="min-w-0 gap-1 md:gap-3 flex items-center">
-        <div class="min-w-0 flex items-center">
+    <div class="flex min-w-0 items-center gap-1 md:gap-3">
+        <div class="flex min-w-0 items-center">
             <AppButton
                 variant="ghost"
                 icon-only
@@ -104,18 +104,18 @@ const goToday = (): void => onGoto(toIsoDate(new Date()));
                 aria-haspopup="dialog"
                 :aria-expanded="expanded"
                 :class="[
-                    'min-w-0 gap-1 px-2 text-lg font-semibold flex min-h-[36px] cursor-pointer items-center rounded-md text-text',
-                    'hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none',
+                    'text-text flex min-h-[36px] min-w-0 cursor-pointer items-center gap-1 rounded-md px-2 text-lg font-semibold',
+                    'hover:bg-surface-hover focus-visible:ring-focus-ring focus-visible:ring-2 focus-visible:outline-none',
                     expanded && 'bg-surface-hover',
                 ]"
                 @click="openToggle"
                 @keydown.escape.prevent="close(true)"
                 @focusout="onFocusOut"
             >
-                <AppIcon name="calendar" class="shrink-0 text-text" />
+                <AppIcon name="calendar" class="text-text shrink-0" />
                 <span class="truncate">{{ title }}</span>
             </button>
-            <h1 v-else class="px-2 text-lg font-semibold truncate text-text">
+            <h1 v-else class="text-text truncate px-2 text-lg font-semibold">
                 {{ title }}
             </h1>
 
@@ -143,7 +143,7 @@ const goToday = (): void => onGoto(toIsoDate(new Date()));
         </div>
 
         <!-- Current view label (hidden on mobile) -->
-        <span v-if="viewLabel" class="text-sm md:inline hidden text-muted">{{
+        <span v-if="viewLabel" class="text-muted hidden text-sm md:inline">{{
             viewLabel
         }}</span>
 
@@ -187,7 +187,7 @@ const goToday = (): void => onGoto(toIsoDate(new Date()));
             <template #secondary>
                 <button
                     type="button"
-                    class="cursor-pointer text-text-secondary"
+                    class="text-text-secondary cursor-pointer"
                     @click="goToday"
                 >
                     Today

@@ -187,15 +187,15 @@ const chevron = {
     <div
         ref="rootRef"
         :class="[
-            'p-3 bg-surface text-text',
+            'bg-surface text-text p-3',
             fluid
                 ? 'text-base'
-                : 'text-sm w-[300px] rounded-xl border border-border-strong shadow-lg',
+                : 'border-border-strong w-[300px] rounded-xl border text-sm shadow-lg',
         ]"
         @keydown.escape.prevent="emit('close')"
     >
         <!-- Header -->
-        <div class="mb-2 gap-1 flex items-center">
+        <div class="mb-2 flex items-center gap-1">
             <AppButton
                 variant="ghost"
                 icon-only
@@ -233,7 +233,7 @@ const chevron = {
             <button
                 v-if="view === 'days'"
                 type="button"
-                class="h-9 font-semibold flex-1 rounded-md hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
+                class="hover:bg-surface-hover focus-visible:ring-focus-ring h-9 flex-1 rounded-md font-semibold focus-visible:ring-2 focus-visible:outline-none"
                 aria-label="Choose month"
                 @click="showMonths"
             >
@@ -242,13 +242,13 @@ const chevron = {
             <button
                 v-else-if="view === 'months'"
                 type="button"
-                class="h-9 font-semibold flex-1 rounded-md hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
+                class="hover:bg-surface-hover focus-visible:ring-focus-ring h-9 flex-1 rounded-md font-semibold focus-visible:ring-2 focus-visible:outline-none"
                 aria-label="Choose year"
                 @click="showYears"
             >
                 {{ year }}
             </button>
-            <span v-else class="font-semibold flex-1 text-center">
+            <span v-else class="flex-1 text-center font-semibold">
                 {{ years[0] }} – {{ years[11] }}
             </span>
 
@@ -290,14 +290,14 @@ const chevron = {
         <!-- Days -->
         <template v-if="view === 'days'">
             <div
-                class="mb-1 tracking-wider grid grid-cols-7 text-center text-[11px] text-muted uppercase"
+                class="text-muted mb-1 grid grid-cols-7 text-center text-[11px] tracking-wider uppercase"
                 aria-hidden="true"
             >
                 <span v-for="d in DAY_NAMES" :key="d">{{ d.slice(0, 2) }}</span>
             </div>
             <div
                 ref="gridRef"
-                class="gap-y-0.5 grid grid-cols-7"
+                class="grid grid-cols-7 gap-y-0.5"
                 @keydown="onGridKeydown"
             >
                 <button
@@ -311,13 +311,13 @@ const chevron = {
                     :aria-pressed="c.selected"
                     :aria-current="c.today ? 'date' : undefined"
                     :class="[
-                        'relative rounded-lg focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none',
+                        'focus-visible:ring-focus-ring relative rounded-lg focus-visible:ring-2 focus-visible:outline-none',
                         fluid ? 'h-11' : 'h-[34px]',
                         c.disabled
-                            ? 'cursor-not-allowed text-muted line-through opacity-35'
-                            : 'cursor-pointer hover:bg-surface-hover',
+                            ? 'text-muted cursor-not-allowed line-through opacity-35'
+                            : 'hover:bg-surface-hover cursor-pointer',
                         c.out && !c.disabled && 'text-muted opacity-55',
-                        c.today && 'font-bold text-success',
+                        c.today && 'text-success font-bold',
                         (c.inRange || c.selected) &&
                             'bg-primary-soft text-on-primary-soft',
                         c.inRange && !c.first && !c.last && 'rounded-none',
@@ -330,28 +330,28 @@ const chevron = {
                     {{ c.day }}
                     <span
                         v-if="c.today"
-                        class="bottom-1 h-1 w-1 absolute left-1/2 -translate-x-1/2 rounded-full bg-success"
+                        class="bg-success absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full"
                     />
                 </button>
             </div>
         </template>
 
         <!-- Months -->
-        <div v-else-if="view === 'months'" class="gap-1.5 grid grid-cols-3">
+        <div v-else-if="view === 'months'" class="grid grid-cols-3 gap-1.5">
             <button
                 v-for="(name, i) in MONTH_NAMES"
                 :key="name"
                 type="button"
                 :aria-label="name"
                 :class="[
-                    'h-10 cursor-pointer rounded-lg hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none',
+                    'hover:bg-surface-hover focus-visible:ring-focus-ring h-10 cursor-pointer rounded-lg focus-visible:ring-2 focus-visible:outline-none',
                     selected &&
                         selected.getFullYear() === year &&
                         selected.getMonth() === i &&
-                        'font-semibold bg-primary-soft text-on-primary-soft',
+                        'bg-primary-soft text-on-primary-soft font-semibold',
                     todayIso.startsWith(
                         `${year}-${String(i + 1).padStart(2, '0')}`,
-                    ) && 'ring-1 ring-success ring-inset',
+                    ) && 'ring-success ring-1 ring-inset',
                 ]"
                 @click="pickMonth(i)"
             >
@@ -360,18 +360,18 @@ const chevron = {
         </div>
 
         <!-- Years -->
-        <div v-else class="gap-1.5 grid grid-cols-4">
+        <div v-else class="grid grid-cols-4 gap-1.5">
             <button
                 v-for="y in years"
                 :key="y"
                 type="button"
                 :class="[
-                    'h-10 cursor-pointer rounded-lg hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none',
+                    'hover:bg-surface-hover focus-visible:ring-focus-ring h-10 cursor-pointer rounded-lg focus-visible:ring-2 focus-visible:outline-none',
                     selected &&
                         selected.getFullYear() === y &&
-                        'font-semibold bg-primary-soft text-on-primary-soft',
+                        'bg-primary-soft text-on-primary-soft font-semibold',
                     todayIso.startsWith(`${y}-`) &&
-                        'ring-1 ring-success ring-inset',
+                        'ring-success ring-1 ring-inset',
                 ]"
                 @click="pickYear(y)"
             >
@@ -382,11 +382,11 @@ const chevron = {
         <!-- Footer (the bottom sheet header carries Today / Done instead) -->
         <div
             v-if="!fluid"
-            class="mt-2.5 pt-2.5 flex items-center justify-between border-t border-border"
+            class="border-border mt-2.5 flex items-center justify-between border-t pt-2.5"
         >
             <button
                 type="button"
-                class="px-1.5 py-1 cursor-pointer rounded-md text-on-primary-soft hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                class="text-on-primary-soft hover:bg-surface-hover focus-visible:ring-focus-ring cursor-pointer rounded-md px-1.5 py-1 focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 :disabled="isDisabled(todayIso)"
                 @click="pick(todayIso)"
             >
@@ -394,7 +394,7 @@ const chevron = {
             </button>
             <button
                 type="button"
-                class="px-1.5 py-1 cursor-pointer rounded-md text-on-primary-soft hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
+                class="text-on-primary-soft hover:bg-surface-hover focus-visible:ring-focus-ring cursor-pointer rounded-md px-1.5 py-1 focus-visible:ring-2 focus-visible:outline-none"
                 @click="emit('close')"
             >
                 Close

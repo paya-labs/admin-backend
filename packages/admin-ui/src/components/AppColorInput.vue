@@ -271,10 +271,10 @@ function commitHex() {
         <label
             v-if="label"
             :for="inputId"
-            class="mb-1.5 text-sm font-medium block text-text"
+            class="text-text mb-1.5 block text-sm font-medium"
         >
             {{ label }}
-            <span v-if="required" class="ml-0.5 text-danger">*</span>
+            <span v-if="required" class="text-danger ml-0.5">*</span>
         </label>
 
         <!-- Trigger button -->
@@ -283,15 +283,15 @@ function commitHex() {
             type="button"
             :disabled="disabled"
             :class="[
-                'gap-3 inline-flex items-center',
+                'inline-flex items-center gap-3',
                 {
-                    sm: 'px-2 py-1 min-h-[36px]',
-                    md: 'px-3 py-2 min-h-[44px]',
-                    lg: 'px-3 py-2.5 min-h-[52px]',
+                    sm: 'min-h-[36px] px-2 py-1',
+                    md: 'min-h-[44px] px-3 py-2',
+                    lg: 'min-h-[52px] px-3 py-2.5',
                 }[size],
-                'rounded-md border bg-input-bg text-text',
+                'bg-input-bg text-text rounded-md border',
                 'transition-colors duration-[var(--transition-fast)]',
-                'focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none',
+                'focus:ring-focus-ring focus:border-transparent focus:ring-2 focus:outline-none',
                 'disabled:cursor-not-allowed disabled:opacity-50',
                 hasError
                     ? 'border-danger focus:ring-danger'
@@ -300,13 +300,13 @@ function commitHex() {
             @click="togglePicker"
         >
             <span
-                class="size-7 border-black/10 shrink-0 rounded-md border shadow-sm"
+                class="size-7 shrink-0 rounded-md border border-black/10 shadow-sm"
                 :style="{ backgroundColor: modelValue }"
                 aria-hidden="true"
             />
             <span
                 v-if="showHex"
-                class="font-mono text-sm text-text-secondary select-all"
+                class="text-text-secondary font-mono text-sm select-all"
             >
                 {{ modelValue }}
             </span>
@@ -323,13 +323,13 @@ function commitHex() {
         >
             <div
                 v-if="isOpen"
-                class="mt-1 w-64 p-3 absolute z-50 origin-top-left rounded-lg border border-border bg-surface shadow-lg"
+                class="border-border bg-surface absolute z-50 mt-1 w-64 origin-top-left rounded-lg border p-3 shadow-lg"
                 @keydown.escape="closePicker"
             >
                 <!-- Saturation / Value gradient -->
                 <div
                     ref="gradientRef"
-                    class="h-40 relative w-full cursor-crosshair rounded-md"
+                    class="relative h-40 w-full cursor-crosshair rounded-md"
                     :style="{ backgroundColor: pureHueColor }"
                     tabindex="0"
                     role="application"
@@ -339,7 +339,7 @@ function commitHex() {
                 >
                     <!-- White overlay (left to right) -->
                     <div
-                        class="inset-0 absolute rounded-md"
+                        class="absolute inset-0 rounded-md"
                         style="
                             background: linear-gradient(
                                 to right,
@@ -350,7 +350,7 @@ function commitHex() {
                     />
                     <!-- Black overlay (top to bottom) -->
                     <div
-                        class="inset-0 absolute rounded-md"
+                        class="absolute inset-0 rounded-md"
                         style="
                             background: linear-gradient(
                                 to bottom,
@@ -361,7 +361,7 @@ function commitHex() {
                     />
                     <!-- Cursor -->
                     <div
-                        class="size-4 border-white pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 shadow-[0_0_0_1px_rgba(0,0,0,0.3)]"
+                        class="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3)]"
                         :style="{
                             left: `${hsv.s * 100}%`,
                             top: `${(1 - hsv.v) * 100}%`,
@@ -372,7 +372,7 @@ function commitHex() {
                 <!-- Hue slider -->
                 <div
                     ref="hueRef"
-                    class="mt-3 h-3 relative w-full cursor-pointer rounded-full"
+                    class="relative mt-3 h-3 w-full cursor-pointer rounded-full"
                     style="
                         background: linear-gradient(
                             to right,
@@ -395,7 +395,7 @@ function commitHex() {
                     @keydown="onHueKeyDown"
                 >
                     <div
-                        class="size-4 border-white pointer-events-none absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 shadow-[0_0_0_1px_rgba(0,0,0,0.3)]"
+                        class="pointer-events-none absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3)]"
                         :style="{
                             left: `${(hsv.h / 360) * 100}%`,
                             backgroundColor: pureHueColor,
@@ -406,7 +406,7 @@ function commitHex() {
                 <!-- Palette swatches -->
                 <div
                     v-if="paletteColors.length"
-                    class="mt-3 gap-1.5 flex flex-wrap"
+                    class="mt-3 flex flex-wrap gap-1.5"
                 >
                     <button
                         v-for="color in paletteColors"
@@ -414,10 +414,10 @@ function commitHex() {
                         type="button"
                         :title="color"
                         :class="[
-                            'size-5 p-0 rounded-full border',
+                            'size-5 rounded-full border p-0',
                             'transition-transform duration-[var(--transition-fast)]',
                             'hover:scale-125',
-                            'focus:ring-2 focus:ring-focus-ring focus:ring-offset-1 focus:outline-none',
+                            'focus:ring-focus-ring focus:ring-2 focus:ring-offset-1 focus:outline-none',
                             modelValue.toLowerCase() === color.toLowerCase()
                                 ? 'border-text shadow-[0_0_0_1.5px_var(--color-surface)]'
                                 : 'border-black/10',
@@ -428,16 +428,16 @@ function commitHex() {
                 </div>
 
                 <!-- Hex input -->
-                <div class="mt-3 gap-2 flex items-center">
+                <div class="mt-3 flex items-center gap-2">
                     <span
-                        class="size-8 border-black/10 shrink-0 rounded-md border"
+                        class="size-8 shrink-0 rounded-md border border-black/10"
                         :style="{ backgroundColor: modelValue }"
                     />
                     <input
                         type="text"
                         :value="hexInput"
                         maxlength="7"
-                        class="px-2 py-1.5 font-mono text-sm w-full rounded-md border border-input-border bg-input-bg text-text focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none"
+                        class="border-input-border bg-input-bg text-text focus:ring-focus-ring w-full rounded-md border px-2 py-1.5 font-mono text-sm focus:border-transparent focus:ring-2 focus:outline-none"
                         @input="onHexInput"
                         @keydown.enter="commitHex"
                         @blur="commitHex"

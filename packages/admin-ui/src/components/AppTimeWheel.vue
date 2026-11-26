@@ -72,11 +72,11 @@ const rowClass =
 
 <template>
     <div
-        class="gap-2 relative flex justify-center [mask-image:linear-gradient(transparent,black_30%,black_70%,transparent)]"
+        class="relative flex justify-center gap-2 [mask-image:linear-gradient(transparent,black_30%,black_70%,transparent)]"
         :style="{ height: `${ROW * VISIBLE}px` }"
     >
         <div
-            class="inset-x-6 h-10 absolute top-1/2 -translate-y-1/2 rounded-lg bg-surface-hover"
+            class="bg-surface-hover absolute inset-x-6 top-1/2 h-10 -translate-y-1/2 rounded-lg"
             aria-hidden="true"
         />
         <ul
@@ -93,7 +93,7 @@ const rowClass =
                     :class="[
                         rowClass,
                         h === current[0]
-                            ? 'font-medium text-text'
+                            ? 'text-text font-medium'
                             : 'text-muted',
                     ]"
                     @click="select(0, h)"
@@ -116,7 +116,7 @@ const rowClass =
                     :class="[
                         rowClass,
                         m === current[1]
-                            ? 'font-medium text-text'
+                            ? 'text-text font-medium'
                             : 'text-muted',
                     ]"
                     @click="select(1, m)"

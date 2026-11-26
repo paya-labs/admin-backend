@@ -27,8 +27,8 @@ defineSlots<{
 <template>
     <header
         :class="[
-            'top-0 right-0 fixed z-[var(--z-header)] h-[var(--header-height)]',
-            'border-b border-border bg-header',
+            'fixed top-0 right-0 z-[var(--z-header)] h-[var(--header-height)]',
+            'border-border bg-header border-b',
             'transition-[left] duration-200',
             'left-0',
             isCollapsed
@@ -36,9 +36,9 @@ defineSlots<{
                 : 'lg:left-[var(--sidebar-width)]',
         ]"
     >
-        <div class="px-4 lg:px-6 flex h-full items-center justify-between">
+        <div class="flex h-full items-center justify-between px-4 lg:px-6">
             <!-- Left section -->
-            <div class="gap-4 flex items-center">
+            <div class="flex items-center gap-4">
                 <!-- Mobile hamburger -->
                 <AppButton
                     variant="ghost"
@@ -58,7 +58,7 @@ defineSlots<{
             </div>
 
             <!-- Center section -->
-            <div class="lg:flex hidden flex-1 justify-center">
+            <div class="hidden flex-1 justify-center lg:flex">
                 <!-- Teleport target: page-level header content (center) -->
                 <div id="header-center" class="flex items-center">
                     <slot name="header-center" />
@@ -66,7 +66,7 @@ defineSlots<{
             </div>
 
             <!-- Right section -->
-            <div class="gap-2 lg:gap-3 flex items-center">
+            <div class="flex items-center gap-2 lg:gap-3">
                 <!-- Teleport target: page-level header content (right) -->
                 <div id="header-right" class="flex items-center">
                     <slot name="header-right" />

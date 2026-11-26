@@ -51,7 +51,7 @@ const select = (): void => {
         <label
             :for="radioId"
             :class="[
-                'gap-3 flex items-start',
+                'flex items-start gap-3',
                 disabled ? 'cursor-not-allowed' : 'cursor-pointer',
             ]"
         >
@@ -73,10 +73,10 @@ const select = (): void => {
             <!-- Visual radio -->
             <div
                 :class="[
-                    'mt-0.5 h-5 w-5 flex shrink-0 items-center justify-center',
+                    'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center',
                     'rounded-full border',
                     'transition-colors duration-[var(--transition-fast)]',
-                    'peer-focus:ring-2 peer-focus:ring-focus-ring peer-focus:ring-offset-2',
+                    'peer-focus:ring-focus-ring peer-focus:ring-2 peer-focus:ring-offset-2',
 
                     checked
                         ? 'border-primary-600 bg-primary-600'
@@ -86,19 +86,19 @@ const select = (): void => {
                 ]"
                 aria-hidden="true"
             >
-                <div v-if="checked" class="h-2 w-2 bg-white rounded-full" />
+                <div v-if="checked" class="h-2 w-2 rounded-full bg-white" />
             </div>
 
             <!-- Label + description -->
             <div v-if="label || description" class="select-none">
-                <span class="text-sm font-medium text-text">
+                <span class="text-text text-sm font-medium">
                     {{ label }}
-                    <span v-if="required" class="ml-0.5 text-danger">*</span>
+                    <span v-if="required" class="text-danger ml-0.5">*</span>
                 </span>
                 <p
                     v-if="description"
                     :id="`${radioId}-description`"
-                    class="text-sm text-muted"
+                    class="text-muted text-sm"
                 >
                     {{ description }}
                 </p>

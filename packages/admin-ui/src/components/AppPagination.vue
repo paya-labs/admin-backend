@@ -124,9 +124,9 @@ const setPageSize = (size: number): void => {
 </script>
 
 <template>
-    <div class="gap-4 sm:flex-row flex flex-col items-center justify-between">
+    <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
         <!-- Info text -->
-        <div v-if="showInfo" class="text-sm text-muted">
+        <div v-if="showInfo" class="text-muted text-sm">
             <template v-if="total > 0">
                 Showing {{ showingFrom }} to {{ showingTo }} of
                 {{ total }} results
@@ -135,7 +135,7 @@ const setPageSize = (size: number): void => {
         </div>
         <div v-else />
 
-        <div class="gap-4 flex items-center">
+        <div class="flex items-center gap-4">
             <!-- Page size selector -->
             <AppSelect
                 v-if="showPageSize"
@@ -147,7 +147,7 @@ const setPageSize = (size: number): void => {
             />
 
             <!-- Page controls -->
-            <div class="gap-1 flex items-center">
+            <div class="flex items-center gap-1">
                 <!-- Previous button -->
                 <AppButton
                     variant="outline"
@@ -176,7 +176,7 @@ const setPageSize = (size: number): void => {
                     <template v-for="(p, index) in pageRange" :key="index">
                         <span
                             v-if="p === '...'"
-                            class="px-2 text-muted select-none"
+                            class="text-muted px-2 select-none"
                         >
                             ...
                         </span>

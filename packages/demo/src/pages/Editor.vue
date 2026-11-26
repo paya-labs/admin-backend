@@ -221,8 +221,7 @@ function onRemoveAttachment(id) {
                         </p>
                         <pre
                             class="text-text-secondary text-xs break-all whitespace-pre-wrap"
-                            >{{ liveContent || '(empty)' }}</pre
-                        >
+                            >{{ liveContent || '(empty)' }}</pre>
                     </div>
                 </div>
             </div>

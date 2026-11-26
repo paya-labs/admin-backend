@@ -80,10 +80,10 @@ const inputAttrs = computed(() => {
         <label
             v-if="label"
             :for="inputId"
-            class="mb-1.5 text-sm font-medium block text-text"
+            class="text-text mb-1.5 block text-sm font-medium"
         >
             {{ label }}
-            <span v-if="required" class="ml-0.5 text-danger">*</span>
+            <span v-if="required" class="text-danger ml-0.5">*</span>
         </label>
 
         <!-- Input wrapper -->
@@ -91,7 +91,7 @@ const inputAttrs = computed(() => {
             <!-- Prefix slot -->
             <div
                 v-if="$slots.prefix"
-                class="inset-y-0 left-0 pl-3 pointer-events-none absolute flex items-center text-muted"
+                class="text-muted pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
             >
                 <slot name="prefix" />
             </div>
@@ -109,16 +109,16 @@ const inputAttrs = computed(() => {
                 :class="[
                     'w-full',
                     {
-                        sm: 'py-1.5 text-sm min-h-[36px]',
-                        md: 'py-2.5 min-h-[44px]',
-                        lg: 'py-3 min-h-[52px]',
+                        sm: 'min-h-[36px] py-1.5 text-sm',
+                        md: 'min-h-[44px] py-2.5',
+                        lg: 'min-h-[52px] py-3',
                     }[size],
                     'bg-input-bg text-text',
                     'rounded-md border',
                     'placeholder:text-muted',
                     'transition-colors duration-[var(--transition-fast)]',
-                    'focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none',
-                    'disabled:cursor-not-allowed disabled:bg-surface-hover disabled:opacity-50',
+                    'focus:ring-focus-ring focus:border-transparent focus:ring-2 focus:outline-none',
+                    'disabled:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-50',
                     '[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none',
 
                     // Padding based on slots
@@ -135,11 +135,11 @@ const inputAttrs = computed(() => {
             <!-- Show/hide toggle for password fields -->
             <div
                 v-if="canReveal"
-                class="inset-y-0 right-0 pr-3 absolute flex items-center text-muted"
+                class="text-muted absolute inset-y-0 right-0 flex items-center pr-3"
             >
                 <button
                     type="button"
-                    class="h-7 w-7 rounded flex items-center justify-center transition-colors hover:text-text disabled:cursor-not-allowed disabled:opacity-50"
+                    class="hover:text-text flex h-7 w-7 items-center justify-center rounded transition-colors disabled:cursor-not-allowed disabled:opacity-50"
                     :disabled="disabled"
                     :aria-label="revealed ? 'Hide password' : 'Show password'"
                     :aria-pressed="revealed"
@@ -152,7 +152,7 @@ const inputAttrs = computed(() => {
             <!-- Suffix slot -->
             <div
                 v-else-if="$slots.suffix"
-                class="inset-y-0 right-0 pr-3 absolute flex items-center text-muted"
+                class="text-muted absolute inset-y-0 right-0 flex items-center pr-3"
             >
                 <slot name="suffix" />
             </div>

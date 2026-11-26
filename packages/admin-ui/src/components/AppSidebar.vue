@@ -107,7 +107,7 @@ const themeIcon = computed(() =>
         >
             <div
                 v-if="isOpen"
-                class="inset-0 bg-black/50 lg:hidden fixed z-[var(--z-overlay)]"
+                class="fixed inset-0 z-[var(--z-overlay)] bg-black/50 lg:hidden"
                 @click="emit('close')"
             />
         </Transition>
@@ -116,8 +116,8 @@ const themeIcon = computed(() =>
     <!-- Sidebar -->
     <aside
         :class="[
-            'top-0 left-0 fixed z-[var(--z-sidebar)] h-full',
-            'border-r border-border bg-sidebar',
+            'fixed top-0 left-0 z-[var(--z-sidebar)] h-full',
+            'border-border bg-sidebar border-r',
             'flex flex-col',
             'transition-all duration-200',
 
@@ -134,11 +134,11 @@ const themeIcon = computed(() =>
         <!-- Logo area -->
         <div
             :class="[
-                'px-4 flex h-[var(--header-height)] items-center border-b border-border',
+                'border-border flex h-[var(--header-height)] items-center border-b px-4',
                 isCollapsed ? 'justify-center' : 'justify-between',
             ]"
         >
-            <RouterLink to="/" class="min-w-0 gap-3 flex items-center">
+            <RouterLink to="/" class="flex min-w-0 items-center gap-3">
                 <img
                     v-if="logo"
                     :src="logo"
@@ -147,13 +147,13 @@ const themeIcon = computed(() =>
                 />
                 <div
                     v-else
-                    class="h-8 w-8 text-sm font-bold text-white flex flex-shrink-0 items-center justify-center rounded-md bg-primary-600"
+                    class="bg-primary-600 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-sm font-bold text-white"
                 >
                     {{ logoAlt.charAt(0) }}
                 </div>
                 <span
                     v-if="!isCollapsed"
-                    class="font-semibold truncate text-text"
+                    class="text-text truncate font-semibold"
                 >
                     {{ logoAlt }}
                 </span>
@@ -163,7 +163,7 @@ const themeIcon = computed(() =>
             <button
                 v-if="!isCollapsed"
                 type="button"
-                class="h-8 w-8 lg:flex hidden items-center justify-center rounded-md text-muted transition-colors hover:bg-surface-hover hover:text-text"
+                class="text-muted hover:bg-surface-hover hover:text-text hidden h-8 w-8 items-center justify-center rounded-md transition-colors lg:flex"
                 @click="emit('toggleCollapse')"
             >
                 <svg
@@ -184,7 +184,7 @@ const themeIcon = computed(() =>
         </div>
 
         <!-- Navigation -->
-        <nav class="px-3 py-4 flex-1 overflow-y-auto">
+        <nav class="flex-1 overflow-y-auto px-3 py-4">
             <ul class="space-y-1">
                 <li
                     v-for="item in navigation"
@@ -195,11 +195,11 @@ const themeIcon = computed(() =>
                         <button
                             type="button"
                             :class="[
-                                'gap-3 px-3 py-2.5 flex min-h-[44px] w-full items-center',
+                                'flex min-h-[44px] w-full items-center gap-3 px-3 py-2.5',
                                 'rounded-md',
                                 'hover:bg-surface-hover',
                                 'transition-colors duration-150',
-                                isCollapsed && 'px-0 justify-center',
+                                isCollapsed && 'justify-center px-0',
                                 hasActiveChild(item.children)
                                     ? 'text-text'
                                     : 'text-text-secondary hover:text-text',
@@ -214,7 +214,7 @@ const themeIcon = computed(() =>
                             />
                             <span
                                 v-if="!isCollapsed"
-                                class="text-sm font-medium flex-1 truncate text-left"
+                                class="flex-1 truncate text-left text-sm font-medium"
                             >
                                 {{ item.label }}
                             </span>
@@ -260,8 +260,8 @@ const themeIcon = computed(() =>
                                     <RouterLink
                                         :to="getItemPath(child) || '/'"
                                         :class="[
-                                            'gap-3 px-3 py-2 flex min-h-[40px] items-center',
-                                            'text-sm rounded-md',
+                                            'flex min-h-[40px] items-center gap-3 px-3 py-2',
+                                            'rounded-md text-sm',
                                             'transition-colors duration-150',
                                             isActive(getItemPath(child))
                                                 ? 'bg-primary-subtle text-on-primary-soft'
@@ -288,10 +288,10 @@ const themeIcon = computed(() =>
                         <RouterLink
                             :to="getItemPath(item) || '/'"
                             :class="[
-                                'gap-3 px-3 py-2.5 flex min-h-[44px] items-center',
+                                'flex min-h-[44px] items-center gap-3 px-3 py-2.5',
                                 'rounded-md',
                                 'transition-colors duration-150',
-                                isCollapsed && 'px-0 justify-center',
+                                isCollapsed && 'justify-center px-0',
                                 isActive(getItemPath(item))
                                     ? 'bg-primary-subtle text-on-primary-soft'
                                     : 'text-text-secondary hover:bg-surface-hover hover:text-text',
@@ -307,7 +307,7 @@ const themeIcon = computed(() =>
                             />
                             <span
                                 v-if="!isCollapsed"
-                                class="text-sm font-medium truncate"
+                                class="truncate text-sm font-medium"
                             >
                                 {{ item.label }}
                             </span>
@@ -315,11 +315,11 @@ const themeIcon = computed(() =>
                             <span
                                 v-if="!isCollapsed && item.badge"
                                 :class="[
-                                    'px-2 py-0.5 text-xs font-medium ml-auto rounded-full',
+                                    'ml-auto rounded-full px-2 py-0.5 text-xs font-medium',
                                     item.badgeVariant === 'danger' &&
-                                        'text-white bg-danger',
+                                        'bg-danger text-white',
                                     item.badgeVariant === 'warning' &&
-                                        'text-black bg-warning',
+                                        'bg-warning text-black',
                                     (!item.badgeVariant ||
                                         item.badgeVariant === 'primary') &&
                                         'bg-primary-soft text-on-primary-soft',
@@ -337,15 +337,15 @@ const themeIcon = computed(() =>
         <div
             v-click-outside="closeUserMenu"
             :class="[
-                'relative border-t border-border',
+                'border-border relative border-t',
                 isCollapsed ? 'p-2' : 'p-3',
             ]"
         >
             <button
                 type="button"
                 :class="[
-                    'flex w-full items-center rounded-md transition-colors hover:bg-surface-hover',
-                    isCollapsed ? 'p-1.5 justify-center' : 'gap-3 px-2 py-1.5',
+                    'hover:bg-surface-hover flex w-full items-center rounded-md transition-colors',
+                    isCollapsed ? 'justify-center p-1.5' : 'gap-3 px-2 py-1.5',
                 ]"
                 aria-haspopup="true"
                 :aria-expanded="isUserMenuOpen"
@@ -353,7 +353,7 @@ const themeIcon = computed(() =>
                 @click="toggleUserMenu"
             >
                 <div
-                    class="h-9 w-9 text-sm font-medium flex flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-soft text-on-primary-soft"
+                    class="bg-primary-soft text-on-primary-soft flex h-9 w-9 flex-shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-medium"
                 >
                     <img
                         v-if="user.avatar"
@@ -366,10 +366,10 @@ const themeIcon = computed(() =>
                     }}</span>
                 </div>
                 <div v-if="!isCollapsed" class="min-w-0 flex-1 text-left">
-                    <p class="text-sm font-medium truncate text-text">
+                    <p class="text-text truncate text-sm font-medium">
                         {{ user.name }}
                     </p>
-                    <p class="text-xs truncate text-muted">
+                    <p class="text-muted truncate text-xs">
                         {{ user.email }}
                     </p>
                 </div>
@@ -377,7 +377,7 @@ const themeIcon = computed(() =>
                     v-if="!isCollapsed"
                     name="chevron-up"
                     size="sm"
-                    class="flex-shrink-0 text-muted"
+                    class="text-muted flex-shrink-0"
                 />
             </button>
 
@@ -393,25 +393,25 @@ const themeIcon = computed(() =>
                 <div
                     v-if="isUserMenuOpen"
                     :class="[
-                        'mb-2 w-56 py-1 absolute bottom-full rounded-lg border border-border bg-surface shadow-[var(--shadow-lg)]',
-                        isCollapsed ? 'left-2' : 'left-3 right-3',
+                        'border-border bg-surface absolute bottom-full mb-2 w-56 rounded-lg border py-1 shadow-[var(--shadow-lg)]',
+                        isCollapsed ? 'left-2' : 'right-3 left-3',
                     ]"
                     role="menu"
                 >
                     <div
                         v-if="isCollapsed"
-                        class="px-3 py-2 border-b border-border"
+                        class="border-border border-b px-3 py-2"
                     >
-                        <p class="text-sm font-medium truncate text-text">
+                        <p class="text-text truncate text-sm font-medium">
                             {{ user.name }}
                         </p>
-                        <p class="text-xs truncate text-muted">
+                        <p class="text-muted truncate text-xs">
                             {{ user.email }}
                         </p>
                     </div>
                     <button
                         type="button"
-                        class="min-h-10 gap-3 px-3 py-2 text-sm flex w-full items-center text-text hover:bg-surface-hover"
+                        class="text-text hover:bg-surface-hover flex min-h-10 w-full items-center gap-3 px-3 py-2 text-sm"
                         role="menuitem"
                         aria-label="Toggle theme"
                         @click="toggleTheme"
@@ -421,7 +421,7 @@ const themeIcon = computed(() =>
                     </button>
                     <button
                         type="button"
-                        class="min-h-10 gap-3 px-3 py-2 text-sm flex w-full items-center text-danger hover:bg-surface-hover"
+                        class="text-danger hover:bg-surface-hover flex min-h-10 w-full items-center gap-3 px-3 py-2 text-sm"
                         role="menuitem"
                         @click="handleLogout"
                     >
@@ -435,11 +435,11 @@ const themeIcon = computed(() =>
         <!-- Expand button when collapsed (desktop) -->
         <div
             v-if="isCollapsed"
-            class="p-4 lg:flex hidden items-center justify-center border-t border-border"
+            class="border-border hidden items-center justify-center border-t p-4 lg:flex"
         >
             <button
                 type="button"
-                class="h-10 w-10 flex items-center justify-center rounded-md text-muted transition-colors hover:bg-surface-hover hover:text-text"
+                class="text-muted hover:bg-surface-hover hover:text-text flex h-10 w-10 items-center justify-center rounded-md transition-colors"
                 @click="emit('toggleCollapse')"
             >
                 <svg

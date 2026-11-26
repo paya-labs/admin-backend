@@ -252,7 +252,7 @@ defineExpose({
                     name="search"
                     :size="sizeClasses.icon"
                     :class="[
-                        'pointer-events-none absolute top-1/2 -translate-y-1/2 text-muted',
+                        'text-muted pointer-events-none absolute top-1/2 -translate-y-1/2',
                         leadingIconLeftClass,
                     ]"
                 />
@@ -266,10 +266,10 @@ defineExpose({
                 autocomplete="off"
                 :class="[
                     'w-full',
-                    'rounded-md border bg-input-bg text-text',
+                    'bg-input-bg text-text rounded-md border',
                     'placeholder:text-muted',
                     'transition-colors duration-[var(--transition-fast)]',
-                    'focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none',
+                    'focus:ring-focus-ring focus:border-transparent focus:ring-2 focus:outline-none',
                     'disabled:cursor-not-allowed disabled:opacity-60',
                     sizeClasses.input,
                     error
@@ -282,7 +282,7 @@ defineExpose({
             />
             <div
                 :class="[
-                    'inset-y-0 right-0 absolute flex items-center',
+                    'absolute inset-y-0 right-0 flex items-center',
                     sizeClasses.trailingPad,
                 ]"
             >
@@ -293,7 +293,7 @@ defineExpose({
                 >
                     <svg
                         v-if="search.loading.value"
-                        class="h-5 w-5 animate-spin text-muted"
+                        class="text-muted h-5 w-5 animate-spin"
                         fill="none"
                         viewBox="0 0 24 24"
                         aria-hidden="true"
@@ -315,7 +315,7 @@ defineExpose({
                     <button
                         v-else-if="search.query.value.length > 0"
                         type="button"
-                        class="h-5 w-5 rounded flex items-center justify-center text-muted transition-colors hover:text-text"
+                        class="text-muted hover:text-text flex h-5 w-5 items-center justify-center rounded transition-colors"
                         aria-label="Clear search"
                         @mousedown.prevent
                         @click="clear"
@@ -342,11 +342,11 @@ defineExpose({
                         search.loading.value ||
                         showEmptyState)
                 "
-                class="mt-1 py-1 max-h-60 absolute z-50 w-full overflow-auto rounded-md border border-border bg-surface shadow-lg"
+                class="border-border bg-surface absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border py-1 shadow-lg"
             >
                 <div
                     v-if="search.loading.value && visibleResults.length === 0"
-                    class="px-3 py-2.5 text-sm text-muted"
+                    class="text-muted px-3 py-2.5 text-sm"
                 >
                     <slot name="loading">Searching...</slot>
                 </div>
@@ -355,7 +355,7 @@ defineExpose({
                         v-for="(item, index) in visibleResults"
                         :key="getKey(item)"
                         :class="[
-                            'px-3 py-2.5 text-sm cursor-pointer',
+                            'cursor-pointer px-3 py-2.5 text-sm',
                             index === search.activeIndex.value
                                 ? 'bg-surface-hover text-text'
                                 : 'text-text hover:bg-surface-hover',
@@ -375,7 +375,7 @@ defineExpose({
                 </ul>
                 <div
                     v-else-if="showEmptyState"
-                    class="px-3 py-2.5 text-sm text-muted"
+                    class="text-muted px-3 py-2.5 text-sm"
                 >
                     <slot name="empty" :query="search.query.value">
                         No results found
@@ -392,9 +392,9 @@ defineExpose({
                 search.query.value.length < minChars &&
                 minLengthHint
             "
-            class="mt-1 py-1 absolute z-50 w-full rounded-md border border-border bg-surface shadow-lg"
+            class="border-border bg-surface absolute z-50 mt-1 w-full rounded-md border py-1 shadow-lg"
         >
-            <div class="px-3 py-2.5 text-sm text-muted">
+            <div class="text-muted px-3 py-2.5 text-sm">
                 {{ minLengthHint }}
             </div>
         </div>
@@ -402,7 +402,7 @@ defineExpose({
         <!-- Selected chips (multi mode) -->
         <div
             v-if="multiple && selectedArray.length > 0"
-            class="mt-2 gap-1.5 flex flex-wrap"
+            class="mt-2 flex flex-wrap gap-1.5"
         >
             <slot
                 v-for="(item, index) in selectedArray"
@@ -413,12 +413,12 @@ defineExpose({
             >
                 <span
                     :key="getKey(item)"
-                    class="gap-1 px-2.5 py-1 text-sm font-medium flex items-center rounded-full bg-primary-faint text-on-primary-soft"
+                    class="bg-primary-faint text-on-primary-soft flex items-center gap-1 rounded-full px-2.5 py-1 text-sm font-medium"
                 >
                     {{ getLabel(item) }}
                     <button
                         type="button"
-                        class="flex items-center text-on-primary-soft hover:text-on-primary-soft-strong"
+                        class="text-on-primary-soft hover:text-on-primary-soft-strong flex items-center"
                         aria-label="Remove"
                         @click="removeItem(item)"
                     >
@@ -428,6 +428,6 @@ defineExpose({
             </slot>
         </div>
 
-        <p v-if="error" class="mt-1.5 text-sm text-danger">{{ error }}</p>
+        <p v-if="error" class="text-danger mt-1.5 text-sm">{{ error }}</p>
     </div>
 </template>

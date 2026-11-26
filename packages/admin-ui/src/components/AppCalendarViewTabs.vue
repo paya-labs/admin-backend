@@ -47,14 +47,14 @@ const handleSelectChange = (event: Event) => {
 
     <!-- Desktop: Tab buttons -->
     <div
-        class="p-0.5 md:flex hidden rounded-lg border border-border bg-surface"
+        class="border-border bg-surface hidden rounded-lg border p-0.5 md:flex"
     >
         <button
             v-for="view in props.views"
             :key="view.value"
             type="button"
             :class="[
-                'px-3 py-1.5 text-sm font-medium rounded-md transition-colors',
+                'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
                 currentView === view.value
                     ? 'bg-surface-hover text-text'
                     : 'text-muted hover:text-text',

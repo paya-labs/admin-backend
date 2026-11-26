@@ -53,11 +53,11 @@ onBeforeUnmount(() => {
         >
             <div
                 v-if="open"
-                class="inset-0 fixed z-[var(--z-modal)]"
+                class="fixed inset-0 z-[var(--z-modal)]"
                 @keydown="onKeydown"
             >
                 <div
-                    class="inset-0 bg-black/50 absolute"
+                    class="absolute inset-0 bg-black/50"
                     @click="emit('close')"
                 />
                 <Transition
@@ -71,14 +71,14 @@ onBeforeUnmount(() => {
                         role="dialog"
                         aria-modal="true"
                         :aria-label="title"
-                        class="inset-x-0 bottom-0 rounded-t-2xl pt-2 absolute flex flex-col border-t border-border bg-surface pb-[max(0.75rem,env(safe-area-inset-bottom))] text-text shadow-[0_-8px_32px_rgba(0,0,0,0.18)]"
+                        class="border-border bg-surface text-text absolute inset-x-0 bottom-0 flex flex-col rounded-t-2xl border-t pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-8px_32px_rgba(0,0,0,0.18)]"
                     >
                         <div
-                            class="mb-1.5 h-1 w-9 mx-auto rounded-full bg-border-strong"
+                            class="bg-border-strong mx-auto mb-1.5 h-1 w-9 rounded-full"
                             aria-hidden="true"
                         />
                         <div
-                            class="px-4 py-1.5 text-base grid grid-cols-[1fr_auto_1fr] items-center"
+                            class="grid grid-cols-[1fr_auto_1fr] items-center px-4 py-1.5 text-base"
                         >
                             <div class="justify-self-start">
                                 <slot name="secondary" />
@@ -86,7 +86,7 @@ onBeforeUnmount(() => {
                             <span class="font-semibold">{{ title }}</span>
                             <button
                                 type="button"
-                                class="font-medium cursor-pointer justify-self-end text-on-primary-soft"
+                                class="text-on-primary-soft cursor-pointer justify-self-end font-medium"
                                 @click="emit('close')"
                             >
                                 Done

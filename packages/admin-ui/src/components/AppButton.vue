@@ -47,36 +47,36 @@ const handleClick = (event: MouseEvent): void => {
         :disabled="asLink ? undefined : disabled || loading"
         :class="[
             // Base styles
-            'gap-2 font-medium inline-flex cursor-pointer items-center justify-center',
+            'inline-flex cursor-pointer items-center justify-center gap-2 font-medium',
             'transition-all duration-[var(--transition-fast)]',
-            'focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:outline-none',
+            'focus-visible:ring-focus-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
             'disabled:cursor-not-allowed disabled:opacity-50',
 
             // Size variants - text buttons
             !iconOnly && {
-                'px-3 py-1.5 text-sm min-h-[36px] rounded-md': size === 'sm',
-                'px-4 py-2 text-sm min-h-[44px] rounded-md': size === 'md',
-                'px-6 py-3 text-base min-h-[52px] rounded-lg': size === 'lg',
+                'min-h-[36px] rounded-md px-3 py-1.5 text-sm': size === 'sm',
+                'min-h-[44px] rounded-md px-4 py-2 text-sm': size === 'md',
+                'min-h-[52px] rounded-lg px-6 py-3 text-base': size === 'lg',
             },
 
             // Size variants - icon only
             iconOnly && {
-                'p-2 min-h-[36px] min-w-[36px] rounded-md': size === 'sm',
-                'p-2.5 min-h-[44px] min-w-[44px] rounded-md': size === 'md',
-                'p-3 min-h-[52px] min-w-[52px] rounded-lg': size === 'lg',
+                'min-h-[36px] min-w-[36px] rounded-md p-2': size === 'sm',
+                'min-h-[44px] min-w-[44px] rounded-md p-2.5': size === 'md',
+                'min-h-[52px] min-w-[52px] rounded-lg p-3': size === 'lg',
             },
 
             // Variant styles
             {
-                'text-white bg-primary-600 hover:bg-primary-700 active:bg-primary-800':
+                'bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white':
                     variant === 'primary',
                 'bg-secondary text-text hover:bg-secondary-hover':
                     variant === 'secondary',
-                'text-white bg-danger hover:opacity-90 active:opacity-80':
+                'bg-danger text-white hover:opacity-90 active:opacity-80':
                     variant === 'danger',
-                'bg-transparent text-text-secondary hover:bg-surface-hover hover:text-text':
+                'text-text-secondary hover:bg-surface-hover hover:text-text bg-transparent':
                     variant === 'ghost',
-                'border border-border bg-transparent text-text hover:bg-surface-hover':
+                'border-border text-text hover:bg-surface-hover border bg-transparent':
                     variant === 'outline',
             },
         ]"

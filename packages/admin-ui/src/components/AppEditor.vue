@@ -283,10 +283,10 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
         <label
             v-if="label"
             :for="editorId"
-            class="mb-1.5 text-sm font-medium block text-text"
+            class="text-text mb-1.5 block text-sm font-medium"
         >
             {{ label }}
-            <span v-if="required" class="ml-0.5 text-danger">*</span>
+            <span v-if="required" class="text-danger ml-0.5">*</span>
         </label>
 
         <!-- Editor container -->
@@ -295,7 +295,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                 'overflow-hidden rounded-md border',
                 'bg-input-bg',
                 'transition-colors duration-[var(--transition-fast)]',
-                'focus-within:border-transparent focus-within:ring-2 focus-within:ring-focus-ring',
+                'focus-within:ring-focus-ring focus-within:border-transparent focus-within:ring-2',
                 disabled ? 'cursor-not-allowed opacity-50' : '',
                 hasError
                     ? 'border-danger focus-within:ring-danger'
@@ -305,7 +305,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
             <!-- Toolbar -->
             <div
                 v-if="editor"
-                class="app-editor-toolbar gap-1 px-2 py-1.5 flex flex-wrap items-center border-b border-input-border bg-surface-hover"
+                class="app-editor-toolbar border-input-border bg-surface-hover flex flex-wrap items-center gap-1 border-b px-2 py-1.5"
                 role="toolbar"
                 aria-label="Formatting options"
             >
@@ -315,7 +315,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                 >
                     <div
                         v-if="groupIndex > 0"
-                        class="mx-0.5 h-5 w-px bg-border-strong"
+                        class="bg-border-strong mx-0.5 h-5 w-px"
                         role="separator"
                     />
                     <button
@@ -327,7 +327,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                         :disabled="disabled || isMarkdownMode"
                         :class="[
                             'inline-flex items-center justify-center',
-                            'h-7 px-1.5 min-w-[28px]',
+                            'h-7 min-w-[28px] px-1.5',
                             'rounded text-xs font-semibold',
                             'transition-colors duration-[var(--transition-fast)]',
                             'disabled:cursor-not-allowed disabled:opacity-50',
@@ -345,7 +345,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                 <template v-if="showAttach">
                     <div
                         v-if="toolbarGroups.length > 0"
-                        class="mx-0.5 h-5 w-px bg-border-strong"
+                        class="bg-border-strong mx-0.5 h-5 w-px"
                         role="separator"
                     />
                     <button
@@ -354,7 +354,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                         :disabled="disabled || isMarkdownMode"
                         :class="[
                             'inline-flex items-center justify-center',
-                            'h-7 px-1.5 min-w-[28px]',
+                            'h-7 min-w-[28px] px-1.5',
                             'rounded text-xs font-semibold',
                             'transition-colors duration-[var(--transition-fast)]',
                             'disabled:cursor-not-allowed disabled:opacity-50',
@@ -391,7 +391,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                 <template v-if="showMarkdownToggle">
                     <div class="flex-grow" />
                     <div
-                        class="mx-0.5 h-5 w-px bg-border-strong"
+                        class="bg-border-strong mx-0.5 h-5 w-px"
                         role="separator"
                     />
                     <button
@@ -401,7 +401,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                         :disabled="disabled"
                         :class="[
                             'inline-flex items-center justify-center',
-                            'h-7 px-1.5 min-w-[28px]',
+                            'h-7 min-w-[28px] px-1.5',
                             'rounded text-xs font-semibold',
                             'transition-colors duration-[var(--transition-fast)]',
                             'disabled:cursor-not-allowed disabled:opacity-50',
@@ -429,12 +429,12 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
             <!-- Attachments -->
             <div
                 v-if="attachments.length > 0"
-                class="app-editor-attachments gap-1.5 px-3 py-2 flex flex-wrap border-t border-input-border"
+                class="app-editor-attachments border-input-border flex flex-wrap gap-1.5 border-t px-3 py-2"
             >
                 <span
                     v-for="attachment in attachments"
                     :key="attachment.id"
-                    class="gap-1.5 px-2.5 py-0.5 text-xs inline-flex items-center rounded-full border border-input-border text-text-secondary"
+                    class="border-input-border text-text-secondary inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs"
                 >
                     <span>{{ attachment.name }}</span>
                     <span
@@ -447,7 +447,7 @@ const toolbarGroups = computed<ToolbarGroup[]>(() => {
                         type="button"
                         :aria-label="`Remove ${attachment.name}`"
                         :disabled="disabled"
-                        class="inline-flex items-center justify-center rounded-full text-muted transition-colors duration-[var(--transition-fast)] hover:text-text disabled:cursor-not-allowed disabled:opacity-50"
+                        class="text-muted hover:text-text inline-flex items-center justify-center rounded-full transition-colors duration-[var(--transition-fast)] disabled:cursor-not-allowed disabled:opacity-50"
                         @click="emit('remove-attachment', attachment.id)"
                     >
                         &times;

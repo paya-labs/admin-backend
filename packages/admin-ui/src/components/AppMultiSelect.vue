@@ -198,10 +198,10 @@ onBeforeUnmount(() => {
         <label
             v-if="label"
             :id="`${selectId}-label`"
-            class="mb-1.5 text-sm font-medium block text-text"
+            class="text-text mb-1.5 block text-sm font-medium"
         >
             {{ label }}
-            <span v-if="required" class="ml-0.5 text-danger">*</span>
+            <span v-if="required" class="text-danger ml-0.5">*</span>
         </label>
 
         <!-- Trigger button -->
@@ -217,22 +217,22 @@ onBeforeUnmount(() => {
             :class="[
                 'flex w-full items-center justify-between',
                 {
-                    sm: 'px-3 py-1.5 text-sm min-h-[36px]',
-                    md: 'px-3 py-2.5 min-h-[44px]',
-                    lg: 'px-3 py-3 min-h-[52px]',
+                    sm: 'min-h-[36px] px-3 py-1.5 text-sm',
+                    md: 'min-h-[44px] px-3 py-2.5',
+                    lg: 'min-h-[52px] px-3 py-3',
                 }[size],
                 'bg-input-bg text-left',
                 'rounded-md border',
                 'transition-colors duration-[var(--transition-fast)]',
-                'focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none',
-                'disabled:cursor-not-allowed disabled:bg-surface-hover disabled:opacity-50',
+                'focus:ring-focus-ring focus:border-transparent focus:ring-2 focus:outline-none',
+                'disabled:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-50',
                 'cursor-pointer',
 
                 // Border color based on state
                 hasError
                     ? 'border-danger focus:ring-danger'
                     : isOpen
-                      ? 'border-transparent ring-2 ring-focus-ring'
+                      ? 'ring-focus-ring border-transparent ring-2'
                       : 'border-input-border',
             ]"
             @click="toggleDropdown"
@@ -245,7 +245,7 @@ onBeforeUnmount(() => {
             <!-- Chevron icon -->
             <svg
                 :class="[
-                    'ml-2 h-5 w-5 shrink-0 text-muted transition-transform duration-200',
+                    'text-muted ml-2 h-5 w-5 shrink-0 transition-transform duration-200',
                     isOpen && 'rotate-180',
                 ]"
                 viewBox="0 0 20 20"
@@ -277,7 +277,7 @@ onBeforeUnmount(() => {
                     aria-multiselectable="true"
                     :aria-labelledby="label ? `${selectId}-label` : undefined"
                     :style="dropdownPos"
-                    class="max-h-60 py-1 z-[var(--z-dropdown,9999)] overflow-auto rounded-md border border-border bg-surface shadow-lg"
+                    class="border-border bg-surface z-[var(--z-dropdown,9999)] max-h-60 overflow-auto rounded-md border py-1 shadow-lg"
                 >
                     <li
                         v-for="(option, index) in options"
@@ -286,12 +286,12 @@ onBeforeUnmount(() => {
                         :aria-selected="isSelected(option)"
                         :aria-disabled="option.disabled"
                         :class="[
-                            'px-3 py-2 text-sm relative cursor-pointer',
-                            'gap-2.5 flex items-center select-none',
+                            'relative cursor-pointer px-3 py-2 text-sm',
+                            'flex items-center gap-2.5 select-none',
 
                             // Disabled state
                             option.disabled &&
-                                'cursor-not-allowed text-muted opacity-50',
+                                'text-muted cursor-not-allowed opacity-50',
 
                             // Highlighted state (keyboard navigation)
                             !option.disabled &&
@@ -311,7 +311,7 @@ onBeforeUnmount(() => {
                         <!-- Visual checkbox -->
                         <div
                             :class="[
-                                'h-5 w-5 flex shrink-0 items-center justify-center',
+                                'flex h-5 w-5 shrink-0 items-center justify-center',
                                 'rounded border',
                                 'transition-colors duration-[var(--transition-fast)]',
                                 isSelected(option)

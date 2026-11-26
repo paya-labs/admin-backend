@@ -49,18 +49,18 @@ const handleRowClick = (row: Record<string, unknown>): void => {
 </script>
 
 <template>
-    <div class="overflow-hidden rounded-lg border border-border bg-surface">
+    <div class="border-border bg-surface overflow-hidden rounded-lg border">
         <!-- Table wrapper for horizontal scroll on mobile -->
-        <div :class="['overflow-x-auto', responsive && 'md:block hidden']">
+        <div :class="['overflow-x-auto', responsive && 'hidden md:block']">
             <table class="w-full min-w-[600px]">
                 <!-- Header -->
-                <thead class="border-b border-border bg-surface-hover">
+                <thead class="border-border bg-surface-hover border-b">
                     <tr>
                         <th
                             v-for="column in columns"
                             :key="column.key"
                             :class="[
-                                'px-4 py-3 text-xs font-semibold tracking-wider text-left text-muted uppercase',
+                                'text-muted px-4 py-3 text-left text-xs font-semibold tracking-wider uppercase',
                                 column.align === 'center' && 'text-center',
                                 column.align === 'right' && 'text-right',
                             ]"
@@ -74,7 +74,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                         </th>
                         <th
                             v-if="hasActions"
-                            class="px-4 py-3 text-xs font-semibold tracking-wider text-right text-muted uppercase"
+                            class="text-muted px-4 py-3 text-right text-xs font-semibold tracking-wider uppercase"
                         >
                             Actions
                         </th>
@@ -92,7 +92,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                                 class="px-4 py-4"
                             >
                                 <div
-                                    class="h-4 animate-pulse rounded bg-skeleton"
+                                    class="bg-skeleton h-4 animate-pulse rounded"
                                     :style="{
                                         width: `${60 + Math.random() * 40}%`,
                                     }"
@@ -100,7 +100,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                             </td>
                             <td v-if="hasActions" class="px-4 py-4">
                                 <div
-                                    class="h-8 w-20 animate-pulse rounded ml-auto bg-skeleton"
+                                    class="bg-skeleton ml-auto h-8 w-20 animate-pulse rounded"
                                 />
                             </td>
                         </tr>
@@ -115,7 +115,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                                         ? columns.length + 1
                                         : columns.length
                                 "
-                                class="px-4 py-12 text-center text-muted"
+                                class="text-muted px-4 py-12 text-center"
                             >
                                 <slot name="empty">
                                     {{ emptyMessage }}
@@ -130,12 +130,12 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                             v-for="(row, index) in rows"
                             :key="(row[rowKey] as string | number) ?? index"
                             :class="[
-                                'border-b border-border last:border-b-0',
+                                'border-border border-b last:border-b-0',
                                 striped &&
                                     index % 2 === 1 &&
                                     'bg-surface-hover/50',
                                 hoverable &&
-                                    'cursor-pointer transition-colors hover:bg-surface-hover',
+                                    'hover:bg-surface-hover cursor-pointer transition-colors',
                             ]"
                             @click="handleRowClick(row)"
                         >
@@ -143,7 +143,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                                 v-for="column in columns"
                                 :key="column.key"
                                 :class="[
-                                    'px-4 py-4 text-sm text-text',
+                                    'text-text px-4 py-4 text-sm',
                                     column.align === 'center' && 'text-center',
                                     column.align === 'right' && 'text-right',
                                 ]"
@@ -162,7 +162,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                                 @click.stop
                             >
                                 <div
-                                    class="gap-2 flex items-center justify-end"
+                                    class="flex items-center justify-end gap-2"
                                 >
                                     <AppButton
                                         v-for="action in actions"
@@ -193,14 +193,14 @@ const handleRowClick = (row: Record<string, unknown>): void => {
         <div
             v-if="responsive"
             data-testid="mobile-layout"
-            class="md:hidden block"
+            class="block md:hidden"
         >
             <!-- Mobile loading state -->
             <template v-if="loading">
                 <div
                     v-for="n in 5"
                     :key="n"
-                    class="p-4 border-b border-border last:border-b-0"
+                    class="border-border border-b p-4 last:border-b-0"
                 >
                     <div
                         v-for="column in columns"
@@ -208,10 +208,10 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                         class="mb-3 last:mb-0"
                     >
                         <div
-                            class="mb-1 h-3 w-16 animate-pulse rounded bg-skeleton"
+                            class="bg-skeleton mb-1 h-3 w-16 animate-pulse rounded"
                         />
                         <div
-                            class="h-4 animate-pulse rounded bg-skeleton"
+                            class="bg-skeleton h-4 animate-pulse rounded"
                             :style="{ width: `${60 + Math.random() * 40}%` }"
                         />
                     </div>
@@ -220,7 +220,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
 
             <!-- Mobile empty state -->
             <template v-else-if="rows.length === 0">
-                <div class="px-4 py-12 text-center text-muted">
+                <div class="text-muted px-4 py-12 text-center">
                     <slot name="empty">
                         {{ emptyMessage }}
                     </slot>
@@ -234,10 +234,10 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                     :key="(row[rowKey] as string | number) ?? index"
                     data-testid="mobile-row"
                     :class="[
-                        'p-4 border-b border-border last:border-b-0',
+                        'border-border border-b p-4 last:border-b-0',
                         striped && index % 2 === 1 && 'bg-surface-hover/50',
                         hoverable &&
-                            'cursor-pointer transition-colors hover:bg-surface-hover',
+                            'hover:bg-surface-hover cursor-pointer transition-colors',
                     ]"
                     @click="handleRowClick(row)"
                 >
@@ -248,11 +248,11 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                             class="mb-3 last:mb-0"
                         >
                             <div
-                                class="mb-0.5 text-xs font-semibold tracking-wider text-muted uppercase"
+                                class="text-muted mb-0.5 text-xs font-semibold tracking-wider uppercase"
                             >
                                 {{ column.label }}
                             </div>
-                            <div class="text-sm text-text">
+                            <div class="text-text text-sm">
                                 <slot
                                     :name="`cell-${column.key}`"
                                     :row="row"
@@ -266,7 +266,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
                         <!-- Mobile actions -->
                         <div
                             v-if="hasActions"
-                            class="mt-3 gap-2 pt-3 flex items-center justify-end border-t border-border"
+                            class="border-border mt-3 flex items-center justify-end gap-2 border-t pt-3"
                             @click.stop
                         >
                             <AppButton
@@ -292,7 +292,7 @@ const handleRowClick = (row: Record<string, unknown>): void => {
         </div>
 
         <!-- Footer slot for pagination -->
-        <div v-if="$slots.footer" class="px-4 py-3 border-t border-border">
+        <div v-if="$slots.footer" class="border-border border-t px-4 py-3">
             <slot name="footer" />
         </div>
     </div>
