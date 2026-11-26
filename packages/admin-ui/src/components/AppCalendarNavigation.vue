@@ -6,6 +6,7 @@ import { toIsoDate } from '../utils/isoDate';
 import AppBottomSheet from './AppBottomSheet.vue';
 import AppButton from './AppButton.vue';
 import AppDatePanel from './AppDatePanel.vue';
+import AppIcon from './AppIcon.vue';
 
 interface Props {
     title: string;
@@ -99,6 +100,7 @@ const goToday = (): void => onGoto(toIsoDate(new Date()));
                 v-if="date"
                 ref="triggerRef"
                 type="button"
+                title="Go to date"
                 aria-haspopup="dialog"
                 :aria-expanded="expanded"
                 :class="[
@@ -110,6 +112,7 @@ const goToday = (): void => onGoto(toIsoDate(new Date()));
                 @keydown.escape.prevent="close(true)"
                 @focusout="onFocusOut"
             >
+                <AppIcon name="calendar" class="shrink-0 text-text" />
                 <span class="truncate">{{ title }}</span>
             </button>
             <h1 v-else class="px-2 text-lg font-semibold truncate text-text">
