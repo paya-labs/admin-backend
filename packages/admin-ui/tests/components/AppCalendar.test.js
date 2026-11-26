@@ -1,6 +1,6 @@
 import FullCalendar from '@fullcalendar/vue3';
 import { mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
 import AppCalendar from '../../src/components/AppCalendar.vue';
 
 const mountCalendar = (props = {}) =>

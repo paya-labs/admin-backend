@@ -12,7 +12,6 @@
         "isolatedModules": true,
         "jsx": "preserve",
         "lib": ["ESNext", "DOM", "DOM.Iterable"],
-        "baseUrl": ".",
         "types": ["vite/client"]
     },
     "include": [

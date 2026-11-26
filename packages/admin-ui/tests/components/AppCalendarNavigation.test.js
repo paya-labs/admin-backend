@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vite-plus/test';
 import { nextTick } from 'vue';
 import AppCalendarNavigation from '../../src/components/AppCalendarNavigation.vue';
 import AppIcon from '../../src/components/AppIcon.vue';

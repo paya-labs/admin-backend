@@ -1,5 +1,12 @@
 import { config, mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+    afterEach,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    vi,
+} from 'vite-plus/test';
 import AppToastContainer from '../../src/components/AppToastContainer.vue';
 import { useToast } from '../../src/composables/useToast.js';
 

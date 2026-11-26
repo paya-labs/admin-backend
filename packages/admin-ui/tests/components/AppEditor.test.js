@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import AppEditor from '../../src/components/AppEditor.vue';
 import { EDITOR_TOOLBAR_COMPACT } from '../../src/components/appEditorToolbar';
 

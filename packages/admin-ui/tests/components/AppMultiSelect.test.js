@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vite-plus/test';
 import AppMultiSelect from '../../src/components/AppMultiSelect.vue';
 
 const defaultOptions = [

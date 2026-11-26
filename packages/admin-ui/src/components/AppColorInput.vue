@@ -37,6 +37,7 @@ const props = withDefaults(defineProps<ColorInputProps>(), {
     hint: '',
     required: false,
     disabled: false,
+    // oxlint-disable-next-line no-undef
     palette: () => DEFAULT_PALETTE,
     showHex: true,
     size: 'md',

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import AppForm from '../../src/components/AppForm.vue';
 
 describe('AppForm', () => {

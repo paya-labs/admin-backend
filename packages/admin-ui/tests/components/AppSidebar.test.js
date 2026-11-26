@@ -1,5 +1,12 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+    afterEach,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    vi,
+} from 'vite-plus/test';
 import AppSidebar from '../../src/components/AppSidebar.vue';
 
 vi.mock('vue-router', () => ({

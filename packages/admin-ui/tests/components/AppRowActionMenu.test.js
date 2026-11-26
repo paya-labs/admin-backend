@@ -1,5 +1,12 @@
 import { mount } from '@vue/test-utils';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+    afterEach,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    vi,
+} from 'vite-plus/test';
 import { h, nextTick } from 'vue';
 import AppRowActionMenu from '../../src/components/AppRowActionMenu.vue';
 import AppRowActionMenuItem from '../../src/components/AppRowActionMenuItem.vue';
