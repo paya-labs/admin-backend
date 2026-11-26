@@ -1,10 +1,13 @@
-import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vite-plus/test';
+import { enableAutoUnmount, mount } from '@vue/test-utils';
+import { afterEach, describe, expect, it } from 'vite-plus/test';
 import AppEditor from '../../src/components/AppEditor.vue';
 import { EDITOR_TOOLBAR_COMPACT } from '../../src/components/appEditorToolbar';
 
 // TipTap needs a small delay to initialize the editor
 const waitForEditor = () => new Promise((resolve) => setTimeout(resolve, 100));
+const mountInDocument = () => mount(AppEditor, { attachTo: document.body });
+
+enableAutoUnmount(afterEach);
 
 describe('AppEditor', () => {
     it('renders editor element', async () => {
@@ -224,7 +227,7 @@ describe('AppEditor', () => {
     });
 
     it('clicking MD toggle shows textarea and hides TipTap editor', async () => {
-        const wrapper = mount(AppEditor, { attachTo: document.body });
+        const wrapper = mountInDocument();
         await waitForEditor();
 
         const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
@@ -235,11 +238,10 @@ describe('AppEditor', () => {
         );
         // TipTap editor should be hidden (v-show=false)
         expect(wrapper.find('.tiptap').isVisible()).toBe(false);
-        wrapper.unmount();
     });
 
     it('clicking MD toggle again returns to rich text mode', async () => {
-        const wrapper = mount(AppEditor, { attachTo: document.body });
+        const wrapper = mountInDocument();
         await waitForEditor();
 
         const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
@@ -255,7 +257,6 @@ describe('AppEditor', () => {
             false,
         );
         expect(wrapper.find('.tiptap').isVisible()).toBe(true);
-        wrapper.unmount();
     });
 
     it('formatting buttons are disabled in markdown mode', async () => {
