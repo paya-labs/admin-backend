@@ -34,11 +34,11 @@
         "vue-router": "^5.1.0"
     },
     "devDependencies": {
-        "@tailwindcss/vite": "^4.3.0",
-        "@vitejs/plugin-vue": "^6.0.7",
-        "@vue/test-utils": "^2.4.11",
-        "jsdom": "^29.1.1",
-        "tailwindcss": "^4.1.0",
+        "@tailwindcss/vite": "^4.3.5",
+        "@vitejs/plugin-vue": "^6.0.11",
+        "@vue/test-utils": "^2.6.0",
+        "jsdom": "^31.0.1",
+        "tailwindcss": "^4.3.5",
         "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
         "vite-plus": "1.7.0"
     },
@@ -60,15 +60,15 @@
         "registry": "https://npm.pkg.github.com"
     },
     "dependencies": {
-        "@fullcalendar/core": "^6.1.20",
-        "@fullcalendar/daygrid": "^6.1.20",
-        "@fullcalendar/interaction": "^6.1.20",
-        "@fullcalendar/list": "^6.1.20",
-        "@fullcalendar/timegrid": "^6.1.20",
-        "@fullcalendar/vue3": "^6.1.20",
-        "@tiptap/markdown": "^3.26.0",
-        "@tiptap/pm": "^3.24.0",
-        "@tiptap/starter-kit": "^3.26.0",
-        "@tiptap/vue-3": "^3.26.0"
+        "@fullcalendar/core": "^6.1.22",
+        "@fullcalendar/daygrid": "^6.1.22",
+        "@fullcalendar/interaction": "^6.1.22",
+        "@fullcalendar/list": "^6.1.22",
+        "@fullcalendar/timegrid": "^6.1.22",
+        "@fullcalendar/vue3": "^6.1.22",
+        "@tiptap/markdown": "^3.35.0",
+        "@tiptap/pm": "^3.35.0",
+        "@tiptap/starter-kit": "^3.35.0",
+        "@tiptap/vue-3": "^3.35.0"
     }
 }
