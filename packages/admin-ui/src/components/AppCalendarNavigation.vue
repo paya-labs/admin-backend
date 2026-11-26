@@ -112,11 +112,7 @@ const goToday = (): void => onGoto(toIsoDate(new Date()));
                 @keydown.escape.prevent="close(true)"
                 @focusout="onFocusOut"
             >
-                <AppIcon
-                    name="calendar"
-                    size="sm"
-                    class="shrink-0 text-muted"
-                />
+                <AppIcon name="calendar" class="shrink-0 text-text" />
                 <span class="truncate">{{ title }}</span>
             </button>
             <h1 v-else class="px-2 text-lg font-semibold truncate text-text">
