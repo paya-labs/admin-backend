@@ -23,6 +23,7 @@ describe('AppCalendarNavigation', () => {
         mountNav({ title: 'September 2026' });
 
         expect(wrapper.find('h1').text()).toBe('September 2026');
+        expect(wrapper.find('h1 svg').exists()).toBe(false);
         expect(wrapper.find('[aria-haspopup="dialog"]').exists()).toBe(false);
         expect(
             wrapper.findAll('button').some((b) => b.text() === 'Today'),
@@ -46,7 +47,8 @@ describe('AppCalendarNavigation', () => {
         const heading = wrapper.find('[aria-haspopup="dialog"]');
         expect(wrapper.find('h1').exists()).toBe(false);
         expect(heading.text()).toBe('Sep 21 – 27, 2026');
-        expect(heading.find('svg').exists()).toBe(false);
+        expect(heading.find('svg').classes()).toContain('shrink-0');
+        expect(heading.attributes('title')).toBe('Go to date');
         expect(heading.attributes('aria-expanded')).toBe('false');
 
         await heading.trigger('click');
