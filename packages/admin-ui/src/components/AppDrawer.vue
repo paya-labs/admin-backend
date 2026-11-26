@@ -141,7 +141,7 @@ onUnmounted(() => {
         >
             <div
                 v-if="modelValue"
-                class="inset-0 bg-black/50 fixed z-[var(--z-overlay)]"
+                class="fixed inset-0 z-[var(--z-overlay)] bg-black/50"
                 @click="handleBackdropClick"
             />
         </Transition>
@@ -163,7 +163,7 @@ onUnmounted(() => {
                 v-if="modelValue"
                 ref="drawerRef"
                 :class="[
-                    'inset-y-0 fixed z-[var(--z-modal)] flex flex-col bg-surface shadow-[var(--shadow-lg)]',
+                    'bg-surface fixed inset-y-0 z-[var(--z-modal)] flex flex-col shadow-[var(--shadow-lg)]',
                     sizeClasses[size],
                     // Fixed widths would overflow a phone screen.
                     'max-md:w-full',
@@ -176,13 +176,13 @@ onUnmounted(() => {
                 <!-- Header -->
                 <div
                     v-if="title || $slots.header || closable"
-                    class="px-6 py-4 flex shrink-0 items-center justify-between border-b border-border"
+                    class="border-border flex shrink-0 items-center justify-between border-b px-6 py-4"
                 >
                     <slot name="header">
                         <h2
                             v-if="title"
                             :id="titleId"
-                            class="text-lg font-semibold text-text"
+                            class="text-text text-lg font-semibold"
                         >
                             {{ title }}
                         </h2>
@@ -221,7 +221,7 @@ onUnmounted(() => {
                 <!-- Footer -->
                 <div
                     v-if="$slots.footer"
-                    class="gap-3 px-6 py-4 flex shrink-0 items-center justify-end border-t border-border"
+                    class="border-border flex shrink-0 items-center justify-end gap-3 border-t px-6 py-4"
                 >
                     <slot name="footer" />
                 </div>

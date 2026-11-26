@@ -74,7 +74,7 @@ const sizeClasses = computed(() => {
     </svg>
     <span
         v-else
-        :class="[sizeClasses, 'rounded inline-block bg-current opacity-20']"
+        :class="[sizeClasses, 'inline-block rounded bg-current opacity-20']"
         :title="`Icon '${name}' not found`"
     />
 </template>

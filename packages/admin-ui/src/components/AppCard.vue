@@ -23,13 +23,13 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-    <div class="p-6 rounded-lg border border-border bg-surface">
+    <div class="border-border bg-surface rounded-lg border p-6">
         <!-- Loading skeleton -->
         <template v-if="loading">
             <div class="animate-pulse">
-                <div class="mb-2 h-4 w-24 rounded bg-skeleton" />
-                <div class="mb-2 h-8 w-32 rounded bg-skeleton" />
-                <div class="h-4 w-20 rounded bg-skeleton" />
+                <div class="bg-skeleton mb-2 h-4 w-24 rounded" />
+                <div class="bg-skeleton mb-2 h-8 w-32 rounded" />
+                <div class="bg-skeleton h-4 w-20 rounded" />
             </div>
         </template>
 
@@ -38,14 +38,14 @@ withDefaults(defineProps<Props>(), {
             <div class="flex items-start justify-between">
                 <div class="min-w-0 flex-1">
                     <!-- Title -->
-                    <p v-if="title" class="text-sm font-medium text-muted">
+                    <p v-if="title" class="text-muted text-sm font-medium">
                         {{ title }}
                     </p>
 
                     <!-- Value -->
                     <p
                         v-if="value !== ''"
-                        class="mt-2 text-3xl font-bold text-text"
+                        class="text-text mt-2 text-3xl font-bold"
                     >
                         {{ value }}
                     </p>
@@ -53,7 +53,7 @@ withDefaults(defineProps<Props>(), {
                     <!-- Trend / Subtitle -->
                     <div
                         v-if="trendValue || subtitle"
-                        class="mt-1 gap-1 flex items-center"
+                        class="mt-1 flex items-center gap-1"
                     >
                         <span
                             v-if="trendValue"
@@ -68,7 +68,7 @@ withDefaults(defineProps<Props>(), {
                             <span v-else-if="trend === 'down'">↓</span>
                             {{ trendValue }}
                         </span>
-                        <span v-if="subtitle" class="text-sm text-muted">
+                        <span v-if="subtitle" class="text-muted text-sm">
                             {{ subtitle }}
                         </span>
                     </div>
@@ -77,7 +77,7 @@ withDefaults(defineProps<Props>(), {
                 <!-- Icon -->
                 <div
                     v-if="icon || $slots.icon"
-                    class="h-12 w-12 flex flex-shrink-0 items-center justify-center rounded-lg bg-primary-soft text-on-primary-soft"
+                    class="bg-primary-soft text-on-primary-soft flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg"
                 >
                     <slot name="icon">
                         <span

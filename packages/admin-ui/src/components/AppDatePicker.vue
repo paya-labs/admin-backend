@@ -225,10 +225,10 @@ const scrollToCurrent = (): void => {
         <label
             v-if="label"
             :for="id"
-            class="mb-1.5 text-sm font-medium block text-text"
+            class="text-text mb-1.5 block text-sm font-medium"
         >
             {{ label }}
-            <span v-if="required" class="ml-0.5 text-danger">*</span>
+            <span v-if="required" class="text-danger ml-0.5">*</span>
         </label>
 
         <!-- Trigger -->
@@ -243,23 +243,23 @@ const scrollToCurrent = (): void => {
                 :aria-expanded="expanded"
                 :aria-describedby="error || hint ? `${id}-helper` : undefined"
                 :class="[
-                    'gap-2 flex w-full items-center text-left',
+                    'flex w-full items-center gap-2 text-left',
                     {
-                        sm: 'py-1.5 text-sm min-h-[36px]',
-                        md: 'py-2.5 min-h-[44px]',
-                        lg: 'py-3 min-h-[52px]',
+                        sm: 'min-h-[36px] py-1.5 text-sm',
+                        md: 'min-h-[44px] py-2.5',
+                        lg: 'min-h-[52px] py-3',
                     }[size],
-                    'pl-3 bg-input-bg',
+                    'bg-input-bg pl-3',
                     clearable && modelValue ? 'pr-9' : 'pr-3',
                     'rounded-md border',
                     'transition-colors duration-[var(--transition-fast)]',
-                    'focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none',
-                    'disabled:cursor-not-allowed disabled:bg-surface-hover disabled:opacity-50',
+                    'focus:ring-focus-ring focus:border-transparent focus:ring-2 focus:outline-none',
+                    'disabled:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-50',
                     'cursor-pointer',
                     hasError
                         ? 'border-danger focus:ring-danger'
                         : expanded
-                          ? 'border-transparent ring-2 ring-focus-ring'
+                          ? 'ring-focus-ring border-transparent ring-2'
                           : 'border-input-border',
                 ]"
                 @click="openToggle"
@@ -269,7 +269,7 @@ const scrollToCurrent = (): void => {
                 <AppIcon
                     :name="isTime ? 'clock' : 'calendar'"
                     size="sm"
-                    class="shrink-0 text-muted"
+                    class="text-muted shrink-0"
                 />
                 <span
                     :class="[
@@ -286,7 +286,7 @@ const scrollToCurrent = (): void => {
                 v-if="clearable && modelValue && !disabled"
                 type="button"
                 aria-label="Clear"
-                class="inset-y-0 right-2 h-5 w-5 absolute my-auto flex cursor-pointer items-center justify-center rounded-full text-muted opacity-0 group-hover:opacity-100 hover:bg-surface-hover hover:text-text focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
+                class="text-muted hover:bg-surface-hover hover:text-text focus-visible:ring-focus-ring absolute inset-y-0 right-2 my-auto flex h-5 w-5 cursor-pointer items-center justify-center rounded-full opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:outline-none"
                 @click="emit('update:modelValue', '')"
             >
                 <AppIcon name="x" size="sm" />
@@ -326,7 +326,7 @@ const scrollToCurrent = (): void => {
                     <div
                         v-else
                         :class="[
-                            'p-3 text-sm rounded-xl border border-border-strong bg-surface text-text shadow-lg',
+                            'border-border-strong bg-surface text-text rounded-xl border p-3 text-sm shadow-lg',
                             from ? 'w-[190px]' : 'w-[150px]',
                         ]"
                     >
@@ -337,24 +337,24 @@ const scrollToCurrent = (): void => {
                             aria-label="Time"
                             autocomplete="off"
                             :value="modelValue"
-                            class="h-8 px-2 text-sm w-full rounded-md border border-input-border bg-input-bg text-text tabular-nums placeholder:text-muted focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none"
+                            class="border-input-border bg-input-bg text-text placeholder:text-muted focus:ring-focus-ring h-8 w-full rounded-md border px-2 text-sm tabular-nums focus:border-transparent focus:ring-2 focus:outline-none"
                             @keydown.enter.prevent="applyTyped"
                         />
                         <ul
                             ref="listRef"
-                            class="mt-2 relative max-h-[268px] overflow-y-auto"
+                            class="relative mt-2 max-h-[268px] overflow-y-auto"
                         >
                             <li
                                 v-for="t in times"
                                 :key="t.value"
-                                :class="t.hourStart && 'border-t border-border'"
+                                :class="t.hourStart && 'border-border border-t'"
                             >
                                 <button
                                     type="button"
                                     :aria-pressed="t.value === modelValue"
                                     :class="[
                                         rowClass,
-                                        'px-2.5 h-[30px]',
+                                        'h-[30px] px-2.5',
                                         rowState(t.value),
                                     ]"
                                     @click="pick(t.value)"
@@ -362,25 +362,25 @@ const scrollToCurrent = (): void => {
                                     {{ t.value }}
                                     <span
                                         v-if="t.duration"
-                                        class="pl-2 font-normal ml-auto text-muted"
+                                        class="text-muted ml-auto pl-2 font-normal"
                                         >{{ t.duration }}</span
                                     >
                                 </button>
                             </li>
                         </ul>
                         <div
-                            class="mt-2.5 pt-2.5 flex items-center justify-between border-t border-border"
+                            class="border-border mt-2.5 flex items-center justify-between border-t pt-2.5"
                         >
                             <button
                                 type="button"
-                                class="px-1.5 py-1 cursor-pointer rounded-md text-on-primary-soft hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
+                                class="text-on-primary-soft hover:bg-surface-hover focus-visible:ring-focus-ring cursor-pointer rounded-md px-1.5 py-1 focus-visible:ring-2 focus-visible:outline-none"
                                 @click="pickNow"
                             >
                                 Now
                             </button>
                             <button
                                 type="button"
-                                class="px-1.5 py-1 cursor-pointer rounded-md text-on-primary-soft hover:bg-surface-hover focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:outline-none"
+                                class="text-on-primary-soft hover:bg-surface-hover focus-visible:ring-focus-ring cursor-pointer rounded-md px-1.5 py-1 focus-visible:ring-2 focus-visible:outline-none"
                                 @click="close(true)"
                             >
                                 Done
@@ -400,7 +400,7 @@ const scrollToCurrent = (): void => {
             <template #secondary>
                 <button
                     type="button"
-                    class="cursor-pointer text-text-secondary disabled:cursor-not-allowed disabled:opacity-50"
+                    class="text-text-secondary cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                     :disabled="!isTime && todayDisabled"
                     @click="isTime ? setNow() : pick(todayIso)"
                 >

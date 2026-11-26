@@ -130,11 +130,11 @@ onUnmounted(() => {
         >
             <div
                 v-if="modelValue"
-                class="inset-0 p-4 max-md:items-end max-md:p-0 fixed z-[var(--z-modal)] flex items-center justify-center"
+                class="fixed inset-0 z-[var(--z-modal)] flex items-center justify-center p-4 max-md:items-end max-md:p-0"
             >
                 <!-- Backdrop -->
                 <div
-                    class="inset-0 bg-black/50 absolute"
+                    class="absolute inset-0 bg-black/50"
                     @click="handleBackdropClick"
                 />
 
@@ -151,7 +151,7 @@ onUnmounted(() => {
                         v-if="modelValue"
                         ref="modalRef"
                         :class="[
-                            'relative flex max-h-[90vh] flex-col rounded-xl bg-surface shadow-[var(--shadow-lg)]',
+                            'bg-surface relative flex max-h-[90vh] flex-col rounded-xl shadow-[var(--shadow-lg)]',
                             // Below md the panel spans the screen width and
                             // clears the home indicator. Size full also drops
                             // the height cap; other sizes become a bottom
@@ -162,10 +162,10 @@ onUnmounted(() => {
                                 : 'max-md:rounded-b-none',
 
                             // Size variants
-                            size === 'sm' && 'max-w-sm w-full',
-                            size === 'md' && 'max-w-md w-full',
-                            size === 'lg' && 'max-w-lg w-full',
-                            size === 'xl' && 'max-w-xl w-full',
+                            size === 'sm' && 'w-full max-w-sm',
+                            size === 'md' && 'w-full max-w-md',
+                            size === 'lg' && 'w-full max-w-lg',
+                            size === 'xl' && 'w-full max-w-xl',
                             size === 'full' &&
                                 'h-full w-full max-w-none rounded-none',
                         ]"
@@ -176,13 +176,13 @@ onUnmounted(() => {
                         <!-- Header -->
                         <div
                             v-if="title || $slots.header || closable"
-                            class="px-6 py-4 flex items-center justify-between border-b border-border"
+                            class="border-border flex items-center justify-between border-b px-6 py-4"
                         >
                             <slot name="header">
                                 <h2
                                     v-if="title"
                                     :id="titleId"
-                                    class="text-lg font-semibold text-text"
+                                    class="text-text text-lg font-semibold"
                                 >
                                     {{ title }}
                                 </h2>
@@ -214,14 +214,14 @@ onUnmounted(() => {
                         </div>
 
                         <!-- Body -->
-                        <div class="px-6 py-4 flex-1 overflow-y-auto">
+                        <div class="flex-1 overflow-y-auto px-6 py-4">
                             <slot />
                         </div>
 
                         <!-- Footer -->
                         <div
                             v-if="$slots.footer"
-                            class="gap-3 px-6 py-4 flex items-center justify-end border-t border-border"
+                            class="border-border flex items-center justify-end gap-3 border-t px-6 py-4"
                         >
                             <slot name="footer" />
                         </div>

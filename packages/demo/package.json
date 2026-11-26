@@ -4,11 +4,11 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build",
-        "preview": "vite preview",
-        "lint": "prettier --check . && eslint .",
-        "lint-fix": "prettier --write . && eslint . --fix"
+        "dev": "vp dev",
+        "build": "vp build",
+        "preview": "vp preview",
+        "lint": "vp fmt --check . && vp lint .",
+        "lint-fix": "vp fmt . && vp lint . --fix"
     },
     "dependencies": {
         "@paya-labs/admin-ui": "*",
@@ -16,19 +16,10 @@
         "vue-router": "^5.1.0"
     },
     "devDependencies": {
-        "@eslint/js": "^10.0.1",
         "@tailwindcss/vite": "^4.3.0",
         "@vitejs/plugin-vue": "^6.0.7",
-        "eslint": "^10.4.1",
-        "eslint-plugin-vue": "^10.9.2",
-        "globals": "^17.6.0",
-        "prettier": "^3.8.3",
-        "prettier-plugin-organize-imports": "^4.3.0",
-        "prettier-plugin-tailwindcss": "^0.8.0",
         "tailwindcss": "^4.1.0",
-        "vite": "npm:rolldown-vite@latest"
-    },
-    "overrides": {
-        "vite": "npm:rolldown-vite@latest"
+        "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
+        "vite-plus": "1.7.0"
     }
 }

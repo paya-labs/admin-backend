@@ -30,13 +30,13 @@ const emit = defineEmits<{ confirm: [] }>();
         :close-on-backdrop="!loading"
         :close-on-escape="!loading"
     >
-        <div class="space-y-3 text-sm text-text">
+        <div class="text-text space-y-3 text-sm">
             <slot />
         </div>
         <template #footer>
             <!-- Phone: stacked full-width 44px buttons, action first, Cancel last -->
             <div
-                class="gap-3 max-md:w-full max-md:flex-col-reverse max-md:*:w-full flex justify-end"
+                class="flex justify-end gap-3 max-md:w-full max-md:flex-col-reverse max-md:*:w-full"
             >
                 <slot name="cancel">
                     <AppButton

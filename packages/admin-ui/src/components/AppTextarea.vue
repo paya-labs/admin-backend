@@ -64,10 +64,10 @@ const resizeClass = computed(() => {
         <label
             v-if="label"
             :for="textareaId"
-            class="mb-1.5 text-sm font-medium block text-text"
+            class="text-text mb-1.5 block text-sm font-medium"
         >
             {{ label }}
-            <span v-if="required" class="ml-0.5 text-danger">*</span>
+            <span v-if="required" class="text-danger ml-0.5">*</span>
         </label>
 
         <!-- Textarea -->
@@ -90,8 +90,8 @@ const resizeClass = computed(() => {
                 'rounded-md border',
                 'placeholder:text-muted',
                 'transition-colors duration-[var(--transition-fast)]',
-                'focus:border-transparent focus:ring-2 focus:ring-focus-ring focus:outline-none',
-                'disabled:cursor-not-allowed disabled:bg-surface-hover disabled:opacity-50',
+                'focus:ring-focus-ring focus:border-transparent focus:ring-2 focus:outline-none',
+                'disabled:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-50',
                 resizeClass,
 
                 // Border color based on state
@@ -104,7 +104,7 @@ const resizeClass = computed(() => {
         <!-- Footer: helper text and/or character count -->
         <div
             v-if="error || hint || maxlength"
-            class="mt-1.5 gap-4 flex items-start justify-between"
+            class="mt-1.5 flex items-start justify-between gap-4"
         >
             <p
                 v-if="error || hint"
@@ -113,7 +113,7 @@ const resizeClass = computed(() => {
                 {{ error || hint }}
             </p>
             <span v-else />
-            <span v-if="maxlength" class="text-xs shrink-0 text-muted">
+            <span v-if="maxlength" class="text-muted shrink-0 text-xs">
                 {{ characterCount }}/{{ maxlength }}
             </span>
         </div>

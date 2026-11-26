@@ -15,12 +15,12 @@ defineProps<{
 
 <template>
     <!-- Actions sit right of the title; below 768px they wrap underneath -->
-    <div class="gap-3 flex flex-wrap items-start justify-between">
-        <div class="space-y-1 min-w-0 max-md:w-full">
+    <div class="flex flex-wrap items-start justify-between gap-3">
+        <div class="min-w-0 space-y-1 max-md:w-full">
             <nav
                 v-if="breadcrumbs?.length"
                 aria-label="Breadcrumb"
-                class="text-sm text-muted"
+                class="text-muted text-sm"
             >
                 <template v-for="(crumb, i) in breadcrumbs" :key="i">
                     <span v-if="i > 0" aria-hidden="true"> › </span>
@@ -39,12 +39,12 @@ defineProps<{
                     >
                 </template>
             </nav>
-            <h1 class="text-lg font-semibold text-text">{{ title }}</h1>
-            <p v-if="description" class="text-sm text-muted">
+            <h1 class="text-text text-lg font-semibold">{{ title }}</h1>
+            <p v-if="description" class="text-muted text-sm">
                 {{ description }}
             </p>
         </div>
-        <div v-if="$slots.default" class="gap-3 flex shrink-0 items-center">
+        <div v-if="$slots.default" class="flex shrink-0 items-center gap-3">
             <slot />
         </div>
     </div>

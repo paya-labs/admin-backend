@@ -2,7 +2,7 @@ import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { defineConfig } from 'vite';
+import { defineConfig, lazyPlugins } from 'vite-plus';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -11,7 +11,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // plugin emitted an empty `export {}` for the re-export barrel entry, breaking
 // every consumer import — vue-tsc emits the entry correctly.
 export default defineConfig({
-    plugins: [vue(), tailwindcss()],
+    plugins: lazyPlugins(() => [vue(), tailwindcss()]),
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),

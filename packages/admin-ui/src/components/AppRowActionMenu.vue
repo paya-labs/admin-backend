@@ -77,7 +77,7 @@ const hiddenClass = computed(() =>
         >
             <div
                 v-if="trigger"
-                class="inset-0 fixed z-[var(--z-dropdown)]"
+                class="fixed inset-0 z-[var(--z-dropdown)]"
                 :class="sheet && 'max-md:bg-black/40'"
                 data-row-menu-backdrop
                 @click="emit('close')"
@@ -93,7 +93,7 @@ const hiddenClass = computed(() =>
                 v-if="trigger"
                 ref="menu"
                 data-row-menu
-                class="p-1.5 fixed z-[var(--z-dropdown)] rounded-lg border border-border bg-surface text-left shadow-lg"
+                class="border-border bg-surface fixed z-[var(--z-dropdown)] rounded-lg border p-1.5 text-left shadow-lg"
                 :class="[
                     menuClass ?? 'w-48',
                     sheet &&
@@ -106,7 +106,7 @@ const hiddenClass = computed(() =>
                 <button
                     v-if="sheet && cancel"
                     type="button"
-                    class="mt-1 px-3 py-2 text-sm md:hidden flex w-full items-center justify-center rounded-lg border-t border-border text-text hover:bg-surface-hover"
+                    class="border-border text-text hover:bg-surface-hover mt-1 flex w-full items-center justify-center rounded-lg border-t px-3 py-2 text-sm md:hidden"
                     @click="emit('close')"
                 >
                     Cancel

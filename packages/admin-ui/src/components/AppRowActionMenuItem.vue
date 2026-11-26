@@ -20,7 +20,7 @@ defineProps<{
         :to="to"
         :href="href"
         :type="to || href ? undefined : 'button'"
-        class="gap-3 px-3 py-2 text-sm max-md:py-3 flex w-full cursor-pointer items-center rounded-lg text-left hover:bg-surface-hover"
+        class="hover:bg-surface-hover flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-left text-sm max-md:py-3"
         :class="danger ? 'text-danger' : 'text-text'"
     >
         <AppIcon v-if="icon" :name="icon" size="sm" class="shrink-0" />

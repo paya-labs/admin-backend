@@ -70,7 +70,7 @@ const getVariantIcon = (variant: ToastVariant): string => {
     <Teleport to="body">
         <div
             :class="[
-                'gap-2 pointer-events-none fixed z-[80] flex flex-col',
+                'pointer-events-none fixed z-[80] flex flex-col gap-2',
                 positionClasses,
             ]"
             aria-live="polite"
@@ -89,7 +89,7 @@ const getVariantIcon = (variant: ToastVariant): string => {
                     v-for="toast in visibleToasts"
                     :key="toast.id"
                     :class="[
-                        'w-80 gap-3 p-4 pointer-events-auto flex items-start rounded-lg border shadow-lg',
+                        'pointer-events-auto flex w-80 items-start gap-3 rounded-lg border p-4 shadow-lg',
                         'bg-surface',
                         getVariantClasses(toast.variant),
                     ]"
@@ -105,14 +105,14 @@ const getVariantIcon = (variant: ToastVariant): string => {
                     <div class="min-w-0 flex-1">
                         <p
                             v-if="toast.title"
-                            class="text-sm font-semibold text-text"
+                            class="text-text text-sm font-semibold"
                         >
                             {{ toast.title }}
                         </p>
                         <p
                             :class="[
                                 'text-sm',
-                                toast.title ? 'mt-1 text-muted' : 'text-text',
+                                toast.title ? 'text-muted mt-1' : 'text-text',
                             ]"
                         >
                             {{ toast.message }}
@@ -122,7 +122,7 @@ const getVariantIcon = (variant: ToastVariant): string => {
                     <!-- Close button -->
                     <button
                         type="button"
-                        class="rounded p-1 shrink-0 text-muted transition-colors hover:bg-surface-hover hover:text-text"
+                        class="text-muted hover:bg-surface-hover hover:text-text shrink-0 rounded p-1 transition-colors"
                         aria-label="Dismiss notification"
                         @click="dismiss(toast.id)"
                     >

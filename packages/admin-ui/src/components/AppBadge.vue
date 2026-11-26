@@ -24,7 +24,7 @@ withDefaults(defineProps<Props>(), {
 <template>
     <span
         :class="[
-            'font-medium inline-flex items-center',
+            'inline-flex items-center font-medium',
 
             // Size
             size === 'sm' && 'px-1.5 py-0.5 text-xs',
@@ -35,12 +35,12 @@ withDefaults(defineProps<Props>(), {
             rounded ? 'rounded-full' : 'rounded-sm',
 
             // Variants
-            variant === 'primary' && 'text-white bg-primary-600',
+            variant === 'primary' && 'bg-primary-600 text-white',
             variant === 'secondary' && 'bg-surface text-text',
-            variant === 'success' && 'text-white bg-success/70',
-            variant === 'warning' && 'text-white bg-warning/70',
-            variant === 'danger' && 'text-white bg-danger/70',
-            variant === 'info' && 'text-white bg-info/70',
+            variant === 'success' && 'bg-success/70 text-white',
+            variant === 'warning' && 'bg-warning/70 text-white',
+            variant === 'danger' && 'bg-danger/70 text-white',
+            variant === 'info' && 'bg-info/70 text-white',
         ]"
     >
         <slot />
