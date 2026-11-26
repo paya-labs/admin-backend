@@ -227,6 +227,15 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+@media (width < 48rem) {
+    input,
+    textarea,
+    select,
+    [contenteditable]:not([contenteditable='false']) {
+        font-size: 16px !important;
+    }
+}
+
 /* Focus visible for accessibility. Lives in the base layer so a component's
    focus:outline-none utility can cancel it where a focus ring is drawn instead. */
 @layer base {
