@@ -60,6 +60,8 @@ interface Props {
     slotMaxTime?: string;
     slotDuration?: string;
     slotHeight?: string; // Minimum CSS height for time slots (e.g., '3rem', '48px'); rows grow with slotDuration
+    scrollTime?: string;
+    scrollTimeReset?: boolean;
     // Day configuration
     firstDay?: number;
     hiddenDays?: number[];
@@ -120,6 +122,8 @@ const props = withDefaults(defineProps<Props>(), {
     slotMaxTime: '21:00:00',
     slotDuration: '00:10:00',
     slotHeight: undefined,
+    scrollTime: undefined,
+    scrollTimeReset: false,
     // Day configuration defaults
     firstDay: 1,
     hiddenDays: () => [],
@@ -168,6 +172,29 @@ const emit = defineEmits<{
 }>();
 
 const moduleConfig = useModuleConfig();
+const calendarTimeZone = computed(
+    () => props.timeZone ?? moduleConfig?.timezone ?? 'local',
+);
+
+const hourAndMinuteIn = (date: Date, timeZone: string) => {
+    const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: timeZone === 'local' ? undefined : timeZone,
+        hour: 'numeric',
+        minute: 'numeric',
+        hourCycle: 'h23',
+    }).formatToParts(date);
+    const partValue = (type: string) =>
+        parseInt(parts.find((p) => p.type === type)?.value ?? '0');
+    return { hour: partValue('hour'), minute: partValue('minute') };
+};
+
+const startOfPreviousHour = () => {
+    const { hour } = hourAndMinuteIn(new Date(), calendarTimeZone.value);
+    const scrollHour = Math.max(0, hour - 1);
+    return `${String(scrollHour).padStart(2, '0')}:00:00`;
+};
+
+const defaultScrollTime = startOfPreviousHour();
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
 const slots: ReturnType<typeof useSlots> = useSlots();
 
@@ -636,7 +663,9 @@ const mergedButtonText = computed(() => {
 
 const calendarOptions = computed<CalendarOptions>(() => ({
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
-    timeZone: props.timeZone ?? moduleConfig?.timezone ?? 'local',
+    timeZone: calendarTimeZone.value,
+    scrollTime: props.scrollTime ?? defaultScrollTime,
+    scrollTimeReset: props.scrollTimeReset,
     initialView: props.initialView,
     editable: props.editable,
     headerToolbar: props.headerToolbar,
@@ -751,19 +780,8 @@ defineExpose({
 
         api.gotoDate(date);
 
-        // Extract hours/minutes in the configured timezone
-        const tz = props.timeZone ?? moduleConfig?.timezone ?? 'UTC';
-        const parts = new Intl.DateTimeFormat('en-US', {
-            timeZone: tz,
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: false,
-        }).formatToParts(date);
-        const get = (type: string) =>
-            parseInt(parts.find((p) => p.type === type)?.value ?? '0');
-        let h = get('hour');
-        if (h === 24) h = 0;
-        const totalMinutes = h * 60 + get('minute');
+        const { hour, minute } = hourAndMinuteIn(date, calendarTimeZone.value);
+        const totalMinutes = hour * 60 + minute;
 
         const scrollMinutes = Math.max(0, totalMinutes - paddingMinutes);
         const hours = Math.floor(scrollMinutes / 60);
