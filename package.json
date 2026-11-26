@@ -18,13 +18,13 @@
         "lint:fix": "vp fmt . && vp lint . --fix"
     },
     "devDependencies": {
-        "@vitejs/plugin-vue": "^6.0.7",
+        "@vitejs/plugin-vue": "^6.0.11",
         "typescript": "^6.0.3",
         "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
         "vite-plugin-dts": "^5.0.2",
         "vite-plugin-vue-devtools": "^8.1.2",
-        "vue": "^3.5.43",
-        "vite-plus": "1.7.0"
+        "vite-plus": "1.7.0",
+        "vue": "^3.5.46"
     },
     "overrides": {
         "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
