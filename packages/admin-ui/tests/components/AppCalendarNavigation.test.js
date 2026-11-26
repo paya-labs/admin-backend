@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it } from 'vitest';
 import { nextTick } from 'vue';
 import AppCalendarNavigation from '../../src/components/AppCalendarNavigation.vue';
+import AppIcon from '../../src/components/AppIcon.vue';
 
 const findDialog = () => document.querySelector('[role="dialog"]');
 
@@ -47,7 +48,7 @@ describe('AppCalendarNavigation', () => {
         const heading = wrapper.find('[aria-haspopup="dialog"]');
         expect(wrapper.find('h1').exists()).toBe(false);
         expect(heading.text()).toBe('Sep 21 – 27, 2026');
-        expect(heading.find('svg').classes()).toContain('shrink-0');
+        expect(heading.findComponent(AppIcon).props('name')).toBe('calendar');
         expect(heading.attributes('title')).toBe('Go to date');
         expect(heading.attributes('aria-expanded')).toBe('false');
 
