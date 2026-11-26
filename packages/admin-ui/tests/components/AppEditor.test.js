@@ -224,7 +224,7 @@ describe('AppEditor', () => {
     });
 
     it('clicking MD toggle shows textarea and hides TipTap editor', async () => {
-        const wrapper = mount(AppEditor);
+        const wrapper = mount(AppEditor, { attachTo: document.body });
         await waitForEditor();
 
         const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
@@ -235,10 +235,11 @@ describe('AppEditor', () => {
         );
         // TipTap editor should be hidden (v-show=false)
         expect(wrapper.find('.tiptap').isVisible()).toBe(false);
+        wrapper.unmount();
     });
 
     it('clicking MD toggle again returns to rich text mode', async () => {
-        const wrapper = mount(AppEditor);
+        const wrapper = mount(AppEditor, { attachTo: document.body });
         await waitForEditor();
 
         const mdButton = wrapper.find('[aria-label="Toggle markdown mode"]');
@@ -254,6 +255,7 @@ describe('AppEditor', () => {
             false,
         );
         expect(wrapper.find('.tiptap').isVisible()).toBe(true);
+        wrapper.unmount();
     });
 
     it('formatting buttons are disabled in markdown mode', async () => {
